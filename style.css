@@ -1,48 +1,64 @@
 /*
 Theme Name: Minimize
-Theme URI: http://slocumstudio.com/
+Theme URI: http://slocumstudio.com/wordpres-themes/minimize
 Description: A lightweight and responsive WordPress theme. Great for a blog or to start a new project.
 Author: Slocum Design Studio
 Author URI: http://slocumstudio.com
-Version: 2.1
+Version: 2.2
 License: GPL2+
 License URI: http://www.gnu.org/licenses/gpl.html
 Tags: blue, green, orange, pink, purple, red, white, light, two-columns, left-sidebar, flexible-width, custom-colors, custom-menu, editor-style, featured-images, full-width-template, sticky-post, theme-options, threaded-comments
+
+Minimize WordPress theme, Copyright (C) 2013 Slocum Studio
+Minimize WordPress theme is licensed under the GPL.
 */
 
-/* CSS Reset */
+/**
+ * HTML5/CSS Reset
+ *
+ * We've used Eric Meyer's reset (http://meyerweb.com) as a base and modified it a bit to suit our needs.
+ */
 html,body, div, dl, dt, dd, ul, li,
-pre, form, fieldset, input, textarea, blockquote, th, td { 
-	padding: 0;
+pre, form, fieldset, input, textarea, blockquote, th, td, section { 
 	margin: 0;
+	padding: 0;
 	-webkit-font-smoothing: antialiased;
-	}
-fieldset, img { 
+}
+
+fieldset, img, abbr, acronym  { 
 	border: 0;
-	margin: 0;
-	padding: 0;
-	}
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+a img {
+	text-decoration: none;
+}
+
+select {
+	max-width: 100%;
+}
+
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
-	}
-ul {
-	list-style: none;
-	}
-address, caption, cite, code, dfn, em, strong, th, var {
+}
+
+address, caption, cite, code, dfn, em, var {
 	font-weight: normal;
 	font-style: normal;
-	}
-caption, th {
-	text-align: left;
-	}
+}
 
 q:before, q:after {
 	content: '';
-	}
-abbr, acronym { 
-	border: 0;
-	}
+}
+
+ul {
+	list-style: none;
+}
 	
 mark{
 	background: none;
@@ -52,13 +68,11 @@ button{
 	border: none;
 }
 
-a img{
-	text-decoration: none;
-}
 
 
-
-/* Theme Styles */
+/**
+ * Theme Styles
+ */
 body{
 	width: auto;
 	max-width: 1100px;
@@ -556,12 +570,9 @@ section.breadcrumb{
 }
 
 .content-wrapper {
-	/*display: inline-block;*/
-	overflow: auto;
 }
 
 .full-width-content-wrapper {
-	overflow: visible;
 }
 
 article.content{
