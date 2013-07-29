@@ -3,7 +3,7 @@
  * This class manages all functionality with our Minimize v2 theme.
  */
 class Minimize {
-	const MIN_VERSION = '2.1';
+	const MIN_VERSION = '2.1.1';
 
 	private static $instance; // Keep track of the instance
 
@@ -52,14 +52,17 @@ class Minimize {
 	 * It will also enqueue the correct color scheme stylesheet to better match front-end display.
 	 */
 	function pre_get_posts() {
-		global $post;
+		global $sds_theme_options, $post;
 
 		// Admin only and if we have a post
 		if ( is_admin() && ! empty( $post ) ) {
 			add_editor_style( 'css/editor-style.css' );
 
-			$options = get_option( 'sbt_options' );
-			add_editor_style( 'css/' . $options['color_scheme'] );
+			// Add correct color scheme if selected
+			if ( function_exists( 'sds_color_schemes' ) && ! empty( $sds_theme_options['color_scheme'] ) && $sds_theme_options['color_scheme'] !== 'default' ) {
+				$color_schemes = sds_color_schemes();
+				add_editor_style( 'css/' . $color_schemes[$sds_theme_options['color_scheme']]['stylesheet'] );
+			}
 
 			// Fetch page template if any on Pages only
 			if ( $post->post_type === 'page' )

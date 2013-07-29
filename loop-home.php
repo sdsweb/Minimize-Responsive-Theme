@@ -10,12 +10,24 @@
 
 		<section class="post-title-wrap <?php echo ( has_post_thumbnail() ) ? 'post-title-wrap-featured-image' : 'post-title-wrap-no-image'; ?>">
 			<h2 class="latest-post-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
-			<p class="latest-post-date"><?php the_time( 'F j, Y' ); ?></p>
+			<p class="latest-post-date">
+				<?php
+					if ( strlen( get_the_title() ) > 0 ) :
+						the_time( 'F j, Y' );
+					else: // No title
+				?>
+					<a href="<?php the_permalink(); ?>"><?php the_time( 'F j, Y' ); ?></a>
+				<?php
+					endif;
+				?>
+			</p>
 		</section>
 
 		<section class="clear">&nbsp;</section>
 
 		<?php the_content( 'Continue Reading' ); ?>
+
+		<section class="clear">&nbsp;</section>
 	</section>
 <?php
 		endwhile;

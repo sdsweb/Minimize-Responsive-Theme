@@ -12,11 +12,9 @@ get_header( 'landing-page' ); ?>
 
 			<section class="clear">&nbsp;</section>
 
-			<?php if ( comments_open() ) : ?>
-				<section id="comments-container" class="comments-container post-comments post-comments-container">
-					<?php comments_template(); // Comments ?>
-				</section>
-			<?php endif; ?>
+			<section id="comments-container" class="comments-container post-comments post-comments-container">
+				<?php comments_template(); // Comments ?>
+			</section>
 		</article>
 	</section>
 

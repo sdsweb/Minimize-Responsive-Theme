@@ -390,7 +390,7 @@ section.footer-widget:hover {
 	}
 
 	nav ul.top-nav li a:hover {
-		background-color: rgba(0,0,0,.5);
+		background-color: rgba(0,0,0,.1);
 	}
 
 	nav ul.top-nav > li:first-child {
@@ -411,7 +411,7 @@ section.footer-widget:hover {
 	}
 
 	nav ul.top-nav.open li ul.sub-menu, nav .primary-nav.open li ul.sub-menu {
-		background: #2b4c6c;
+		background: #3c639a;
 	}
 
 	article.content {

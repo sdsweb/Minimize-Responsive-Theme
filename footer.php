@@ -26,7 +26,7 @@
 			</section>
 
 			<p class="copyright">
-				<?php sds_copyright(); ?>
+				<?php sds_copyright( 'Minimize' ); ?>
 			</p>
 		</footer>
 

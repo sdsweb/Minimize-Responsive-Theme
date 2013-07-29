@@ -40,10 +40,6 @@ if( ! empty( $_SERVER['SCRIPT_FILENAME'] ) && basename( $_SERVER['SCRIPT_FILENAM
 
 	<?php endif; // have_comments() ?>
 
-	<?php if ( ! comments_open() ) : ?>
-		<p id="no-comments" class="no-comments"><?php _e( 'Comments are closed.' , 'min' ); ?></p>
-	<?php endif; ?>
-
 	<section class="clear">&nbsp;</section>
 
 	<?php comment_form(); // Display the comment form (add new comment) ?>
