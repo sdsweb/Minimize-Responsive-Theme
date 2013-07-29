@@ -16,6 +16,8 @@
 
 		<?php the_content(); ?>
 
+		<section class="clear">&nbsp;</section>
+
 		<?php edit_post_link( 'Edit Page' ); // Allow logged in users to edit ?>
 
 		<?php if ( $multipage ) : ?>

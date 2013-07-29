@@ -9,7 +9,7 @@
 include_once get_template_directory() . '/includes/theme-options.php'; // SDS Theme Options
 include_once get_template_directory() . '/includes/theme-functions.php'; // SDS Theme Options Functions
 include_once get_template_directory() . '/includes/widget-social-media.php'; // SDS Social Media Widget
-	
+
 include_once get_template_directory() . '/includes/Minimize.php'; // Minimize Class (main functionality, actions/filters)
 
 
@@ -54,7 +54,15 @@ if ( ! function_exists( 'sds_color_schemes' ) ) {
  */
 if ( ! function_exists( 'sds_web_fonts' ) ) {
 	function sds_web_fonts() {
-		return apply_filters( 'sds_theme_options_web_fonts', false );
+		$web_fonts = array(
+			// Average Sans
+			'Lato:400' => array(
+				'label' => 'Lato',
+				'css' => 'font-family: \'Lato\', sans-serif;'
+			)
+		);
+
+		return apply_filters( 'sds_theme_options_web_fonts', $web_fonts );
 	}
 }
 
@@ -111,11 +119,6 @@ if ( ! function_exists( 'sds_theme_options_upgrade_cta' ) ) {
 			case 'featured-image-sizes':
 			?>
 				<p><a href="http://slocumstudio.com/wordpress-themes/minimize" target="_blank">Upgrade to Minimize Pro</a> to modify featured image sizes!</p>
-			<?php
-			break;
-			case 'custom-scripts-styles':
-			?>
-				<p><a href="http://slocumstudio.com/wordpress-themes/minimize" target="_blank">Upgrade to Minimize Pro</a> to add your own custom scripts and styles!</p>
 			<?php
 			break;
 			case 'help-support':

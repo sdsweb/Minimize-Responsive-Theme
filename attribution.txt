@@ -1,0 +1,9 @@
+/**
+ * Font Awesome 3.2.1 Web Font
+ * http://fontawesome.io/
+ *
+ * Created and Maintained by Dave Gandy - http://twitter.com/davegandy
+ 
+ * Released under the GPLv2 license.
+ * License URI: http://fontawesome.io/license/
+ */

@@ -118,6 +118,15 @@ if ( ! function_exists( 'sds_wp_enqueue_scripts' ) ) {
 			}
 		}
 
+		// Web Fonts
+		if ( function_exists( 'sds_web_fonts' ) && ! empty( $sds_theme_options['web_font'] ) ) {
+			$web_fonts = sds_web_fonts();
+			$protocol = is_ssl() ? 'https' : 'http';
+
+			if ( ! empty( $sds_theme_options['web_font'] ) )
+				wp_enqueue_style( 'sds-google-web-font', $protocol . '://fonts.googleapis.com/css?family=' . $sds_theme_options['web_font'] );
+		}
+
 		// Theme Option Fonts (Social Media)
 		if ( ! empty( $sds_theme_options['social_media'] ) ) {
 			$social_networks_active = false;
@@ -141,13 +150,42 @@ if ( ! function_exists( 'sds_wp_enqueue_scripts' ) ) {
 }
 
 /**
+ * This function adds the current site name after the title in the <head> section.
+ */
+if ( ! function_exists( 'sds_wp_title' ) ) {
+	add_filter( 'wp_title', 'sds_wp_title' );
+
+	function sds_wp_title( $title ) {
+		$title .= get_bloginfo( 'name' );
+
+		return $title;
+	}
+}
+
+/**
  * This function outputs necessary scripts/styles in the head section based on options (web font, custom scripts/styles).
  */
 if ( ! function_exists( 'sds_wp_head' ) ) {
 	add_action( 'wp_head', 'sds_wp_head' );
 
 	function sds_wp_head() {
-		global $is_IE;
+		global $sds_theme_options, $is_IE;
+
+		// Web Fonts
+		if ( function_exists( 'sds_web_fonts' ) && ! empty( $sds_theme_options['web_font'] ) ) {
+			$web_fonts = sds_web_fonts();
+			$selected_web_font = array_key_exists( $sds_theme_options['web_font'], $web_fonts ) ? $web_fonts[$sds_theme_options['web_font']] : false;
+
+			if ( ! empty( $selected_web_font ) && isset( $selected_web_font['css'] ) ) :
+			?>
+				<style type="text/css">
+					html, body {
+						<?php echo $selected_web_font['css']; ?>
+					}
+				</style>
+			<?php
+			endif;
+		}
 
 		// HTML5 Shiv (IE only, conditionally for less than IE9)
 		if ( $is_IE )
@@ -508,13 +546,13 @@ if ( ! function_exists( 'sds_single_image_navigation' ) ) {
  * This function outputs the site's copyright as well as the SDS copyright.
  */
 if ( ! function_exists( 'sds_copyright' ) ) {
-	function sds_copyright() {
+	function sds_copyright( $theme_name ) {
 	?>
 		<span class="site-copyright">
 			<?php echo apply_filters( 'sds_copyright', 'Copyright &copy; ' . date( 'Y' ) . ' <a href="' . home_url() . '" title="' . get_bloginfo( 'name' ) . '">' . get_bloginfo( 'name' ) . '</a>. All Rights Reserved.' ); ?>
 		</span>
 		<span class="slocum-credit">
-			<?php echo apply_filters( 'sds_copyright_branding', '<a href="http://slocumstudio.com/?utm_source=' . home_url() . '&amp;utm_medium=footer-plugs&amp;utm_campaign=WordPressThemes" target="_blank">WordPress theme by Slocum Design Studio</a>' ); ?>
+			<?php echo apply_filters( 'sds_copyright_branding', '<a href="http://slocumstudio.com/?utm_source=' . home_url() . '&amp;utm_medium=footer-plugs&amp;utm_campaign=WordPressThemes" target="_blank">' . $theme_name . ' by Slocum Design Studio</a>' ); ?>
 		</span>
 	<?php
 	}

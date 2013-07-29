@@ -59,6 +59,13 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 
 				wp_enqueue_media(); // Enqueue media scripts
 				wp_enqueue_script( 'sds-theme-options', get_template_directory_uri() . '/includes/js/sds-theme-options.js', array( 'jquery' ), self::VERSION );
+
+				// Web Fonts
+				if ( function_exists( 'sds_web_fonts' ) ) {
+					$google_families = $this->get_google_font_families_list();
+
+					wp_enqueue_style( 'google-web-fonts', $protocol . '://fonts.googleapis.com/css?family=' . $google_families, false, self::VERSION );
+				}
 			}
 		}
 
@@ -100,10 +107,6 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 				add_settings_section( 'sds_theme_options_web_fonts_section', 'Web Fonts', array( $this, 'sds_theme_options_web_fonts_section' ), 'sds-theme-options[general]' );
 				add_settings_field( 'sds_theme_options_web_fonts_field', 'Select A Web Font:', array( $this, 'sds_theme_options_web_fonts_field' ), 'sds-theme-options[general]', 'sds_theme_options_web_fonts_section' );
 			}
-
-			// Featured Image Size
-			add_settings_section( 'sds_theme_options_featured_image_size_section', 'Featured Image Size', array( $this, 'sds_theme_options_featured_image_size_section' ), 'sds-theme-options[general]' );
-			add_settings_field( 'sds_theme_options_featured_image_size_field', 'Featured Image Size:', array( $this, 'sds_theme_options_featured_image_size_field' ), 'sds-theme-options[general]', 'sds_theme_options_featured_image_size_section' );
 
 
 			/*
@@ -221,6 +224,8 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 						</label>
 					</div>
 				<?php endforeach; ?>
+
+				<?php do_action( 'sds_theme_options_upgrade_cta', 'color-schemes' ); ?>
 			</div>
 		<?php
 			endif;
@@ -240,39 +245,41 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 		 * This function is the callback for the web fonts settings field.
 		 */
 		function sds_theme_options_web_fonts_field() {
+			global $sds_theme_options;
+
+			$web_fonts = sds_web_fonts();
+
+			if ( ! empty( $web_fonts ) ) :
 		?>
 			<div class="sbt-theme-options-web-fonts-wrap">
 				<div class="sbt-theme-options-web-font sbt-theme-options-web-font-none">
 						<label>
-							<input type="radio" id="sds_theme_options_web_font_none" name="sds_theme_options[web_font]" <?php ( ! isset( $sds_theme_options['web_font'] ) || empty( $sds_theme_options['web_font'] ) ) ? checked( true ) : checked( false ); ?> value="none" />
+							<input type="radio" id="sds_theme_options_web_font_none" name="sds_theme_options[web_font]" <?php ( ! isset( $sds_theme_options['web_font'] ) || empty( $sds_theme_options['web_font'] ) || $sds_theme_options['web_font'] === 'none' ) ? checked( true ) : checked( false ); ?> value="none" />
 							<div class="sbt-theme-options-web-font-selected">&#10004;</div>
-							None
 						</label>
+						<span class="sds-theme-options-web-font-label-none">None</span>
 				</div>
+
+				<?php
+					foreach( $web_fonts as $name => $atts ) :
+						$css_name = strtolower( str_replace( array( '+'. ':' ), '-', $name) );
+				?>
+						<div class="sbt-theme-options-web-font sbt-theme-options-web-font-<?php echo $css_name; ?>" style="<?php echo ( isset( $atts['css'] ) && ! empty( $atts['css'] ) ) ? $atts['css'] : false; ?>">
+							<label>
+								<input type="radio" id="sds_theme_options_web_font_name_<?php echo $css_name; ?>" name="sds_theme_options[web_font]" <?php ( isset( $sds_theme_options['web_font'] ) ) ? checked( $sds_theme_options['web_font'], $name ) : checked( false ); ?> value="<?php echo $name; ?>" />
+								<div class="sbt-theme-options-web-font-selected">&#10004;</div>
+							</label>
+							<span class="sds-theme-options-web-font-label"><?php echo ( isset( $atts['label'] ) ) ? $atts['label'] : false; ?></span>
+							<span class="sds-theme-options-web-font-preview">Grumpy wizards make toxic brew for the evil Queen and Jack.</span>
+						</div>
+				<?php
+					endforeach;
+				?>
 
 				<?php do_action( 'sds_theme_options_upgrade_cta', 'web-fonts' ); ?>
 			</div>
 		<?php
-		}
-
-		
-		/**
-		 * This function is the callback for the featured image size settings section.
-		 */
-		function sds_theme_options_featured_image_size_section() {
-		?>
-			<p>Use this section to modify how featured images are displayed on your site.</p>
-		<?php
-		}
-		
-		/**
-		 * This function is the callback for the featured image size settings field.
-		 */
-		function sds_theme_options_featured_image_size_field() {
-		?>
-			<strong>Default</strong>
-		<?php
-			do_action( 'sds_theme_options_upgrade_cta', 'featured-image-sizes' );
+			endif;
 		}
 
 		
@@ -422,6 +429,7 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 			// General
 			$input['logo_attachment_id'] = ( ! empty( $input['logo_attachment_id'] ) ) ? ( int ) $input['logo_attachment_id'] : '';
 			$input['color_scheme'] = sanitize_text_field( $input['color_scheme'] );
+			$input['web_font'] = ( ! empty( $input['web_font'] ) && $input['web_font'] !== 'none' ) ? sanitize_text_field( $input['web_font'] ) : false;
 			$input['hide_tagline'] = ( $input['hide_tagline'] ) ? true : false;
 
 			// Social media
@@ -461,7 +469,6 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 				<h2 class="nav-tab-wrapper sds-theme-options-tab-wrap">
 					<a href="#general" id="general-tab" class="nav-tab sds-theme-options-tab nav-tab-active">General Options</a>
 					<a href="#social-media" id="social-media-tab" class="nav-tab sds-theme-options-tab">Social Media</a>
-					<a href="#custom-scripts-styles" id="custom-scripts-styles-tab" class="nav-tab sds-theme-options-tab">Custom Scripts/Styles</a>
 					<?php do_action( 'sds_theme_options_navigation_tabs' ); // Hook for extending tabs ?>
 					<a href="#help-support" id="help-support-tab" class="nav-tab sds-theme-options-tab">Help/Support</a>
 				</h2>
@@ -490,16 +497,6 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 
 					<?php
 					/*
-					 * Custom Scripts/Styles Settings
-					 */
-					?>
-					<div id="custom-scripts-styles-tab-content" class="sds-theme-options-tab-content">
-						<h3>Custom Scripts/Styles</h3>
-						<?php do_action( 'sds_theme_options_upgrade_cta', 'custom-scripts-styles' ); ?>
-					</div>
-
-					<?php
-					/*
 					 * Help/Support
 					 */
 					?>
@@ -520,7 +517,10 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 
 				<div id="sds-theme-options-ads" class="sidebar">
 					<div class="sds-theme-options-ad">
-						<iframe src="http://www.youtube.com/subscribe_widget?p=slocumstudio" id="youtube-subscribe-frame" scrolling="no" frameBorder="0"></iframe>
+						<div class="yt-subscribe">
+							<div class="g-ytsubscribe" data-channel="slocumstudio" data-layout="default"></div>
+							<script src="https://apis.google.com/js/plusone.js"></script>
+						</div>
 
 						<a href="https://twitter.com/slocumstudio" class="twitter-follow-button" data-show-count="false" data-size="large" data-dnt="true">Follow @slocumstudio</a>
 						<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
@@ -575,6 +575,7 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 				'logo_attachment_id' => false,
 				'color_scheme' => false,
 				'hide_tagline' => false,
+				'web_font' => false,
 
 				// Social Media
 				'social_media' => array(
@@ -584,9 +585,9 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 					'google_plus_url' => '',
 					'youtube_url' => '',
 					'vimeo_url' => '',
-					//'instagram_url' => '',
-					//'pinterest_url' => '',
-					'yelp_url' => '',
+					'instagram_url' => '',
+					'pinterest_url' => '',
+					//'yelp_url' => '',
 					'foursquare_url' => '',
 					'rss_url' => '',
 					'rss_url_use_site_feed' => false
@@ -594,6 +595,33 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 			);
 
 			return apply_filters( 'sds_theme_options_defaults', $defaults );
+		}
+
+		/**
+		 * This function returns a formatted list of Google Web Font families for use when enqueuing styles.
+		 */
+		function get_google_font_families_list() {
+			if ( function_exists( 'sds_web_fonts' ) ) {
+				$web_fonts = sds_web_fonts();
+				$web_fonts_count = count( $web_fonts );
+				$google_families = '';
+
+				if ( ! empty( $web_fonts ) && is_array( $web_fonts ) ) {
+					foreach( $web_fonts as $name => $atts ) {
+						// Google Font Name
+						$google_families .= $name;
+
+						if ( $web_fonts_count > 1 )
+							$google_families .= '|';
+					}
+
+					// Trim last | when multiple fonts are set
+					if ( $web_fonts_count > 1 )
+						$google_families = substr( $google_families, 0, -1 );
+				}
+
+				return $google_families;
+			}
 		}
 	}
 
