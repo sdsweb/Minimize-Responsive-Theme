@@ -1,48 +1,64 @@
 /*
 Theme Name: Minimize
-Theme URI: http://slocumstudio.com/
+Theme URI: http://slocumstudio.com/wordpres-themes/minimize
 Description: A lightweight and responsive WordPress theme. Great for a blog or to start a new project.
 Author: Slocum Design Studio
 Author URI: http://slocumstudio.com
-Version: 2.1
+Version: 2.1.1
 License: GPL2+
 License URI: http://www.gnu.org/licenses/gpl.html
 Tags: blue, green, orange, pink, purple, red, white, light, two-columns, left-sidebar, flexible-width, custom-colors, custom-menu, editor-style, featured-images, full-width-template, sticky-post, theme-options, threaded-comments
+
+Minimize WordPress theme, Copyright (C) 2013 Slocum Studio
+Minimize WordPress theme is licensed under the GPL.
 */
 
-/* CSS Reset */
+/**
+ * HTML5/CSS Reset
+ *
+ * We've used Eric Meyer's reset (http://meyerweb.com) as a base and modified it a bit to suit our needs.
+ */
 html,body, div, dl, dt, dd, ul, li,
-pre, form, fieldset, input, textarea, blockquote, th, td { 
-	padding: 0;
+pre, form, fieldset, input, textarea, blockquote, th, td, section { 
 	margin: 0;
+	padding: 0;
 	-webkit-font-smoothing: antialiased;
-	}
-fieldset, img { 
+}
+
+fieldset, img, abbr, acronym  { 
 	border: 0;
-	margin: 0;
-	padding: 0;
-	}
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+a img {
+	text-decoration: none;
+}
+
+select {
+	max-width: 100%;
+}
+
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
-	}
-ul {
-	list-style: none;
-	}
-address, caption, cite, code, dfn, em, strong, th, var {
+}
+
+address, caption, cite, code, dfn, em, var {
 	font-weight: normal;
 	font-style: normal;
-	}
-caption, th {
-	text-align: left;
-	}
+}
 
 q:before, q:after {
 	content: '';
-	}
-abbr, acronym { 
-	border: 0;
-	}
+}
+
+ul {
+	list-style: none;
+}
 	
 mark{
 	background: none;
@@ -52,13 +68,11 @@ button{
 	border: none;
 }
 
-a img{
-	text-decoration: none;
-}
 
 
-
-/* Theme Styles */
+/**
+ * Theme Styles
+ */
 body{
 	width: auto;
 	max-width: 1100px;
@@ -236,6 +250,10 @@ header .header-call-to-action .widget {
 	text-align: center;
 }
 
+header .header-call-to-action .widget a {
+	color: #fff;
+}
+
 header .header-call-to-action .widgettitle {
 	margin: 0 0 0.25em;
 }
@@ -253,25 +271,102 @@ aside.nav-options{
 	float: right;
 }
 
-nav ul.secondary-nav{
+nav.top-nav{
+	z-index: 1001;
+}
+
+nav ul.top-nav{
 	margin: 10px 0; /* Changed from em's to px due to CSS3 transition, was: 0.25em 0*/
-	overflow: auto;
 }
 
-nav ul.secondary-nav li{
+nav ul.top-nav li {
+	min-height: 30px;
+	margin: 2px;
 	float: left;
+	position: relative;
+
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    -ms-transition: all .3s ease-in-out;
+    -o-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
 }
 
-nav ul.secondary-nav li a{
+nav ul.top-nav li:first-child {
+	margin-left: 0;
+}
+
+nav ul.top-nav li ul {
+}
+
+nav ul.top-nav li li {
+	margin: 0;
+	list-style: square;
+	float: none;
+}
+
+nav ul.top-nav li a{
 	text-decoration: none;
-	padding-right: 20px;
+	padding: 8px;
 	font-size: 14px;
 	color: #565656;
+	display: block;
+
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    -ms-transition: all .3s ease-in-out;
+    -o-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
 }
 
-nav ul.secondary-nav li a:hover{
+nav ul.top-nav li a:hover{
+	background: #eee;
 	text-decoration: underline;
 }
+
+nav ul.top-nav .sub-menu {
+	width: auto;
+	margin: -1px 0 0;
+	padding: 0;
+	position: absolute;
+	top: 100%;
+	display: none;
+	background: #fafafa;
+	border: 1px solid #eee;
+}
+
+nav ul.top-nav > li:hover {
+	background: #eee;
+}
+
+nav ul.top-nav li:hover > .sub-menu {
+	display: block;
+}
+
+nav ul.top-nav .sub-menu li {
+	width: auto;
+	min-height: 40px;
+	float: none;
+	display: block;
+	position: relative;
+}
+
+nav ul.top-nav .sub-menu li a {
+	width: auto;
+	min-width: 8em;
+	padding: 10px;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+	white-space: nowrap;
+	float: none;
+	display: block;
+}
+
+/* Top Nav sub menus */
+nav ul.top-nav .sub-menu li > ul {
+	top: 0;
+	left: 100%;
+}
+
 
 /* Search Form */
 #searchform input{
@@ -556,12 +651,9 @@ section.breadcrumb{
 }
 
 .content-wrapper {
-	/*display: inline-block;*/
-	overflow: auto;
 }
 
 .full-width-content-wrapper {
-	overflow: visible;
 }
 
 article.content{
@@ -644,7 +736,7 @@ article.content ol > li {
 
 article.content blockquote, .comment-content blockquote {
 	width: 94%;
-	margin: auto;
+	margin: 0.5em auto auto;
 	padding: 0.5em;
 	font-style: italic;
 	background: #ededed;
@@ -657,7 +749,7 @@ article.content blockquote:before, .comment-content blockquote:before {
 	font-size: 66px;
 	position: absolute;
 	left: -15px;
-	top: -4px;
+	top: 10px;
 	color: #7a7a7a;
 }
 
@@ -1291,19 +1383,28 @@ section.footer-widget:hover img{
 	display: block;
 	margin: 0 0 2em;
 	padding: 0;
-	border-top: 1px solid #ccc;
+	/*border-top: 1px solid #ccc;*/
 	border-bottom: 1px solid #ccc;
 }
 
 .footer-nav li {
 	display: inline-block;
-	vertical-align: middle;
+	vertical-align: top;
 }
 
 .footer-nav li a {
 	margin-right: 0.5em;
 	padding: 0.5em;
 	display: block;
+}
+
+ul.footer-nav li ul {
+	padding-left: 20px;
+	list-style: square;
+}
+
+.footer-nav li li {
+	display: list-item;
 }
 
 
@@ -1329,8 +1430,7 @@ section.footer-widget:hover img{
 @media only screen and (max-width: 1100px) {
 	body {
 		width: 90%;
-		padding: 5% 5% 0;
-		/*background: #6cf;*/
+		padding: 0 5% 0;
 	}
 
 	#searchform input {
@@ -1343,10 +1443,6 @@ section.footer-widget:hover img{
 	}
 }
 @media only screen and (min-width: 769px) and (max-width: 1023px) {
-	body {
-		/*background: #f00;*/
-	}
-
 	section.logo-box {
 		width: 65%;
 	}
@@ -1370,9 +1466,6 @@ section.footer-widget:hover img{
 }
 
 @media only screen and (min-width : 641px) and (max-width : 768px) {
-	body {
-		/*background: #ff0;*/
-	}
 
 	header #title {
 		font-size: 1.35em;
@@ -1385,12 +1478,8 @@ section.footer-widget:hover img{
 }
 
 @media only screen and (max-width : 640px) {
-	body {
-		/*background: #f60;*/
-	}
-
 	header#header {
-		margin-top: 2em;
+		/*margin-top: 2em;*/
 	}
 
 	/* ------------------
@@ -1400,9 +1489,9 @@ section.footer-widget:hover img{
 		width: 50px;
 		height: 35px;
 		display: block;
-		position: fixed;
-		top: 7px;
-		left: 20px;
+		position: absolute;
+		top: 5px;
+		left: -10px;
 		background: #565656 url('images/menu-icon-large.png') center center no-repeat;
 		background-size: 24px;
 		cursor: pointer;
@@ -1466,7 +1555,7 @@ section.footer-widget:hover img{
 		z-index: 2
 	}
 
-	nav ul.top-nav, nav .primary-nav {
+	nav.top-nav, nav.top-nav ul, nav .primary-nav {
 		width: 100%;
 		float: left;
 		background-color: #fff; /* ---- Color Change ----*/
@@ -1483,11 +1572,20 @@ section.footer-widget:hover img{
 		overflow: hidden;
 		-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.6);
 		box-shadow: 0 1px 2px rgba(0,0,0,.6);
-		position: fixed;
-		top: 0px;
-		left: 0px;
+		position: absolute;
+		top: 0;
+		left: 0;
 		z-index: 999;
 		clear: both;
+	}
+
+	nav.top-nav {
+		width: 110%;
+		left: -5%;
+	}
+
+	nav ul.top-nav li li {
+		padding-left: 0;
 	}
 
 	nav .primary-nav {
@@ -1496,7 +1594,6 @@ section.footer-widget:hover img{
 		background: transparent;
 		-webkit-box-shadow: none;
 		box-shadow: none;
-		position: absolute;
 		z-index: 2;
 	}
 
@@ -1527,7 +1624,7 @@ section.footer-widget:hover img{
 	}
 
 	nav ul.top-nav li a:hover {
-		background-color: rgba(0,0,0,.5);
+		background-color: rgba(0,0,0,.1);
 		text-decoration: none;
 	}
 
@@ -1536,13 +1633,23 @@ section.footer-widget:hover img{
 	}
 
 	/* Toggle the navigation bar open  */
-	nav ul.top-nav.open, nav .primary-nav.open { 
+	nav.top-nav.open, nav.top-nav.open ul, nav .primary-nav.open { 
 		height: auto; 
 		padding-top: 50px;
+		overflow: visible;
 	}
 
 	nav .primary-nav.open {
 		padding-top: 36px;
+		overflow: hidden;
+	}
+
+	nav.top-nav.open ul ul.sub-menu {
+		padding-top: 0;
+	}
+
+	nav.top-nav.open ul li {
+		overflow: hidden;
 	}
 
 	nav ul.top-nav.open li, nav ul.top-nav.open li ul.sub-menu, nav ul.top-nav.open li ul.sub-menu li, nav .primary-nav.open li, nav .primary-nav.open li a, nav .primary-nav.open li ul.sub-menu, nav .primary-nav.open li ul.sub-menu li  { 
@@ -1586,7 +1693,7 @@ section.footer-widget:hover img{
 		padding-left: 30px;
 	}
 
-	nav ul.top-nav li .sub-menu li .sub-menu > li a {
+	nav ul.top-nav li ul.sub-menu li a {
 		padding-left: 20px;
 	}
 
@@ -1610,7 +1717,11 @@ section.footer-widget:hover img{
 		width: 100%;
 		position: static;
 		top: auto;
-		background: #2b4c6c;
+		background: #565656;
+	}
+
+	nav ul.top-nav.open li ul.sub-menu a {
+		color: #fff;
 	}
 
 	nav ul.top-nav.open li ul.sub-menu li, nav .primary-nav.open li ul.sub-menu li {
@@ -1620,7 +1731,7 @@ section.footer-widget:hover img{
 
 	section.logo-box {
 		width: 100%;
-		padding: 1em 0;
+		padding: 3em 0 1em;
 		text-align: center;
 		float: none;
 	}
@@ -1722,8 +1833,13 @@ section.footer-widget:hover img{
 
 
 	/* Footer Navigation */
+	.footer-nav {
+		padding-left: 20px;
+	}
+
 	.footer-nav li {
-		display: block;
+		display: list-item;
+		list-style: square;
 	}
 
 	.footer-nav li a {
@@ -1751,11 +1867,6 @@ section.footer-widget:hover img{
 }
 
 @media only screen and (max-width : 479px) {
-	body {
-		/*background: #f0f;*/
-	}
-
-
 	/* Post Navigation */
 	.post-navigation .previous-posts, .post-navigation .next-posts {
 		width: 48%;
@@ -1776,17 +1887,9 @@ section.footer-widget:hover img{
 }
 
 @media only screen and (min-width : 380px) and (max-width : 419px) {
-	body {
-		/*background: #00f;*/
-	}
 }
 
-@media only screen and (max-width : 379px) {
-	body {
-		/*background: #000;*/
-	}
-
-	
+@media only screen and (max-width : 379px) {	
 	/* Post Navigation */
 	.post-navigation .previous-posts, .post-navigation .next-posts, .post-navigation .previous-posts a, .post-navigation .next-posts a {
 		width: 96%;
@@ -1798,7 +1901,4 @@ section.footer-widget:hover img{
 }
 
 @media only screen and (max-width : 320px) {
-	body {
-		/*background: #fc6;*/
-	}
 }
