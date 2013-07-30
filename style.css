@@ -4,7 +4,7 @@ Theme URI: http://slocumstudio.com/wordpres-themes/minimize
 Description: A lightweight and responsive WordPress theme. Great for a blog or to start a new project.
 Author: Slocum Design Studio
 Author URI: http://slocumstudio.com
-Version: 2.1.1
+Version: 2.1.2
 License: GPL2+
 License URI: http://www.gnu.org/licenses/gpl.html
 Tags: blue, green, orange, pink, purple, red, white, light, two-columns, left-sidebar, flexible-width, custom-colors, custom-menu, editor-style, featured-images, full-width-template, sticky-post, theme-options, threaded-comments
@@ -91,7 +91,7 @@ strong{
 }
 
 a {
-	color: #565656;
+	color: #087981;
 }
 
 img {
@@ -217,7 +217,7 @@ section.logo-box{
 	padding: 0;
 	font-size: 16px;
 	font-style: italic;
-	color: #999999;
+	color: #ae5f11;
 	line-height: 1em;
 	float: left;
 }
@@ -244,7 +244,7 @@ header .header-cta-container {
 header .header-call-to-action .widget {
 	margin: 0 0 0.5em;
 	padding: 0.5em;
-	background: #565656;
+	background: #087981;
 	color: #fff;
 	text-transform: uppercase;
 	text-align: center;
@@ -367,7 +367,6 @@ nav ul.top-nav .sub-menu li > ul {
 	left: 100%;
 }
 
-
 /* Search Form */
 #searchform input{
     font-size: 14px;
@@ -396,7 +395,7 @@ nav ul.top-nav .sub-menu li > ul {
     color: #fff;
     cursor: pointer;
     float: left;
-    background: #565656;
+    background: #087981;
 
 	/* Ensure that all long words are kepth together. */
 	-ms-word-wrap: normal;
@@ -452,7 +451,7 @@ nav .primary-nav{
 	width: 100%;
 	display: inline-block;
 	clear: both;
-	background: #565656;
+	background: #087981;
 	margin-top: 20px;
 	margin-bottom: 20px;
 	position: relative;
@@ -491,7 +490,7 @@ nav .primary-nav li ul.sub-menu {
 	position: absolute;
 	top: 100%;
 	display: none;
-	background: #565656;
+	background: #087981;
 }
 
 /* Third Level */
@@ -542,8 +541,8 @@ nav .primary-nav li a:hover{
 	 -------------  */
 .front-page-slider-title {
 	padding: 1em;
-	background: #bbb;
-	background: rgba(180, 180, 180, .5);
+	background: #087981;
+	background: rgba(8, 121, 129, .5);
 	color: #fff;
 	text-transform: uppercase;
 	font-size: 16px;
@@ -592,8 +591,8 @@ a#cancel-comment-reply-link,
 #respond input[type="submit"],
 .gform_wrapper .gform_footer input.button,
 .gform_wrapper .gform_footer input[type=submit] {
-	background: #989898;
-	color: #f6f6f6;
+	background: #fad881;
+	color: #ae5f11;
 	margin: 0.5em 0;
 	padding: 5px 10px;
 	font-size: 14px;
@@ -626,8 +625,8 @@ a#cancel-comment-reply-link:hover,
 #respond input[type="submit"]:hover,
 .gform_wrapper .gform_footer input.button:hover,
 .gform_wrapper .gform_footer input[type=submit]:hover {
-	background: #f6f6f6;
-	color: #989898;
+	background: #ae5f11;
+	color: #fad881;
 }
 
 
@@ -699,7 +698,7 @@ article.content h5, article.full-width-content h5{
 }
 
 article.content a, article.full-width-content a{
-	color: #565656;
+	color: #087981;
 }
 
 article.content a:hover, article.full-width-content a:hover{
@@ -736,10 +735,10 @@ article.content ol > li {
 
 article.content blockquote, .comment-content blockquote {
 	width: 94%;
-	margin: 0.5em auto auto;
+	margin: auto;
 	padding: 0.5em;
 	font-style: italic;
-	background: #ededed;
+	background: #e3f3f4;
 	position: relative;
 }
 
@@ -759,10 +758,10 @@ article.content cite, .comment-content cite {
 
 article.content table th, .comment-content table th {
 	padding: 0.5em;
-	background: #ededed;
+	background: #e3f3f4;
 	font-weight: bold;
 	text-align: center;
-	border: 1px solid #e8e8e8;
+	border: 1px solid #c9dfe0;
 	border-bottom: none;
 }
 
@@ -839,7 +838,7 @@ section.latest-post.page, section.page {
 
 
 .sticky {
-	background: #ededed;
+	background: #e3f3f4;
 }
 
 .post-image{
@@ -941,7 +940,7 @@ footer.pagination{
 .after-posts-widget {
 	margin: 0 0 0.75em;
 	padding: 0.5em;
-	/*background: #565656;
+	/*background: #087981;
 	color: #fff;*/
 }
 
@@ -964,7 +963,7 @@ footer.post-footer{
 	background: none;
 	float: left;
 	width: 100%;
-	color: #262626;
+	color: #080c2f;
 }
 
 footer.post-footer .post-meta p {
@@ -1082,8 +1081,8 @@ footer.post-footer .post-meta p {
 article.content .comments-area .comments-title-container h4.comments-title, article.full-width-content .comments-area .comments-title-container h4.comments-title {
 	margin: 0;
 	padding: 0.5em;
-	color: #f6f6f6;
-	background: #989898;
+	color: #ae5f11;
+	background: #fad881;
 	/*font-size: 1.5em;*/
 
 	position: relative;
@@ -1098,7 +1097,7 @@ article.content .comments-area .comments-title-container h4.comments-title, arti
 	width: 0;
 	border-width: 15px 15px 0;
 	border-style: solid;
-	border-color: #989898 transparent;
+	border-color: #fad881 transparent;
 }
 
 ol.comment-list {
@@ -1108,32 +1107,32 @@ ol.comment-list {
 
 article.content ol.comment-list > li, ol.comment-list > li {
 	padding: 0;
-	border-bottom: 1px dashed #f6f6f6;
+	border-bottom: 1px dashed #ae5f11;
 }
 
 article.content ol.comment-list > li .comment, ol.comment-list > li .comment {
 	padding: 2%;
-	background: #f4f4f4;
+	background: #f9f8f4;
 }
 
 #comments ol.comment-list > li  article.bypostauthor {
-	background: #ccc;
+	background: #e3f3f4;
 }
 
 ol.comment-list > li:nth-child(even) article.comment {
-	background: #f4f4f4;
+	background: #f9f4e8;
 }
 
 .comment-author {
 	padding: 2%;
 	overflow: auto;
-	background: #efefef;
-	border: 1px dashed #e5e5e5;
+	background: #f4ead0;
+	border: 1px dashed #ead4a4;
 }
 
 #comments ol.comment-list > li  article.bypostauthor .comment-author {
-	background: #e5e5e5;
-	border: 1px dashed #dbdbdb;
+	background: #d5ebed;
+	border: 1px dashed #a7e0e5;
 }
 
 .comment-author .avatar {
@@ -1147,22 +1146,22 @@ ol.comment-list > li:nth-child(even) article.comment {
 
 .comment-author .author-link a {
 	color: #555;
+	text-decoration: none;
 }
 
 .comment-author .comment-meta a {
-	color: #333;
+	color: #555;
 }
 
 .comment-author .author-link a:hover {
 	text-decoration: underline;
 }
 
-#comments ol.comment-list > li  article.bypostauthor .comment-meta a { 
-	color: #666;
+.comment-author .comment-meta a {
+	color: #ae5f11;
 }
-
-#comments ol.comment-list > li  article.bypostauthor .comment-content {
-	color: #333
+#comments ol.comment-list > li  article.bypostauthor .comment-meta a { 
+	color: #087981;
 }
 
 
@@ -1192,8 +1191,8 @@ ol.comment-list > li:nth-child(even) article.comment {
 /* Comments Form - Leave A Reply */
 #respond {
 	padding: 2%;
-	background: #ededed;
-	border: 1px dashed #dbdbdb;
+	background: #e3f3f4;
+	border: 1px dashed #a7e0e5;
 }
 
 #respond #reply-title {
@@ -1238,8 +1237,8 @@ ol.comment-list > li:nth-child(even) article.comment {
 
 #respond .form-allowed-tags {
 	padding: 2%;
-	background: #e8e8e8;
-	border: 1px dashed #dbdbdb;
+	background: #d5ebed;
+	border: 1px dashed #a7e0e5;
 }
 
 a#cancel-comment-reply-link {
@@ -1383,7 +1382,7 @@ section.footer-widget:hover img{
 	display: block;
 	margin: 0 0 2em;
 	padding: 0;
-	/*border-top: 1px solid #ccc;*/
+	border-top: 1px solid #ccc;
 	border-bottom: 1px solid #ccc;
 }
 
@@ -1415,7 +1414,7 @@ ul.footer-nav li ul {
 }
 
 .copyright a{
-	color: #565656;
+	color: #087981;
 	text-decoration: none;
 }
 
@@ -1430,7 +1429,7 @@ ul.footer-nav li ul {
 @media only screen and (max-width: 1100px) {
 	body {
 		width: 90%;
-		padding: 0 5% 0;
+		padding: 5% 5% 0;
 	}
 
 	#searchform input {
@@ -1466,7 +1465,6 @@ ul.footer-nav li ul {
 }
 
 @media only screen and (min-width : 641px) and (max-width : 768px) {
-
 	header #title {
 		font-size: 1.35em;
 	}
@@ -1511,7 +1509,7 @@ ul.footer-nav li ul {
 		left: auto;
 		color: #fff;
 		font-weight: bold;
-		background: #565656;
+		background: #087981;
 		text-indent: 0;
 		overflow: visible;
 		line-height: 1.5em;
@@ -1526,21 +1524,21 @@ ul.footer-nav li ul {
 	}
 
 	.nav-button:hover, .primary-nav-button:hover {
-		background: #4c4c4c url('images/menu-icon-large.png') center center no-repeat;
+		background: #054e53 url('images/menu-icon-large.png') center center no-repeat;
 		background-size: 24px;
 	}
 
 	.primary-nav-button:hover {
-		background: #4c4c4c;
+		background: #054e53;
 	}
 
 	.nav-button.open, .primary-nav-button.open {
-		background: #4c4c4c url('images/menu-icon-large.png') center center no-repeat;
+		background: #054e53 url('images/menu-icon-large.png') center center no-repeat;
 		background-size: 24px;
 	}
 
 	.primary-nav-button.open {
-		background: #4c4c4c;
+		background: #054e53;
 		position: relative;
 		z-index: 5;
 		border-bottom-left-radius: 0;
@@ -1598,7 +1596,7 @@ ul.footer-nav li ul {
 	}
 
 	nav .primary-nav li {
-		background: #565656;
+		background: #087981;
 	}
 
 	nav ul.top-nav li, nav .primary-nav li {
@@ -1611,7 +1609,7 @@ ul.footer-nav li ul {
 		width: 100%;
 		padding: 10px 5%;
 		font-size: 14px;
-		color: #565656;
+		color: #087981;
 		text-decoration: none;
 		border-bottom: 1px solid rgba(0,0,0,.2);
 		border-top: 1px solid rgba(255,255,255,.1); 
@@ -1624,7 +1622,7 @@ ul.footer-nav li ul {
 	}
 
 	nav ul.top-nav li a:hover {
-		background-color: rgba(0,0,0,.1);
+		background-color: rgba(0,0,0,.5);
 		text-decoration: none;
 	}
 
@@ -1633,10 +1631,9 @@ ul.footer-nav li ul {
 	}
 
 	/* Toggle the navigation bar open  */
-	nav.top-nav.open, nav.top-nav.open ul, nav .primary-nav.open { 
+	nav ul.top-nav.open, nav .primary-nav.open { 
 		height: auto; 
 		padding-top: 50px;
-		overflow: visible;
 	}
 
 	nav .primary-nav.open {
@@ -1717,7 +1714,7 @@ ul.footer-nav li ul {
 		width: 100%;
 		position: static;
 		top: auto;
-		background: #565656;
+		background: #2b4c6c;
 	}
 
 	nav ul.top-nav.open li ul.sub-menu a {
@@ -1780,7 +1777,7 @@ ul.footer-nav li ul {
 	article.content h1.page-title {
 		padding: 2%;
 		color: #fff;
-		background: #565656;
+		background: #087981;
 		font-size: 32px;
 	}
 
@@ -1852,7 +1849,7 @@ ul.footer-nav li ul {
 	.copyright {
 		width: 96%;
 		padding: 2%;
-		background: #565656;
+		background: #087981;
 		color: #ddd;
 	}
 
@@ -1889,7 +1886,7 @@ ul.footer-nav li ul {
 @media only screen and (min-width : 380px) and (max-width : 419px) {
 }
 
-@media only screen and (max-width : 379px) {	
+@media only screen and (max-width : 379px) {
 	/* Post Navigation */
 	.post-navigation .previous-posts, .post-navigation .next-posts, .post-navigation .previous-posts a, .post-navigation .next-posts a {
 		width: 96%;

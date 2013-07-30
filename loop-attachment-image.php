@@ -68,6 +68,8 @@
 			<section class="single-post-navigation single-post-pagination wp-link-pages">
 				<?php wp_link_pages(); ?>
 			</section>
+
+			<?php sds_single_image_navigation(); ?>
 		</section>
 
 		<?php edit_post_link( 'Edit Attachment' ); // Allow logged in users to edit ?>
@@ -82,8 +84,6 @@
 			<p><?php echo get_the_author_meta( 'description' ); ?></p>
 			<a href="<?php echo get_author_posts_url( get_the_author_meta( 'ID' ) ); ?>">View more posts from this author</a>
 		</section>
-
-		<?php sds_single_image_navigation(); ?>
 	</footer>
 <?php
 		endwhile;

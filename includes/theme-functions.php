@@ -16,12 +16,18 @@ if ( !defined( 'ABSPATH' ) ) exit;
 // Globalize Theme options
 $sds_theme_options = SDS_Theme_Options::get_sds_theme_options();
 
+
+/***********************
+ * Pluggable Functions *
+ ***********************/
+
 /**
  * This function displays either a logo, or the site title depending on options.
  *
  * @uses site_url()
  * @uses get_bloginfo()
  * @uses wp_get_attachment_image()
+ * @uses bloginfo()
  */
 if ( ! function_exists( 'sds_logo' ) ) {
 	function sds_logo() {
@@ -97,59 +103,6 @@ if ( ! function_exists( 'sds_featured_image' ) ) {
 }
 
 /**
- * This function enqueues all necessary scripts/styles based on options.
- */
-if ( ! function_exists( 'sds_wp_enqueue_scripts' ) ) {
-	add_action( 'wp_enqueue_scripts', 'sds_wp_enqueue_scripts' );
-
-	function sds_wp_enqueue_scripts() {
-		global $sds_theme_options;
-
-		// Color Schemes
-		if ( function_exists( 'sds_color_schemes' ) && ! empty( $sds_theme_options['color_scheme'] ) ) {
-			$color_schemes = sds_color_schemes();
-
-			if ( ! empty( $sds_theme_options['color_scheme'] ) && isset( $color_schemes[$sds_theme_options['color_scheme']] ) ) {
-				$selected_color_scheme = array_key_exists( $sds_theme_options['color_scheme'], $color_schemes ) ? $color_schemes[$sds_theme_options['color_scheme']] : false;
-
-				// Make sure this is not the default color scheme
-				if ( ! empty( $selected_color_scheme ) && ( ! isset( $selected_color_scheme['default'] ) || ! $selected_color_scheme['default'] ) )
-					wp_enqueue_style( $selected_color_scheme['deps'] . '-' . $sds_theme_options['color_scheme'], get_template_directory_uri() . $selected_color_scheme['stylesheet'], array( $selected_color_scheme['deps'] ) );
-			}
-		}
-
-		// Web Fonts
-		if ( function_exists( 'sds_web_fonts' ) && ! empty( $sds_theme_options['web_font'] ) ) {
-			$web_fonts = sds_web_fonts();
-			$protocol = is_ssl() ? 'https' : 'http';
-
-			if ( ! empty( $sds_theme_options['web_font'] ) )
-				wp_enqueue_style( 'sds-google-web-font', $protocol . '://fonts.googleapis.com/css?family=' . $sds_theme_options['web_font'] );
-		}
-
-		// Theme Option Fonts (Social Media)
-		if ( ! empty( $sds_theme_options['social_media'] ) ) {
-			$social_networks_active = false;
-
-			foreach( $sds_theme_options['social_media'] as $network => $url )
-				if ( ! empty( $url ) ) {
-					$social_networks_active = true;
-					break;
-				}
-
-			if ( $social_networks_active ) {
-				wp_enqueue_style( 'font-awesome-css-min', get_template_directory_uri() . '/includes/css/font-awesome.min.css' );
-				wp_enqueue_style( 'sds-theme-options-fonts', get_template_directory_uri() . '/includes/css/sds-theme-options-fonts.css', array( 'font-awesome-css-min' ) );
-			}
-		}
-
-		// Comment Replies
-		if ( is_singular() )
-			wp_enqueue_script( 'comment-reply' );
-	}
-}
-
-/**
  * This function adds the current site name after the title in the <head> section.
  */
 if ( ! function_exists( 'sds_wp_title' ) ) {
@@ -159,140 +112,6 @@ if ( ! function_exists( 'sds_wp_title' ) ) {
 		$title .= get_bloginfo( 'name' );
 
 		return $title;
-	}
-}
-
-/**
- * This function outputs necessary scripts/styles in the head section based on options (web font, custom scripts/styles).
- */
-if ( ! function_exists( 'sds_wp_head' ) ) {
-	add_action( 'wp_head', 'sds_wp_head' );
-
-	function sds_wp_head() {
-		global $sds_theme_options, $is_IE;
-
-		// Web Fonts
-		if ( function_exists( 'sds_web_fonts' ) && ! empty( $sds_theme_options['web_font'] ) ) {
-			$web_fonts = sds_web_fonts();
-			$selected_web_font = array_key_exists( $sds_theme_options['web_font'], $web_fonts ) ? $web_fonts[$sds_theme_options['web_font']] : false;
-
-			if ( ! empty( $selected_web_font ) && isset( $selected_web_font['css'] ) ) :
-			?>
-				<style type="text/css">
-					html, body {
-						<?php echo $selected_web_font['css']; ?>
-					}
-				</style>
-			<?php
-			endif;
-		}
-
-		// HTML5 Shiv (IE only, conditionally for less than IE9)
-		if ( $is_IE )
-			echo '<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->';
-	}
-}
-
-/**
- * This function configures/sets up theme options/features.
- */
-if ( ! function_exists( 'sds_after_setup_theme' ) ) {
-	add_action( 'after_setup_theme', 'sds_after_setup_theme' );
-
-	function sds_after_setup_theme() {
-		// Enable Featured Images
-		add_theme_support( 'post-thumbnails' );
-
-		// Enable Automatic Feed Links
-		add_theme_support( 'automatic-feed-links' );
-
-		// Enable excerpts on Pages
-		add_post_type_support( 'page', 'excerpt' );
-
-		// Register WordPress Menus
-		register_nav_menus( array(
-			'top_nav' => 'Top Navigation',
-			'primary_nav' => 'Primary Navigation',
-			'footer_nav' => 'Footer Navigation'
-		) );
-	}
-}
-
-/**
- * This function configures sidebars for use throughout the theme
- */
-if ( ! function_exists( 'sds_widgets_init' ) ) {
-	add_action( 'widgets_init', 'sds_widgets_init' );
-
-	function sds_widgets_init() {
-		// Register SDS Social Media Widget (/includes/widget-social-media.php)
-		register_widget( 'SDS_Social_Media_Widget' );
-
-		// Primary sidebar
-		register_sidebar( array(
-			'name'          => 'Primary Sidebar',
-			'id'            => 'primary-sidebar',
-			'description'   => 'This widget area is the primary widget area.',
-			'before_widget' => '<div id="primary-sidebar-%1$s" class="widget primary-sidebar %2$s">',
-			'after_widget'  => '<div class="clear"></div></div>',
-			'before_title'  => '<h3 class="widgettitle">',
-			'after_title'   => '</h3>',
-		) );
-
-		// Front Page Slider
-		register_sidebar( array(
-			'name'          => 'Front Page Slider',
-			'id'            => 'front-page-slider-sidebar',
-			'description'   => '*This widget area is only displayed if a Front Page is selected via Settings > Reading in the Dashboard. Specifically formatted for Soliloquy or SlideDeck sliders.* This widget area is displayed above the content on the Front Page.',
-			'before_widget' => '<section id="front-page-slider-%1$s" class="front-page-slider slider %2$s">',
-			'after_widget'  => '</section>',
-			'before_title'  => '<h3 class="widgettitle widget-title front-page-slider-title">',
-			'after_title'   => '</h3>'
-		) );
-
-		// Header Call To Action
-		register_sidebar( array(
-			'name'          => 'Header Call To Action',
-			'id'            => 'header-call-to-action-sidebar',
-			'description'   => 'This widget area is used to display a call to action in the header',
-			'before_widget' => '<div id="header-call-to-action-%1$s" class="widget header-call-to-action-widget %2$s">',
-			'after_widget'  => '</div>',
-			'before_title'  => '<h3 class="widgettitle">',
-			'after_title'   => '</h3>',
-		) );
-
-		// After Posts
-		register_sidebar( array(
-			'name'          => 'After Posts',
-			'id'            => 'after-posts-sidebar',
-			'description'   => 'This widget area is displayed below the content on single posts only.',
-			'before_widget' => '<section id="after-posts-%1$s" class="after-posts after-posts-widget %2$s">',
-			'after_widget'  => '</section>',
-			'before_title'  => '<h3 class="widgettitle widget-title after-posts-title">',
-			'after_title'   => '</h3>'
-		) );
-
-		// Footer
-		register_sidebar( array(
-			'name'          => 'Footer',
-			'id'            => 'footer-sidebar',
-			'description'   => 'Tis widget area is displayed in the footer of all pages.',
-			'before_widget' => '<section id="footer-widget-%1$s" class="footer-widget %2$s">',
-			'after_widget'  => '</section>',
-			'before_title'  => '<h3 class="widgettitle widget-title footer-widget-title">',
-			'after_title'   => '</h3>'
-		) );
-
-		// Copyright
-		register_sidebar( array(
-			'name'          => 'Copyright Area',
-			'id'            => 'copyright-area-sidebar',
-			'description'   => 'This widget area is designed for small text blurbs or disclaimers at the bottom of the website.',
-			'before_widget' => '<div id="copyright-area-widget-%1$s" class="widget copyright-area-widget %2$s">',
-			'after_widget'  => '<div class="clear"></div></div>',
-			'before_title'  => '<h3 class="widgettitle">',
-			'after_title'   => '</h3>',
-		) );
 	}
 }
 
@@ -312,66 +131,6 @@ if ( ! function_exists( 'sds_primary_menu_fallback' ) ) {
 			'link_before' => '',
 			'link_after'  => ''
 		) );
-	}
-}
-
-/**
- * This function outputs the Primary Sidebar.
- */
-if ( ! function_exists( 'sds_primary_sidebar' ) ) {
-	function sds_primary_sidebar() {
-		if ( is_active_sidebar( 'primary-sidebar' ) )
-			dynamic_sidebar( 'primary-sidebar' );
-	}
-}
-
-/**
- * This function outputs the Front Page Slider Sidebar.
- */
-if ( ! function_exists( 'sds_front_page_slider_sidebar' ) ) {
-	function sds_front_page_slider_sidebar() {
-		if ( is_active_sidebar( 'front-page-slider-sidebar' ) )
-			dynamic_sidebar( 'front-page-slider-sidebar' );
-	}
-}
-
-/**
- * This function outputs the Header Call to Action Sidebar.
- */
-if ( ! function_exists( 'sds_header_call_to_action_sidebar' ) ) {
-	function sds_header_call_to_action_sidebar() {
-		if ( is_active_sidebar( 'header-call-to-action-sidebar' ) )
-			dynamic_sidebar( 'header-call-to-action-sidebar' );
-	}
-}
-
-/**
- * This function outputs the After Posts Sidebar.
- */
-if ( ! function_exists( 'sds_after_posts_sidebar' ) ) {
-	function sds_after_posts_sidebar() {
-		if ( is_active_sidebar( 'after-posts-sidebar' ) )
-			dynamic_sidebar( 'after-posts-sidebar' );
-	}
-}
-
-/**
- * This function outputs the Footer Sidebar.
- */
-if ( ! function_exists( 'sds_footer_sidebar' ) ) {
-	function sds_footer_sidebar() {
-		if ( is_active_sidebar( 'footer-sidebar' ) )
-			dynamic_sidebar( 'footer-sidebar' );
-	}
-}
-
-/**
- * This function outputs the Copyright Area Sidebar.
- */
-if ( ! function_exists( 'sds_copyright_area_sidebar' ) ) {
-	function sds_copyright_area_sidebar() {
-		if ( is_active_sidebar( 'copyright-area-sidebar' ) )
-			dynamic_sidebar( 'copyright-area-sidebar' );
 	}
 }
 
@@ -566,7 +325,7 @@ if ( ! function_exists( 'sds_social_media' ) ) {
 		global $sds_theme_options;
 
 		if ( ! empty( $sds_theme_options['social_media'] ) ) {
-			// Map the correct values for social icon display (JustVector webfont, i.e. 'r' = RSS icon)
+			// Map the correct values for social icon display (FontAwesome webfont, i.e. 'icon-rss' = RSS icon)
 			$social_font_map = array(
 				'facebook_url' => 'icon-facebook-sign',
 				'twitter_url' => 'icon-twitter-sign',
@@ -738,4 +497,235 @@ if ( ! function_exists( 'sds_comment' ) ) {
 			break;
 		endswitch;
 	}
+}
+
+/***************************
+ * Non-Pluggable Functions *
+ ***************************/
+
+/**
+ * This function enqueues all necessary scripts/styles based on options.
+ */
+add_action( 'wp_enqueue_scripts', 'sds_wp_enqueue_scripts' );
+
+function sds_wp_enqueue_scripts() {
+	global $sds_theme_options;
+
+	// Color Schemes
+	if ( function_exists( 'sds_color_schemes' ) && ! empty( $sds_theme_options['color_scheme'] ) ) {
+		$color_schemes = sds_color_schemes();
+
+		if ( ! empty( $sds_theme_options['color_scheme'] ) && isset( $color_schemes[$sds_theme_options['color_scheme']] ) ) {
+			$selected_color_scheme = array_key_exists( $sds_theme_options['color_scheme'], $color_schemes ) ? $color_schemes[$sds_theme_options['color_scheme']] : false;
+
+			// Make sure this is not the default color scheme
+			if ( ! empty( $selected_color_scheme ) && ( ! isset( $selected_color_scheme['default'] ) || ! $selected_color_scheme['default'] ) )
+				wp_enqueue_style( $selected_color_scheme['deps'] . '-' . $sds_theme_options['color_scheme'], get_template_directory_uri() . $selected_color_scheme['stylesheet'], array( $selected_color_scheme['deps'] ) );
+		}
+	}
+
+	// Web Fonts
+	if ( function_exists( 'sds_web_fonts' ) && ! empty( $sds_theme_options['web_font'] ) ) {
+		$web_fonts = sds_web_fonts();
+		$protocol = is_ssl() ? 'https' : 'http';
+
+		if ( ! empty( $sds_theme_options['web_font'] ) )
+			wp_enqueue_style( 'sds-google-web-font', $protocol . '://fonts.googleapis.com/css?family=' . $sds_theme_options['web_font'] );
+	}
+
+	// Theme Option Fonts (Social Media)
+	if ( ! empty( $sds_theme_options['social_media'] ) ) {
+		$social_networks_active = false;
+
+		foreach( $sds_theme_options['social_media'] as $network => $url )
+			if ( ! empty( $url ) ) {
+				$social_networks_active = true;
+				break;
+			}
+
+		if ( $social_networks_active ) {
+			wp_enqueue_style( 'font-awesome-css-min', get_template_directory_uri() . '/includes/css/font-awesome.min.css' );
+			wp_enqueue_style( 'sds-theme-options-fonts', get_template_directory_uri() . '/includes/css/sds-theme-options-fonts.css', array( 'font-awesome-css-min' ) );
+		}
+	}
+
+	// Comment Replies
+	if ( is_singular() )
+		wp_enqueue_script( 'comment-reply' );
+}
+
+/**
+ * This function outputs necessary scripts/styles in the head section based on options (web font, custom scripts/styles).
+ */
+add_action( 'wp_head', 'sds_wp_head' );
+
+function sds_wp_head() {
+	global $sds_theme_options, $is_IE;
+
+	// Web Fonts
+	if ( function_exists( 'sds_web_fonts' ) && ! empty( $sds_theme_options['web_font'] ) ) {
+		$web_fonts = sds_web_fonts();
+		$selected_web_font = array_key_exists( $sds_theme_options['web_font'], $web_fonts ) ? $web_fonts[$sds_theme_options['web_font']] : false;
+
+		if ( ! empty( $selected_web_font ) && isset( $selected_web_font['css'] ) ) :
+		?>
+			<style type="text/css">
+				html, body {
+					<?php echo $selected_web_font['css']; ?>
+				}
+			</style>
+		<?php
+		endif;
+	}
+
+	// HTML5 Shiv (IE only, conditionally for less than IE9)
+	if ( $is_IE )
+		echo '<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->';
+}
+
+/**
+ * This function configures/sets up theme options/features.
+ */
+add_action( 'after_setup_theme', 'sds_after_setup_theme' );
+
+function sds_after_setup_theme() {
+	// Enable Featured Images
+	add_theme_support( 'post-thumbnails' );
+
+	// Enable Automatic Feed Links
+	add_theme_support( 'automatic-feed-links' );
+
+	// Enable excerpts on Pages
+	add_post_type_support( 'page', 'excerpt' );
+
+	// Register WordPress Menus
+	register_nav_menus( array(
+		'top_nav' => 'Top Navigation',
+		'primary_nav' => 'Primary Navigation',
+		'footer_nav' => 'Footer Navigation'
+	) );
+}
+
+/**
+ * This function configures sidebars for use throughout the theme
+ */
+add_action( 'widgets_init', 'sds_widgets_init' );
+
+function sds_widgets_init() {
+	// Register SDS Social Media Widget (/includes/widget-social-media.php)
+	register_widget( 'SDS_Social_Media_Widget' );
+
+	// Primary sidebar
+	register_sidebar( array(
+		'name'          => 'Primary Sidebar',
+		'id'            => 'primary-sidebar',
+		'description'   => 'This widget area is the primary widget area.',
+		'before_widget' => '<div id="primary-sidebar-%1$s" class="widget primary-sidebar %2$s">',
+		'after_widget'  => '<div class="clear"></div></div>',
+		'before_title'  => '<h3 class="widgettitle">',
+		'after_title'   => '</h3>',
+	) );
+
+	// Front Page Slider
+	register_sidebar( array(
+		'name'          => 'Front Page Slider',
+		'id'            => 'front-page-slider-sidebar',
+		'description'   => '*This widget area is only displayed if a Front Page is selected via Settings > Reading in the Dashboard. Specifically formatted for Soliloquy or SlideDeck sliders.* This widget area is displayed above the content on the Front Page.',
+		'before_widget' => '<section id="front-page-slider-%1$s" class="front-page-slider slider %2$s">',
+		'after_widget'  => '</section>',
+		'before_title'  => '<h3 class="widgettitle widget-title front-page-slider-title">',
+		'after_title'   => '</h3>'
+	) );
+
+	// Header Call To Action
+	register_sidebar( array(
+		'name'          => 'Header Call To Action',
+		'id'            => 'header-call-to-action-sidebar',
+		'description'   => 'This widget area is used to display a call to action in the header',
+		'before_widget' => '<div id="header-call-to-action-%1$s" class="widget header-call-to-action-widget %2$s">',
+		'after_widget'  => '</div>',
+		'before_title'  => '<h3 class="widgettitle">',
+		'after_title'   => '</h3>',
+	) );
+
+	// After Posts
+	register_sidebar( array(
+		'name'          => 'After Posts',
+		'id'            => 'after-posts-sidebar',
+		'description'   => 'This widget area is displayed below the content on single posts only.',
+		'before_widget' => '<section id="after-posts-%1$s" class="after-posts after-posts-widget %2$s">',
+		'after_widget'  => '</section>',
+		'before_title'  => '<h3 class="widgettitle widget-title after-posts-title">',
+		'after_title'   => '</h3>'
+	) );
+
+	// Footer
+	register_sidebar( array(
+		'name'          => 'Footer',
+		'id'            => 'footer-sidebar',
+		'description'   => 'Tis widget area is displayed in the footer of all pages.',
+		'before_widget' => '<section id="footer-widget-%1$s" class="footer-widget %2$s">',
+		'after_widget'  => '</section>',
+		'before_title'  => '<h3 class="widgettitle widget-title footer-widget-title">',
+		'after_title'   => '</h3>'
+	) );
+
+	// Copyright
+	register_sidebar( array(
+		'name'          => 'Copyright Area',
+		'id'            => 'copyright-area-sidebar',
+		'description'   => 'This widget area is designed for small text blurbs or disclaimers at the bottom of the website.',
+		'before_widget' => '<div id="copyright-area-widget-%1$s" class="widget copyright-area-widget %2$s">',
+		'after_widget'  => '<div class="clear"></div></div>',
+		'before_title'  => '<h3 class="widgettitle">',
+		'after_title'   => '</h3>',
+	) );
+}
+
+/**
+ * This function outputs the Primary Sidebar.
+ */
+function sds_primary_sidebar() {
+	if ( is_active_sidebar( 'primary-sidebar' ) )
+		dynamic_sidebar( 'primary-sidebar' );
+}
+
+/**
+ * This function outputs the Front Page Slider Sidebar.
+ */
+function sds_front_page_slider_sidebar() {
+	if ( is_active_sidebar( 'front-page-slider-sidebar' ) )
+		dynamic_sidebar( 'front-page-slider-sidebar' );
+}
+
+/**
+ * This function outputs the Header Call to Action Sidebar.
+ */
+function sds_header_call_to_action_sidebar() {
+	if ( is_active_sidebar( 'header-call-to-action-sidebar' ) )
+		dynamic_sidebar( 'header-call-to-action-sidebar' );
+}
+
+/**
+ * This function outputs the After Posts Sidebar.
+ */
+function sds_after_posts_sidebar() {
+	if ( is_active_sidebar( 'after-posts-sidebar' ) )
+		dynamic_sidebar( 'after-posts-sidebar' );
+}
+
+/**
+ * This function outputs the Footer Sidebar.
+ */
+function sds_footer_sidebar() {
+	if ( is_active_sidebar( 'footer-sidebar' ) )
+		dynamic_sidebar( 'footer-sidebar' );
+}
+
+/**
+ * This function outputs the Copyright Area Sidebar.
+ */
+function sds_copyright_area_sidebar() {
+	if ( is_active_sidebar( 'copyright-area-sidebar' ) )
+		dynamic_sidebar( 'copyright-area-sidebar' );
 }
