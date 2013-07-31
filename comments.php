@@ -20,7 +20,13 @@ if( ! empty( $_SERVER['SCRIPT_FILENAME'] ) && basename( $_SERVER['SCRIPT_FILENAM
 	<?php if ( have_comments() ) : ?>
 		<section class="comments-title-container">
 			<h4 class="comments-title block-title">
-				<?php printf( 'One thought on &ldquo;%2$s&rdquo;', '%1$s thoughts on &ldquo;%2$s&rdquo;', get_comments_number(), 'comments title', number_format_i18n( get_comments_number() ), '<span>' . get_the_title() . '</span>' ); ?>
+				<?php
+					if ( ( int ) get_comments_number() === 1 ) : // One Comment
+						printf( 'One thought on &ldquo;%2$s&rdquo;', get_comments_number(), '<span>' . get_the_title() . '</span>' );
+					else: // Multiple Comments
+						printf( '%1$s thoughts on &ldquo;%2$s&rdquo;', get_comments_number(), '<span>' . get_the_title() . '</span>' );
+					endif;
+				?>
 			</h4>
 		</section>
 
@@ -33,8 +39,8 @@ if( ! empty( $_SERVER['SCRIPT_FILENAME'] ) && basename( $_SERVER['SCRIPT_FILENAM
 		<?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : // Are there comments to navigate through? ?>
 			<nav class="navigation comment-navigation" role="navigation">
 				<h1 class="assistive-text section-heading"><?php _e( 'Comment navigation', 'min' ); ?></h1>
-				<div class="nav-previous"><?php previous_comments_link( __( '&larr; Older Comments', 'min' ) ); ?></div>
-				<div class="nav-next"><?php next_comments_link( __( 'Newer Comments &rarr;', 'min' ) ); ?></div>
+				<section class="nav-previous"><?php previous_comments_link( __( '&larr; Older Comments', 'min' ) ); ?></section>
+				<section class="nav-next"><?php next_comments_link( __( 'Newer Comments &rarr;', 'min' ) ); ?></section>
 			</nav>
 		<?php endif; // Check for comment navigation ?>
 

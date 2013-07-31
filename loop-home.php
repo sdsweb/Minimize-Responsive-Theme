@@ -1,6 +1,4 @@
 <?php
-	global $sbt_options;
-
 	// Loop through posts
 	if ( have_posts() ) :
 		while ( have_posts() ) : the_post();

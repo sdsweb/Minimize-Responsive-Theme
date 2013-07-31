@@ -5,7 +5,7 @@
 <!--[if IE 9 ]><html class="ie ie9"> <![endif]-->
 <!--[if (gte IE 9)|!(IE)]><!--><html><!--<![endif]-->
 	<head>
-		<title><?php wp_title( '|', true, 'right' ); ?> <?php bloginfo( 'name' ); ?></title>
+		<title><?php wp_title( '|', true, 'right' ); ?></title>
 		<meta charset="<?php bloginfo( 'blog_charset' ); ?>" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 			
