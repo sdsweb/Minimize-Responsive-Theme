@@ -16,6 +16,8 @@ get_header( 'landing-page' ); ?>
 				<?php comments_template(); // Comments ?>
 			</section>
 		</article>
+
+		<section class="clear">&nbsp;</section>
 	</section>
 
 <?php get_footer( 'landing-page' ); ?>

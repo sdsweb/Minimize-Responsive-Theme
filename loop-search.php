@@ -1,5 +1,4 @@
 <?php
-	global $sbt_options;
 	if ( have_posts() ) : // Search results
 ?>
 	<header class="search-title">

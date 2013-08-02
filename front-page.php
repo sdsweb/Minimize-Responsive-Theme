@@ -32,6 +32,8 @@ get_header(); ?>
 	?>
 
 		<?php get_sidebar(); ?>
+
+		<section class="clear">&nbsp;</section>
 	</section>
 
 <?php get_footer(); ?>

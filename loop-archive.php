@@ -1,5 +1,3 @@
-<?php global $sbt_options; ?>
-
 <header class="archive-title">
 	<?php sds_archive_title(); ?>
 </header>

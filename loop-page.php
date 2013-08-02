@@ -1,5 +1,5 @@
 <?php
-	global $multipage, $sbt_options;
+	global $multipage;
 
 	// Loop through posts
 	if ( have_posts() ) :
