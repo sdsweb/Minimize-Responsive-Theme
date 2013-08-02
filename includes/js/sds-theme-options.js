@@ -1,6 +1,10 @@
 jQuery( function( $ ) {
-	/*
-	 * Media Uploader
+	/**
+	 * WordPress 3.5 Media Uploader Script/Tutorial - http://mikejolley.com/2012/12/using-the-new-wordpress-3-5-media-uploader-in-plugins/
+	 * License: None (public domain)
+	 * Copyright: Mike Jolley, http://mikejolley.com/
+	 *
+	 * We've modified this to suit our needs.
 	 */
 	var sds_media_frame;
 
@@ -17,9 +21,7 @@ jQuery( function( $ ) {
 		// Create the media frame
 		sds_media_frame = wp.media.frames.sds_media_frame = wp.media( {
 			title: _this.attr( 'data-media-title' ),
-			button: {
-				text: _this.attr( 'data-media-button-text' ),
-			},
+			button: { text: _this.attr( 'data-media-button-text' ) },
 			multiple: false
 		} );
 
@@ -58,7 +60,7 @@ jQuery( function( $ ) {
 	} );
 
 
-	/*
+	/**
 	 * Social Media - RSS (hide custom feed url box when default is used)
 	 */
 	$( '#sds_theme_options_social_media_rss_url_use_site_feed' ).on( 'change', function( e ) {
@@ -75,7 +77,7 @@ jQuery( function( $ ) {
 
 
 
-	/*
+	/**
 	 * Navigation Tabs
 	 */
 	$( '.sds-theme-options-tab-wrap a' ).on( 'click', function ( e ) {

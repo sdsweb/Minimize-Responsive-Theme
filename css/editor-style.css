@@ -1,36 +1,51 @@
-/* CSS Reset */
+/**
+ * CSS Reset - http://meyerweb.com/eric/tools/css/reset/
+ * License: None (public domain)
+ * Copyright: Eric Meyer, http://meyerweb.com/eric/
+ *
+ * We've used Eric Meyer's reset as a base and modified it a bit to suit our needs.
+ */
 html,body, div, dl, dt, dd, ul, li,
-pre, form, fieldset, input, textarea, blockquote, th, td { 
-	padding: 0;
+pre, form, fieldset, input, textarea, blockquote, th, td, section { 
 	margin: 0;
-	-webkit-appearance: none;
-	}
-fieldset, img { 
+	padding: 0;
+	-webkit-font-smoothing: antialiased;
+}
+
+fieldset, img, abbr, acronym  { 
 	border: 0;
-	margin: 0;
-	padding: 0;
-	}
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+a img {
+	text-decoration: none;
+}
+
+select {
+	max-width: 100%;
+}
+
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
-	}
-ul {
-	list-style: none;
-	}
-address, caption, cite, code, dfn, em, strong, th, var {
+}
+
+address, caption, cite, code, dfn, em, var {
 	font-weight: normal;
 	font-style: normal;
-	}
-caption, th {
-	text-align: left;
-	}
+}
 
 q:before, q:after {
 	content: '';
-	}
-abbr, acronym { 
-	border: 0;
-	}
+}
+
+ul {
+	list-style: none;
+}
 	
 mark{
 	background: none;
@@ -38,10 +53,6 @@ mark{
 
 button{
 	border: none;
-}
-
-a img{
-	text-decoration: none;
 }
 
 

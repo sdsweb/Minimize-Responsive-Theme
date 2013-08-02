@@ -1,5 +1,5 @@
 <?php
-	global $multipage, $sds_theme_options;
+	global $multipage;
 
 	// Loop through posts
 	if ( have_posts() ) :

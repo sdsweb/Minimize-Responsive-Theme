@@ -1,22 +1,26 @@
 /*
 Theme Name: Minimize
-Theme URI: http://slocumstudio.com/wordpres-themes/minimize
+Theme URI: http://slocumstudio.com/wordpress-themes/minimize-free/
 Description: A lightweight and responsive WordPress theme. Great for a blog or to start a new project.
 Author: Slocum Design Studio
 Author URI: http://slocumstudio.com
-Version: 2.1.1
+Version: 2.1.3
 License: GPL2+
 License URI: http://www.gnu.org/licenses/gpl.html
 Tags: blue, green, orange, pink, purple, red, white, light, two-columns, left-sidebar, flexible-width, custom-colors, custom-menu, editor-style, featured-images, full-width-template, sticky-post, theme-options, threaded-comments
 
 Minimize WordPress theme, Copyright (C) 2013 Slocum Studio
 Minimize WordPress theme is licensed under the GPL.
+
+@see attribution.txt for more license information.
 */
 
 /**
- * HTML5/CSS Reset
+ * CSS Reset - http://meyerweb.com/eric/tools/css/reset/
+ * License: None (public domain)
+ * Copyright: Eric Meyer, http://meyerweb.com/eric/
  *
- * We've used Eric Meyer's reset (http://meyerweb.com) as a base and modified it a bit to suit our needs.
+ * We've used Eric Meyer's reset as a base and modified it a bit to suit our needs.
  */
 html,body, div, dl, dt, dd, ul, li,
 pre, form, fieldset, input, textarea, blockquote, th, td, section { 
@@ -112,9 +116,11 @@ img {
 .nav-button, .primary-nav-button { display: none; } /* hide the navigation button by default */
 
 
-
-/* =WordPress Core
--------------------------------------------------------------- */
+/**
+ * WordPress Core CSS - http://codex.wordpress.org/CSS#WordPress_Generated_Classes
+ * License: GPL2
+ * Copyright: WordPress.org, http://wordpress.org
+ */
 .alignnone {
     margin: 5px 20px 20px 0;
 }
@@ -829,7 +835,12 @@ section.latest-post{
 	margin-bottom: 0.75em;
 	border-bottom: 1px solid;
 	border-color: rgba(0, 0, 0, .15);
-	padding: 1% 1% 0;
+	padding: 1%;
+}
+
+.search section.latest-post.page {
+	border-bottom: 1px solid;
+	border-color: rgba(0, 0, 0, .15);
 }
 
 section.latest-post.page, section.page {
