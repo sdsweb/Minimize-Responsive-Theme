@@ -312,7 +312,7 @@ if ( ! function_exists( 'sds_copyright' ) ) {
 			<?php echo apply_filters( 'sds_copyright', 'Copyright &copy; ' . date( 'Y' ) . ' <a href="' . esc_url( home_url() ) . '">' . get_bloginfo( 'name' ) . '</a>. All Rights Reserved.' ); ?>
 		</span>
 		<span class="slocum-credit">
-			<?php echo apply_filters( 'sds_copyright_branding', '<a href="http://slocumstudio.com/?utm_source=' . esc_url( home_url() ) . '&amp;utm_medium=footer-plugs&amp;utm_campaign=WordPressThemes" target="_blank">' . $theme_name . ' by Slocum Design Studio</a>' ); ?>
+			<?php echo apply_filters( 'sds_copyright_branding', '<a href="http://slocumstudio.com/?utm_source=' . esc_url( home_url() ) . '&amp;utm_medium=footer-plugs&amp;utm_campaign=WordPressThemes" target="_blank">' . $theme_name . ' by Slocum Design Studio</a>', $theme_name ); ?>
 		</span>
 	<?php
 	}

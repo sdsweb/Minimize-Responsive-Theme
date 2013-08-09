@@ -139,3 +139,12 @@ if ( ! function_exists( 'sds_theme_options_help_support_tab_content' ) ) {
 	<?php
 	}
 }
+
+
+if ( ! function_exists( 'sds_copyright_branding' ) ) {
+	add_filter( 'sds_copyright_branding', 'sds_copyright_branding', 10, 2 );
+
+	function sds_copyright_branding( $text, $theme_name ) {
+		return '<a href="http://slocumstudio.com/wordpress-themes/minimize-free/?utm_source=' . esc_url( home_url() ) . '&amp;utm_medium=footer-plugs&amp;utm_campaign=WordPressThemes" target="_blank">' . $theme_name . ' by Slocum Design Studio</a>';
+	}
+}
