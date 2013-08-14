@@ -12,9 +12,7 @@ get_header(); ?>
 
 			<section class="clear">&nbsp;</section>
 
-			<section id="comments-container" class="comments-container post-comments post-comments-container">
-				<?php comments_template(); // Comments ?>
-			</section>
+			<?php comments_template(); // Comments ?>
 		</article>
 
 		<?php get_sidebar(); ?>

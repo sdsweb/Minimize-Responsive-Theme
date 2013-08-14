@@ -552,7 +552,7 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 		/**
 		 * This function returns the current option values.
 		 */
-		function get_sds_theme_options() {
+		public static function get_sds_theme_options() {
 			global $sds_theme_options;
 
 			$sds_theme_options = wp_parse_args( get_option( 'sds_theme_options' ), SDS_Theme_Options::get_sds_theme_option_defaults() );
@@ -569,7 +569,7 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 		/**
 		 * This function returns default values for SDS Theme Options
 		 */
-		function get_sds_theme_option_defaults() {
+		public static function get_sds_theme_option_defaults() {
 			$defaults = array(
 				// General
 				'logo_attachment_id' => false,

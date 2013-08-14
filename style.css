@@ -4,7 +4,7 @@ Theme URI: http://slocumstudio.com/wordpress-themes/minimize-free/
 Description: A lightweight and responsive WordPress theme. Great for a blog or to start a new project.
 Author: Slocum Design Studio
 Author URI: http://slocumstudio.com
-Version: 2.1.4
+Version: 2.1.5
 License: GPL2+
 License URI: http://www.gnu.org/licenses/gpl.html
 Tags: blue, green, orange, pink, purple, red, white, light, two-columns, left-sidebar, flexible-width, custom-colors, custom-menu, editor-style, featured-images, full-width-template, sticky-post, theme-options, threaded-comments
@@ -27,6 +27,14 @@ pre, form, fieldset, input, textarea, blockquote, th, td, section {
 	margin: 0;
 	padding: 0;
 	-webkit-font-smoothing: antialiased;
+
+	/* Ensure that all long words are broken up so they do not exceed the width of their container elements. */
+	-ms-word-wrap: break-word;
+	word-wrap: break-word;
+}
+
+pre {
+	white-space: pre-wrap;
 }
 
 fieldset, img, abbr, acronym  { 
@@ -84,10 +92,6 @@ body{
 	font-family: 'Open Sans', sans-serif;
 	font-size: 18px;
 	color: #555555;
-
-	/* Ensure that all long words are broken up so they do not exceed the width of their container elements. */
-	-ms-word-wrap: break-word;
-	word-wrap: break-word;
 }
 
 strong{
@@ -443,6 +447,10 @@ article.content #searchform  input {
 	border-radius: 0;
 }
 
+article.content #searchform input[type=submit] {
+	padding: 1.35% 1%;
+	line-height: 15px;
+}
 
 
 /*   -------------
@@ -1079,6 +1087,11 @@ footer.post-footer .post-meta p {
 	border-bottom: 1px solid #ccc;
 }
 
+.comments-container-no-comments {
+	padding-bottom: 0;
+	border-bottom: none;
+}
+
 .full-width-content .comments-container {
 	border-bottom: none;
 }
@@ -1087,6 +1100,10 @@ footer.post-footer .post-meta p {
 	margin: 0.5em 0 0;
 	padding: 1em 0 0;
 	border-top: 1px solid #e0e0e0;
+}
+
+.comments-container-no-comments .comments-area {
+	border-top: none;
 }
 
 .comments-area .comments-title-container{
