@@ -3,7 +3,7 @@
  * This class manages all functionality with our Minimize v2 theme.
  */
 class Minimize {
-	const MIN_VERSION = '2.1.5';
+	const MIN_VERSION = '2.1.6';
 
 	private static $instance; // Keep track of the instance
 
