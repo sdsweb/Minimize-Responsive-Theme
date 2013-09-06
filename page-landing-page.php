@@ -5,8 +5,8 @@
  */
 
 get_header( 'landing-page' ); ?>
-	<section class="content-wrapper page-content full-width-content-wrapper">
-		<article class="content full-width-content">
+	<section class="content-wrapper page-content full-width-content-wrapper cf">
+		<article class="content full-width-content cf">
 
 			<?php get_template_part( 'loop', 'page-full-width' ); // Loop - Full Width ?>
 
@@ -14,8 +14,6 @@ get_header( 'landing-page' ); ?>
 
 			<?php comments_template(); // Comments ?>
 		</article>
-
-		<section class="clear">&nbsp;</section>
 	</section>
 
 <?php get_footer( 'landing-page' ); ?>

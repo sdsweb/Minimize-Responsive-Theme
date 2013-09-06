@@ -32,13 +32,13 @@ if ( ! function_exists( 'sds_color_schemes' ) ) {
 	function sds_color_schemes() {
 		$color_schemes = array(
 			'default' => array( // Name used in saved option
-				'label' => 'Default', // Label on options panel (required)
+				'label' => __( 'Default', 'minimize' ), // Label on options panel (required)
 				'stylesheet' => false, // Stylesheet URL, relative to theme directory (required)
 				'preview' => '#565656', // Preview color on options panel (required)
 				'default' => true
 			),
 			'slocum-blue' => array(
-				'label' => 'Slocum Blue',
+				'label' => __( 'Slocum Blue', 'minimize' ),
 				'stylesheet' => '/css/slocum-blue.css',
 				'preview' => '#3c639a',
 				'deps' => 'minimize'
@@ -83,18 +83,18 @@ if ( ! function_exists( 'sds_theme_options_ads' ) ) {
 	function sds_theme_options_ads() {
 	?>
 		<div class="sds-theme-options-ad">
-			<a href="http://slocumstudio.com/wordpress-themes/minimize?utm_source=<?php echo esc_url( home_url() ); ?>'&amp;utm_medium=options-panel-plug&amp;utm_campaign=WordPressThemes" target="_blank" class="sds-theme-options-upgrade-ad">
-				<h2>Upgrade to Minimize Pro!</h2>
+			<a href="http://slocumstudio.com/wordpress-themes/minimize?utm_medium=options-panel-plug&amp;utm_campaign=WordPressThemes" target="_blank" class="sds-theme-options-upgrade-ad">
+				<h2><?php _e( 'Upgrade to Minimize Pro!', 'minimize' ); ?></h2>
 				<ul>
-					<li>Priority Ticketing Support</li>
-					<li>More Color Schemes</li>
-					<li>Web Fonts</li>
-					<li>Adjust Featured Image Sizes</li>
-					<li>Easily Add Custom Scripts/Styles</li>
-					<li>and More!</li>
+					<li><?php _e( 'Priority Ticketing Support', 'minimize' ); ?></li>
+					<li><?php _e( 'More Color Schemes', 'minimize' ); ?></li>
+					<li><?php _e( 'Web Fonts', 'minimize' ); ?></li>
+					<li><?php _e( 'Adjust Featured Image Sizes', 'minimize' ); ?></li>
+					<li><?php _e( 'Easily Add Custom Scripts/Styles', 'minimize' ); ?></li>
+					<li><?php _e( 'and More!', 'minimize' ); ?></li>
 				</ul>
 
-				<span class="sds-theme-options-btn-green">Upgrade Now!</span>
+				<span class="sds-theme-options-btn-green"><?php _e( 'Upgrade Now!', 'minimize' ); ?></span>
 			</a>
 		</div>
 	<?php
@@ -108,22 +108,17 @@ if ( ! function_exists( 'sds_theme_options_upgrade_cta' ) ) {
 		switch( $type ) :
 			case 'color-schemes':
 			?>
-				<p><a href="http://slocumstudio.com/wordpress-themes/minimize?utm_medium=options-panel-plug&amp;utm_campaign=WordPressThemes" target="_blank">Upgrade to Minimize Pro</a> and receive more color schemes!</p>
+				<p><?php printf( __( '%1$s and receive more color schemes!', 'minimize' ), '<a href="http://slocumstudio.com/wordpress-themes/minimize?utm_medium=options-panel-plug&amp;utm_campaign=WordPressThemes" target="_blank">Upgrade to Minimize Pro</a>' ); ?></p>
 			<?php
 			break;
 			case 'web-fonts':
 			?>
-				<p><a href="http://slocumstudio.com/wordpress-themes/minimize?utm_medium=options-panel-plug&amp;utm_campaign=WordPressThemes" target="_blank">Upgrade to Minimize Pro</a> to use web fonts!</p>
-			<?php
-			break;
-			case 'featured-image-sizes':
-			?>
-				<p><a href="http://slocumstudio.com/wordpress-themes/minimize?utm_medium=options-panel-plug&amp;utm_campaign=WordPressThemes" target="_blank">Upgrade to Minimize Pro</a> to modify featured image sizes!</p>
+				<p><?php printf( __( '%1$s to use more web fonts!', 'minimize' ), '<a href="http://slocumstudio.com/wordpress-themes/minimize?utm_medium=options-panel-plug&amp;utm_campaign=WordPressThemes" target="_blank">Upgrade to Minimize Pro</a>' ); ?></p>
 			<?php
 			break;
 			case 'help-support':
 			?>
-				<p><a href="http://slocumstudio.com/wordpress-themes/minimize?utm_medium=options-panel-plug&amp;utm_campaign=WordPressThemes" target="_blank">Upgrade to Minimize Pro</a> to receive priority ticketing support!</p>
+				<p><?php printf( __( '%1$s to receive priority ticketing support!', 'minimize' ), '<a href="http://slocumstudio.com/wordpress-themes/minimize?utm_medium=options-panel-plug&amp;utm_campaign=WordPressThemes" target="_blank">Upgrade to Minimize Pro</a>' ); ?></p>
 			<?php
 			break;
 		endswitch;
@@ -135,7 +130,7 @@ if ( ! function_exists( 'sds_theme_options_help_support_tab_content' ) ) {
 
 	function sds_theme_options_help_support_tab_content( ) {
 	?>
-		<p>If you'd like to create a suppport request, please visit the <a href="http://wordpress.org/themes/minimize" target="_blank">Minimize Forums on WordPress.org</a>.</p>
+		<p><?php printf( __( 'If you\'d like to create a suppport request, please visit the %1$s.', 'minimize' ), '<a href="http://wordpress.org/themes/minimize" target="_blank">Minimize Forums on WordPress.org</a>' ); ?></p>
 	<?php
 	}
 }
@@ -144,6 +139,6 @@ if ( ! function_exists( 'sds_copyright_branding' ) ) {
 	add_filter( 'sds_copyright_branding', 'sds_copyright_branding', 10, 2 );
 
 	function sds_copyright_branding( $text, $theme_name ) {
-		return '<a href="http://slocumstudio.com/wordpress-themes/minimize-free/?utm_medium=footer-plugs&amp;utm_campaign=WordPressThemes" target="_blank">' . $theme_name . ' by Slocum Design Studio</a>';
+		return '<a href="http://slocumstudio.com/wordpress-themes/minimize-free/?utm_medium=footer-plugs&amp;utm_campaign=WordPressThemes" target="_blank">' . sprintf( __( '%1$s by Slocum Design Studio', 'minimize' ), $theme_name ) . '</a>';
 	}
 }

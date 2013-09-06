@@ -5,21 +5,19 @@
 	if ( have_posts() ) :
 		while ( have_posts() ) : the_post();
 ?>
-	<section id="post-<?php the_ID(); ?>" <?php post_class( 'latest-post' ); ?>>
+	<section id="post-<?php the_ID(); ?>" <?php post_class( 'latest-post cf' ); ?>>
 		<?php sds_featured_image(); ?>
 
-		<section class="post-title-wrap <?php echo ( has_post_thumbnail() ) ? 'post-title-wrap-featured-image' : 'post-title-wrap-no-image'; ?>">
+		<section class="post-title-wrap cf <?php echo ( has_post_thumbnail() ) ? 'post-title-wrap-featured-image' : 'post-title-wrap-no-image'; ?>">
 			<h1 class="post-title page-title"><?php the_title(); ?></h1>
 			<p class="latest-post-date"><?php the_time( 'F j, Y' ); ?></p>
 		</section>
 
-		<section class="clear">&nbsp;</section>
-
 		<?php the_content(); ?>
 
-		<section class="clear">&nbsp;</section>
+		<section class="clear"></section>
 
-		<?php edit_post_link( 'Edit Post' ); // Allow logged in users to edit ?>
+		<?php edit_post_link( __( 'Edit Post', 'minimize' ) ); // Allow logged in users to edit ?>
 
 		<?php if ( $multipage ) : ?>
 			<section class="single-post-navigation single-post-pagination wp-link-pages">
@@ -45,7 +43,7 @@
 			</figure>
 			<h4><?php echo get_the_author_meta( 'display_name' ); ?></h4>
 			<p><?php echo get_the_author_meta( 'description' ); ?></p>
-			<a href="<?php echo get_author_posts_url( get_the_author_meta( 'ID' ) ); ?>">View more posts from this author</a>
+			<a href="<?php echo get_author_posts_url( get_the_author_meta( 'ID' ) ); ?>"><?php _e( 'View more posts from this author', 'minimize' ); ?></a>
 		</section>
 
 		<?php sds_single_post_navigation(); ?>

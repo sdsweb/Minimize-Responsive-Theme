@@ -4,7 +4,7 @@ Theme URI: http://slocumstudio.com/wordpress-themes/minimize-free/
 Description: A lightweight and responsive WordPress theme. Great for a blog or to start a new project.
 Author: Slocum Design Studio
 Author URI: http://slocumstudio.com
-Version: 2.1.5
+Version: 2.1.8
 License: GPL2+
 License URI: http://www.gnu.org/licenses/gpl.html
 Tags: blue, green, orange, pink, purple, red, white, light, two-columns, left-sidebar, flexible-width, custom-colors, custom-menu, editor-style, featured-images, full-width-template, sticky-post, theme-options, threaded-comments
@@ -111,6 +111,16 @@ img {
 	height: 0;
 	font-size: 0;
 	clear: both;
+}
+
+.cf:before,
+.cf:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.cf:after {
+    clear: both;
 }
 
 .hide {
@@ -1316,9 +1326,15 @@ aside.sidebar{
 }
 
 .widget .social-media-icons a, .footer-widget .social-media-icons a {
+	width: 50px;
+	height: 50px;
 	margin-right: 10px;
-	font-size: 3em;
-	line-height: 1em;
+	margin-bottom: 10px;
+	color: #fff;
+	background: #565656;
+	font-size: 32px;
+	line-height: 50px;
+	text-align: center;
 	text-decoration: none;
 	display: inline-block;
 	-webkit-transition: all .2s ease-in-out;

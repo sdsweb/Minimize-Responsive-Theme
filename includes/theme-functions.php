@@ -45,7 +45,7 @@ if ( ! function_exists( 'sds_logo' ) ) {
 		// No logo
 		else :
 	?>
-		<h1 id="title" class="site-title site-title-logo has-logo">
+		<h1 id="title" class="site-title site-title-no-logo no-logo">
 			<a href="<?php echo esc_url( site_url() ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
 				<?php bloginfo( 'name' ); ?>
 			</a>
@@ -81,8 +81,12 @@ if ( ! function_exists( 'sds_tagline' ) ) {
  * @uses the_post_thumbnail()
  */
 if ( ! function_exists( 'sds_featured_image' ) ) {
-	function sds_featured_image( $link_image = false ) {
-		$featured_image_size = apply_filters( 'sds_theme_options_default_featured_image_size', '' );
+	function sds_featured_image( $link_image = false, $size = false ) {	
+		// Allow size to be over-written by function call
+		if ( $size )
+			$featured_image_size = $size;
+		else
+			$featured_image_size = apply_filters( 'sds_theme_options_default_featured_image_size', '' );
 
 		// Featured Image
 		if ( has_post_thumbnail() && $link_image ) :
@@ -144,21 +148,21 @@ if ( ! function_exists( 'sds_sitemap' ) ) {
 	?>
 	<section class="sds-sitemap sitemap">
 		<section class="sitemap-pages page-list">
-			<h2 title="Pages">Pages</h2>
+			<h2 title="<?php esc_attr_e( 'Pages', 'minimize' ); ?>"><?php _e( 'Pages', 'minimize' ); ?></h2>
 			<ul>
 				<?php wp_list_pages( array( 'title_li' => '' ) ); ?>
 			</ul>
 		</section>
 
 		<section class="sitemap-archives sitemap-monthly-archives monthly-archives archive-list">
-			<h2 title="Monthly Archives">Monthly Archives</h2>
+			<h2 title="<?php esc_attr_e( 'Monthly Archives', 'minimize' ); ?>"><?php _e( 'Monthly Archives', 'minimize' ); ?></h2>
 			<ul>
 				<?php wp_get_archives(); ?>
 			</ul>
 		</section>
 
 		<section class="sitemap-categories category-list">
-			<h2 title="Blog Categories">Blog Categories</h2>
+			<h2 title="<?php esc_attr_e( 'Blog Categories', 'minimize' ); ?>"><?php _e( 'Blog Categories', 'minimize' ); ?></h2>
 			<ul>
 				<?php wp_list_categories( array( 'title_li' => '' ) ); ?>
 			</ul>
@@ -207,46 +211,46 @@ if ( ! function_exists( 'sds_archive_title' ) ) {
 		if ( is_author() ) :
 			$author = get_user_by( 'slug', get_query_var( 'author_name' ) );
 			?>
-				<h1 title="<?php echo $author_text; ?> Archive: <?php echo esc_attr( $author->display_name ); ?>" class="page-title">
-					Author Archive: <?php echo $author->display_name; ?>
+				<h1 title="Author Archive: <?php echo esc_attr( $author->display_name ); ?>" class="page-title">
+					<?php _e( 'Author Archive:', 'minimize' ); ?> <?php echo $author->display_name; ?>
 				</h1>
 			<?php
 		// Categories
 		elseif ( is_category() ) :
 		?>
-			<h1 title="<?php single_cat_title( 'Category Archive: ' ); ?>" class="page-title">
-				<?php single_cat_title( 'Category Archive: ' ); ?>
+			<h1 title="<?php single_cat_title( __( 'Category Archive: ', 'minimize' ) ); ?>" class="page-title">
+				<?php single_cat_title( __( 'Category Archive: ', 'minimize' ) ); ?>
 			</h1>
 		<?php 
 		// Tags
 		elseif ( is_tag() ) :
 		?>
-			<h1 title="<?php single_tag_title( 'Tag Archive: ' ); ?>" class="page-title">
-				<?php single_tag_title( 'Tag Archive: ' ); ?>
+			<h1 title="<?php single_tag_title( __( 'Tag Archive: ', 'minimize' ) ); ?>" class="page-title">
+				<?php single_tag_title( __( 'Tag Archive: ', 'minimize' ) ); ?>
 			</h1>
 		<?php
 		// Daily Archives
 		elseif ( is_day() ) :
 			$the_date = get_the_date();
 		?>
-			<h1 title="Daily Archives: <?php echo $the_date; ?>" class="page-title">
-				Daily Archives: <?php echo $the_date; ?>
+			<h1 title="<?php esc_attr_e( 'Daily Archives:', 'minimize' ); ?> <?php echo $the_date; ?>" class="page-title">
+				<?php _e( 'Daily Archives:', 'minimize' ); ?> <?php echo $the_date; ?>
 			</h1>
 		<?php
 		// Monthly Archives
 		elseif ( is_month() ) :
 			$the_date = get_the_date( 'F Y' );
 		?>
-			<h1 title="Monthly Archives <?php echo $the_date; ?>" class="page-title">
-				Monthly Archives: <?php echo $the_date; ?>
+			<h1 title="<?php esc_attr_e( 'Monthly Archives:', 'minimize' ); ?> <?php echo $the_date; ?>" class="page-title">
+				<?php _e( 'Monthly Archives:', 'minimize' ); ?> <?php echo $the_date; ?>
 			</h1>
 		<?php
 		// Yearly Archives
 		elseif ( is_year() ) :
 			$the_date = get_the_date( 'Y' );
 		?>
-			<h1 title="Yearly Archives <?php echo $the_date; ?>" class="page-title">
-				Yearly Archives: <?php echo $the_date; ?>
+			<h1 title="<?php esc_attr_e( 'Yearly Archives:', 'minimize' ); ?> <?php echo $the_date; ?>" class="page-title">
+				<?php _e( 'Yearly Archives:', 'minimize' ); ?> <?php echo $the_date; ?>
 			</h1>
 		<?php
 		endif;
@@ -260,7 +264,7 @@ if ( ! function_exists( 'sds_no_posts' ) ) {
 	function sds_no_posts() {
 	?>
 		<section class="no-results no-posts">
-			<p>We were not able to find any posts. Please try again.</p>
+			<p><?php _e( 'We were not able to find any posts. Please try again.', 'minimize' ); ?></p>
 		</section>
 	<?php
 	}
@@ -328,14 +332,14 @@ if ( ! function_exists( 'sds_social_media' ) ) {
 		if ( ! empty( $sds_theme_options['social_media'] ) ) {
 			// Map the correct values for social icon display (FontAwesome webfont, i.e. 'icon-rss' = RSS icon)
 			$social_font_map = array(
-				'facebook_url' => 'icon-facebook-sign',
-				'twitter_url' => 'icon-twitter-sign',
-				'linkedin_url' => 'icon-linkedin-sign',
-				'google_plus_url' => 'icon-google-plus-sign',
-				'youtube_url' => 'icon-youtube-sign',
+				'facebook_url' => 'icon-facebook',
+				'twitter_url' => 'icon-twitter',
+				'linkedin_url' => 'icon-linkedin',
+				'google_plus_url' => 'icon-google-plus',
+				'youtube_url' => 'icon-youtube',
 				'vimeo_url' => 'icon-play',
-				'instagram_url' => 'icon-instagram-sign',
-				'pinterest_url' => 'icon-pinterest-sign',
+				'instagram_url' => 'icon-instagram',
+				'pinterest_url' => 'icon-pinterest',
 				//'yelp_url' => '',
 				'foursquare_url' => 'icon-foursquare',
 				'rss_url' => 'icon-rss'
@@ -381,17 +385,33 @@ if ( ! function_exists( 'sds_post_meta' ) ) {
 		// Categories and tags
 		if ( $cats && $tags ):
 		?>
-			<p>This entry was posted in <?php the_category( ', ', 'multiple' ); ?> and tagged in <?php the_tags( '', ', ' ); ?>.</p>
+			<p>
+			<?php
+				printf( __( 'This entry was posted in %1$s and tagged in %2$s.', 'minimize' ),
+				get_the_category_list( ', ', 'multiple' ),
+				get_the_tag_list( '', ', ' ) );
+			?>
+			</p>
 		<?php
 		// Categories and no tags
 		elseif ( $cats && ! $tags ) :
 		?>
-			<p>This entry was posted in <?php the_category( ', ', 'multiple' ); ?>.</p>
+			<p>
+			<?php
+				printf( __( 'This entry was posted in %1$s.', 'minimize' ),
+				get_the_category_list( ', ', 'multiple' ) );
+			?>
+			</p>
 		<?php
 		// Tags and no categories
 		elseif ( $tags && ! $cats ) :
 		?>
-			<p>This entry was tagged in <?php the_tags( '', ', ' ); ?>.</p>
+			<p>
+			<?php
+				printf( __( 'This entry was tagged in %1$s.', 'minimize' ),
+				get_the_tag_list( '', ', ' ) );
+			?>
+			</p>
 		<?php
 		endif;
 	}
@@ -441,7 +461,7 @@ if ( ! function_exists( 'sds_comment' ) ) {
 			// Display trackbacks differently than normal comments.
 		?>
 		<li id="comment-<?php comment_ID(); ?>" <?php comment_class(); ?>>
-			<p>Pingback: <?php comment_author_link(); ?> <?php edit_comment_link( 'Edit', '<span class="ping-meta"><span class="edit-link">', '</span></span>' ); ?></p>
+			<p><?php _e( 'Pingback:', 'minimize' ); ?> <?php comment_author_link(); ?> <?php edit_comment_link( 'Edit', '<span class="ping-meta"><span class="edit-link">', '</span></span>' ); ?></p>
 		</li>
 		<?php
 			break;
@@ -458,14 +478,14 @@ if ( ! function_exists( 'sds_comment' ) ) {
 						<header class="comment-meta">
 							<cite class="fn">
 								<?php
-									printf( '<a href="%1$s"><time datetime="%2$s" itemprop="commentTime">%3$s</time></a>',
+									printf( __( '<a href="%1$s"><time datetime="%2$s" itemprop="commentTime">%3$s</time></a>', 'minimize' ),
 										esc_url( get_comment_link( $comment->comment_ID ) ),
 										get_comment_time( 'c' ),
-										sprintf( '%1$s at %2$s', get_comment_date(), get_comment_time() )
+										sprintf( __( '%1$s at %2$s', 'minimize' ), get_comment_date(), get_comment_time() )
 									);
 								?>
 
-								<?php edit_comment_link( 'Edit', '<span class="edit-link">', '<span>' ); ?>
+								<?php edit_comment_link( __( 'Edit', 'minimize' ), '<span class="edit-link">', '<span>' ); ?>
 							</cite>
 						</header>
 					</section>
@@ -473,7 +493,7 @@ if ( ! function_exists( 'sds_comment' ) ) {
 
 				<section class="comment-content-container">
 					<?php if ( $comment->comment_approved == '0' ) : ?>
-						<p class="comment-awaiting-moderation">Your comment is awaiting moderation.</p>
+						<p class="comment-awaiting-moderation"><?php _e( 'Your comment is awaiting moderation.', 'minimize' ); ?></p>
 					<?php endif; ?>
 
 					<section class="comment-content">
@@ -484,7 +504,7 @@ if ( ! function_exists( 'sds_comment' ) ) {
 				<section class="clear">&nbsp;</section>
 
 				<section class="reply">
-					<?php comment_reply_link( array_merge( $args, array( 'reply_text' => 'Reply', 'depth' => $depth, 'max_depth' => $args['max_depth'] ) ) ); ?>
+					<?php comment_reply_link( array_merge( $args, array( 'reply_text' => __( 'Reply', 'minimize' ), 'depth' => $depth, 'max_depth' => $args['max_depth'] ) ) ); ?>
 				</section>
 			</article>
 		</li>
@@ -593,9 +613,9 @@ function sds_after_setup_theme() {
 
 	// Register WordPress Menus
 	register_nav_menus( array(
-		'top_nav' => 'Top Navigation',
-		'primary_nav' => 'Primary Navigation',
-		'footer_nav' => 'Footer Navigation'
+		'top_nav' => __( 'Top Navigation', 'minimize' ),
+		'primary_nav' => __( 'Primary Navigation', 'minimize' ),
+		'footer_nav' => __( 'Footer Navigation', 'minimize' )
 	) );
 }
 
@@ -610,9 +630,9 @@ function sds_widgets_init() {
 
 	// Primary sidebar
 	register_sidebar( array(
-		'name'          => 'Primary Sidebar',
+		'name'          => __( 'Primary Sidebar', 'minimize' ),
 		'id'            => 'primary-sidebar',
-		'description'   => 'This widget area is the primary widget area.',
+		'description'   => __( 'This widget area is the primary widget area.', 'minimize' ),
 		'before_widget' => '<section id="primary-sidebar-%1$s" class="widget primary-sidebar %2$s">',
 		'after_widget'  => '<section class="clear"></section></section>',
 		'before_title'  => '<h3 class="widgettitle">',
@@ -621,20 +641,31 @@ function sds_widgets_init() {
 
 	// Front Page Slider
 	register_sidebar( array(
-		'name'          => 'Front Page Slider',
+		'name'          => __( 'Front Page Slider', 'minimize' ),
 		'id'            => 'front-page-slider-sidebar',
-		'description'   => '*This widget area is only displayed if a Front Page is selected via Settings > Reading in the Dashboard. Specifically formatted for Soliloquy or SlideDeck sliders.* This widget area is displayed above the content on the Front Page.',
+		'description'   => __( '*This widget area is only displayed if a Front Page is selected via Settings > Reading in the Dashboard. Specifically formatted for Soliloquy or SlideDeck sliders.* This widget area is displayed above the content on the Front Page.', 'minimize' ),
 		'before_widget' => '<section id="front-page-slider-%1$s" class="front-page-slider slider %2$s">',
 		'after_widget'  => '</section>',
 		'before_title'  => '<h3 class="widgettitle widget-title front-page-slider-title">',
 		'after_title'   => '</h3>'
 	) );
 
+	// Front Page
+	register_sidebar( array(
+		'name'          => __( 'Front Page', 'minimize' ),
+		'id'            => 'front-page-sidebar',
+		'description'   => __( '*This widget area is only displayed if a Front Page is selected via Settings > Reading in the Dashboard.* This widget area is displayed below the Front Page Slider on the Front Page and will replace the Front Page content.', 'minimize' ),
+		'before_widget' => '<section id="front-page-%1$s" class="front-page %2$s">',
+		'after_widget'  => '</section>',
+		'before_title'  => '<h3 class="widgettitle widget-title front-page-title">',
+		'after_title'   => '</h3>'
+	) );
+
 	// Header Call To Action
 	register_sidebar( array(
-		'name'          => 'Header Call To Action',
+		'name'          => __( 'Header Call To Action', 'minimize' ),
 		'id'            => 'header-call-to-action-sidebar',
-		'description'   => 'This widget area is used to display a call to action in the header',
+		'description'   => __( 'This widget area is used to display a call to action in the header', 'minimize' ),
 		'before_widget' => '<section id="header-call-to-action-%1$s" class="widget header-call-to-action-widget %2$s">',
 		'after_widget'  => '</section>',
 		'before_title'  => '<h3 class="widgettitle">',
@@ -643,9 +674,9 @@ function sds_widgets_init() {
 
 	// After Posts
 	register_sidebar( array(
-		'name'          => 'After Posts',
+		'name'          => __( 'After Posts', 'minimize' ),
 		'id'            => 'after-posts-sidebar',
-		'description'   => 'This widget area is displayed below the content on single posts only.',
+		'description'   => __( 'This widget area is displayed below the content on single posts only.', 'minimize' ),
 		'before_widget' => '<section id="after-posts-%1$s" class="after-posts after-posts-widget %2$s">',
 		'after_widget'  => '</section>',
 		'before_title'  => '<h3 class="widgettitle widget-title after-posts-title">',
@@ -654,9 +685,9 @@ function sds_widgets_init() {
 
 	// Footer
 	register_sidebar( array(
-		'name'          => 'Footer',
+		'name'          => __( 'Footer', 'minimize' ),
 		'id'            => 'footer-sidebar',
-		'description'   => 'Tis widget area is displayed in the footer of all pages.',
+		'description'   => __( 'This widget area is displayed in the footer of all pages.', 'minimize' ),
 		'before_widget' => '<section id="footer-widget-%1$s" class="footer-widget %2$s">',
 		'after_widget'  => '</section>',
 		'before_title'  => '<h3 class="widgettitle widget-title footer-widget-title">',
@@ -665,9 +696,9 @@ function sds_widgets_init() {
 
 	// Copyright
 	register_sidebar( array(
-		'name'          => 'Copyright Area',
+		'name'          => __( 'Copyright Area', 'minimize' ),
 		'id'            => 'copyright-area-sidebar',
-		'description'   => 'This widget area is designed for small text blurbs or disclaimers at the bottom of the website.',
+		'description'   => __( 'This widget area is designed for small text blurbs or disclaimers at the bottom of the website.', 'minimize' ),
 		'before_widget' => '<section id="copyright-area-widget-%1$s" class="widget copyright-area-widget %2$s">',
 		'after_widget'  => '</section>',
 		'before_title'  => '<h3 class="widgettitle">',
