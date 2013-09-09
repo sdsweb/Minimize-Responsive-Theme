@@ -209,12 +209,12 @@ if ( ! function_exists( 'sds_archive_title' ) ) {
 	function sds_archive_title() {
 		// Author
 		if ( is_author() ) :
-			$author = get_user_by( 'slug', get_query_var( 'author_name' ) );
-			?>
-				<h1 title="Author Archive: <?php echo esc_attr( $author->display_name ); ?>" class="page-title">
-					<?php _e( 'Author Archive:', 'minimize' ); ?> <?php echo $author->display_name; ?>
-				</h1>
-			<?php
+			$author = get_user_by( 'slug', get_query_var( 'author_name' ) ); // Get user data by slug with value of author_name in query
+		?>
+			<h1 title="<?php esc_attr_e( 'Author Archive:', 'minimize' ); ?> <?php echo ( $author instanceof WP_User ) ? $author->display_name : false; ?>" class="page-title">
+				<?php _e( 'Author Archive:', 'minimize' ); ?> <?php echo ( $author instanceof WP_User ) ? $author->display_name : false; ?>
+			</h1>
+		<?php
 		// Categories
 		elseif ( is_category() ) :
 		?>
