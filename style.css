@@ -59,7 +59,7 @@ table {
 	border-spacing: 0;
 }
 
-address, caption, cite, code, dfn, em, var {
+address, caption, cite, code, dfn, var {
 	font-weight: normal;
 	font-style: normal;
 }
@@ -821,7 +821,7 @@ article.content em, .comment-content em {
 	font-style: italic;
 }
 
-article.content input {
+article.content input[type=text] {
 	width: 48%;
 	margin-bottom: 1em;
 	padding: 1%;
@@ -1332,7 +1332,6 @@ aside.sidebar{
 	margin-bottom: 10px;
 	color: #fff;
 	background: #565656;
-	font-size: 32px;
 	line-height: 50px;
 	text-align: center;
 	text-decoration: none;
@@ -1773,7 +1772,7 @@ ul.footer-nav li ul {
 	}
 
 	nav ul.top-nav.open li ul.sub-menu li, nav .primary-nav.open li ul.sub-menu li {
-		min-height: auto;
+		min-height: 0;
 	}
 
 
@@ -1931,6 +1930,10 @@ ul.footer-nav li ul {
 		margin: 0 auto 1em;
 		padding: 1%;
 		display: block;
+	}
+
+	section.footer-widget:last-child {
+		margin-right: auto;
 	}
 }
 
