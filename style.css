@@ -4,7 +4,7 @@ Theme URI: http://slocumstudio.com/wordpress-themes/minimize-free/
 Description: A lightweight and responsive WordPress theme. Great for a blog or to start a new project.
 Author: Slocum Design Studio
 Author URI: http://slocumstudio.com
-Version: 2.1.3
+Version: 2.2
 License: GPL2+
 License URI: http://www.gnu.org/licenses/gpl.html
 Tags: blue, green, orange, pink, purple, red, white, light, two-columns, left-sidebar, flexible-width, custom-colors, custom-menu, editor-style, featured-images, full-width-template, sticky-post, theme-options, threaded-comments
@@ -27,6 +27,14 @@ pre, form, fieldset, input, textarea, blockquote, th, td, section {
 	margin: 0;
 	padding: 0;
 	-webkit-font-smoothing: antialiased;
+
+	/* Ensure that all long words are broken up so they do not exceed the width of their container elements. */
+	-ms-word-wrap: break-word;
+	word-wrap: break-word;
+}
+
+pre {
+	white-space: pre-wrap;
 }
 
 fieldset, img, abbr, acronym  { 
@@ -51,7 +59,7 @@ table {
 	border-spacing: 0;
 }
 
-address, caption, cite, code, dfn, em, var {
+address, caption, cite, code, dfn, var {
 	font-weight: normal;
 	font-style: normal;
 }
@@ -84,10 +92,6 @@ body{
 	font-family: 'Open Sans', sans-serif;
 	font-size: 18px;
 	color: #555555;
-
-	/* Ensure that all long words are broken up so they do not exceed the width of their container elements. */
-	-ms-word-wrap: break-word;
-	word-wrap: break-word;
 }
 
 strong{
@@ -107,6 +111,16 @@ img {
 	height: 0;
 	font-size: 0;
 	clear: both;
+}
+
+.cf:before,
+.cf:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.cf:after {
+    clear: both;
 }
 
 .hide {
@@ -443,6 +457,10 @@ article.content #searchform  input {
 	border-radius: 0;
 }
 
+article.content #searchform input[type=submit] {
+	padding: 1.35% 1%;
+	line-height: 15px;
+}
 
 
 /*   -------------
@@ -546,6 +564,10 @@ nav .primary-nav li a:hover{
 /*   -------------
 	  Home Slider
 	 -------------  */
+.front-page-slider {
+	margin-bottom: 1em;
+}
+
 .front-page-slider-title {
 	padding: 1em;
 	background: #bbb;
@@ -799,7 +821,7 @@ article.content em, .comment-content em {
 	font-style: italic;
 }
 
-article.content input {
+article.content input[type=text] {
 	width: 48%;
 	margin-bottom: 1em;
 	padding: 1%;
@@ -1075,6 +1097,11 @@ footer.post-footer .post-meta p {
 	border-bottom: 1px solid #ccc;
 }
 
+.comments-container-no-comments {
+	padding-bottom: 0;
+	border-bottom: none;
+}
+
 .full-width-content .comments-container {
 	border-bottom: none;
 }
@@ -1083,6 +1110,10 @@ footer.post-footer .post-meta p {
 	margin: 0.5em 0 0;
 	padding: 1em 0 0;
 	border-top: 1px solid #e0e0e0;
+}
+
+.comments-container-no-comments .comments-area {
+	border-top: none;
 }
 
 .comments-area .comments-title-container{
@@ -1295,9 +1326,14 @@ aside.sidebar{
 }
 
 .widget .social-media-icons a, .footer-widget .social-media-icons a {
+	width: 50px;
+	height: 50px;
 	margin-right: 10px;
-	font-size: 3em;
-	line-height: 1em;
+	margin-bottom: 10px;
+	color: #fff;
+	background: #565656;
+	line-height: 50px;
+	text-align: center;
 	text-decoration: none;
 	display: inline-block;
 	-webkit-transition: all .2s ease-in-out;
@@ -1736,7 +1772,7 @@ ul.footer-nav li ul {
 	}
 
 	nav ul.top-nav.open li ul.sub-menu li, nav .primary-nav.open li ul.sub-menu li {
-		min-height: auto;
+		min-height: 0;
 	}
 
 
@@ -1894,6 +1930,10 @@ ul.footer-nav li ul {
 		margin: 0 auto 1em;
 		padding: 1%;
 		display: block;
+	}
+
+	section.footer-widget:last-child {
+		margin-right: auto;
 	}
 }
 

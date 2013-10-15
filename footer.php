@@ -1,4 +1,4 @@
-	<section class="clear">&nbsp;</section>
+	<section class="clear"></section>
 
 	<!-- Footer -->
 		<footer id="footer">	

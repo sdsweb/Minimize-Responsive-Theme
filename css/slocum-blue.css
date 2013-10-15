@@ -224,6 +224,13 @@ footer.pagination{
 }
 
 
+/* =Social Media Widget
+-------------------------------------------------------------- */
+.widget .social-media-icons a, .footer-widget .social-media-icons a {
+	background: #3c639a;
+}
+
+
 /* =Comments
 -------------------------------------------------------------- */
 .comments-container {

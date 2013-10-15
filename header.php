@@ -6,7 +6,7 @@
 <!--[if (gte IE 9)|!(IE)]><!--><html><!--<![endif]-->
 	<head>
 		<title><?php wp_title( '| ', true, 'right' ); ?></title>
-		<meta charset="<?php bloginfo( 'blog_charset' ); ?>" />
+		<meta charset="<?php bloginfo( 'charset' ); ?>" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 			
 		<?php wp_head(); ?>
@@ -14,9 +14,9 @@
 
 	<body <?php language_attributes(); ?> <?php body_class(); ?>>
 	<!-- Header	-->
-		<header id="header">
+		<header id="header" class="cf">
 			<?php if( has_nav_menu( 'top_nav' ) ) : // Top Navigation Area ?>
-				<button class="nav-button">Toggle Navigation</button>
+				<button class="nav-button"><?php _e( 'Toggle Navigation', 'minimize' ); ?></button>
 				<nav class="top-nav">
 					<?php
 						wp_nav_menu( array(
@@ -27,7 +27,7 @@
 						) );
 					?>
 				</nav>
-				<section class="clear">&nbsp;</section>
+				<section class="clear"></section>
 			<?php endif; ?>
 	<!-- Logo	-->
 			<section class="logo-box">
@@ -44,17 +44,15 @@
 
 	<!-- main nav	-->
 			<nav class="primary-nav-container">
-				<button class="primary-nav-button"><img src="<?php echo get_template_directory_uri(); ?>/images/menu-icon-large.png" alt="Toggle Navigation" /> Navigation</button>
+				<button class="primary-nav-button"><img src="<?php echo get_template_directory_uri(); ?>/images/menu-icon-large.png" alt="<?php esc_attr_e( 'Toggle Navigation', 'minimize' ); ?>" /><?php _e( 'Navigation', 'minimize' ); ?></button>
 				<?php
 					wp_nav_menu( array(
 						'theme_location' => 'primary_nav',
 						'container' => false,
 						'menu_class' => 'primary-nav menu',
 						'menu_id' => 'primary-nav',
-						'fallback_cb' =>  'sds_primary_menu_fallback'
+						'fallback_cb' => 'sds_primary_menu_fallback'
 					) );
 				?>
 			</nav>
 		</header>
-
-		<section class="clear">&nbsp;</section>
