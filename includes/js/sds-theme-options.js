@@ -51,8 +51,6 @@ jQuery( function( $ ) {
 			}
 			else
 				_this.parent().find( '.sds-theme-options-preview' ).html( '<div class="description error">Please choose an image from the Media Library for the logo.</div>' );
-
-			console.log( attachment );
 		} );
 
 		// Open the modal
@@ -64,7 +62,6 @@ jQuery( function( $ ) {
 	 * Social Media - RSS (hide custom feed url box when default is used)
 	 */
 	$( '#sds_theme_options_social_media_rss_url_use_site_feed' ).on( 'change', function( e ) {
-		console.log( 'change' );
 		var _this = $( this ), _this_parent = _this.parents( 'td' );
 		if ( _this.is( ':checked' ) )
 			_this_parent.find( '#sds_theme_options_social_media_rss_url_custom' ).slideUp();

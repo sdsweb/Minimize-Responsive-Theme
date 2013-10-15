@@ -4,22 +4,16 @@
  */
 
 get_header(); ?>
-	<section class="content-wrapper page-content">
-		<article class="content">
+	<section class="content-wrapper page-content cf">
+		<article class="content cf">
 			<?php get_template_part( 'yoast', 'breadcrumbs' ); // Yoast Breadcrumbs ?>
 
 			<?php get_template_part( 'loop', 'page' ); // Loop - Page ?>
 
-			<section class="clear">&nbsp;</section>
-
-			<section id="comments-container" class="comments-container post-comments post-comments-container">
-				<?php comments_template(); // Comments ?>
-			</section>
+			<?php comments_template(); // Comments ?>
 		</article>
 
 		<?php get_sidebar(); ?>
-
-		<section class="clear">&nbsp;</section>
 	</section>
 
 <?php get_footer(); ?>

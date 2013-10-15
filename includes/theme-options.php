@@ -73,7 +73,7 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 		 * This function adds a menu item under "Appearance" in the Dashboard.
 		 */
 		function admin_menu() {
-			add_theme_page( 'Theme Options', 'Theme Options', 'edit_theme_options', 'sds-theme-options', array( $this, 'sds_theme_options_page' ) );
+			add_theme_page( __( 'Theme Options', 'minimize' ), __( 'Theme Options', 'minimize' ), 'edit_theme_options', 'sds-theme-options', array( $this, 'sds_theme_options_page' ) );
 		}
 
 		/**
@@ -89,23 +89,23 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 			 */
 
 			// Logo
-			add_settings_section( 'sds_theme_options_logo_section', 'Upload A Logo', array( $this, 'sds_theme_options_logo_section' ), 'sds-theme-options[general]' );
-			add_settings_field( 'sds_theme_options_logo_field', 'Logo:', array( $this, 'sds_theme_options_logo_field' ), 'sds-theme-options[general]', 'sds_theme_options_logo_section' );
+			add_settings_section( 'sds_theme_options_logo_section', __( 'Upload A Logo', 'minimize'), array( $this, 'sds_theme_options_logo_section' ), 'sds-theme-options[general]' );
+			add_settings_field( 'sds_theme_options_logo_field', __( 'Logo:', 'minimize'), array( $this, 'sds_theme_options_logo_field' ), 'sds-theme-options[general]', 'sds_theme_options_logo_section' );
 			
 			// Hide Tagline
-			add_settings_section( 'sds_theme_options_hide_tagline_section', 'Show/Hide Site Tagline', array( $this, 'sds_theme_options_hide_tagline_section' ), 'sds-theme-options[general]' );
-			add_settings_field( 'sds_theme_options_hide_tagline_field', 'Show or Hide Site Tagline:', array( $this, 'sds_theme_options_hide_tagline_field' ), 'sds-theme-options[general]', 'sds_theme_options_hide_tagline_section' );
+			add_settings_section( 'sds_theme_options_hide_tagline_section', __( 'Show/Hide Site Tagline', 'minimize'), array( $this, 'sds_theme_options_hide_tagline_section' ), 'sds-theme-options[general]' );
+			add_settings_field( 'sds_theme_options_hide_tagline_field', __( 'Show or Hide Site Tagline:', 'minimize'), array( $this, 'sds_theme_options_hide_tagline_field' ), 'sds-theme-options[general]', 'sds_theme_options_hide_tagline_section' );
 
 			// Color Schemes (if specified by theme)
 			if ( function_exists( 'sds_color_schemes' ) ) {
-				add_settings_section( 'sds_theme_options_color_schemes_section', 'Color Scheme', array( $this, 'sds_theme_options_color_schemes_section' ), 'sds-theme-options[general]' );
-				add_settings_field( 'sds_theme_options_color_schemes_field', 'Select A Color Scheme:', array( $this, 'sds_theme_options_color_schemes_field' ), 'sds-theme-options[general]', 'sds_theme_options_color_schemes_section' );
+				add_settings_section( 'sds_theme_options_color_schemes_section', __( 'Color Scheme', 'minimize'), array( $this, 'sds_theme_options_color_schemes_section' ), 'sds-theme-options[general]' );
+				add_settings_field( 'sds_theme_options_color_schemes_field', __( 'Select A Color Scheme:', 'minimize'), array( $this, 'sds_theme_options_color_schemes_field' ), 'sds-theme-options[general]', 'sds_theme_options_color_schemes_section' );
 			}
 
-			// Google Webfonts (if specified by theme)
+			// Google Web Fonts (if specified by theme)
 			if ( function_exists( 'sds_web_fonts' ) ) {
-				add_settings_section( 'sds_theme_options_web_fonts_section', 'Web Fonts', array( $this, 'sds_theme_options_web_fonts_section' ), 'sds-theme-options[general]' );
-				add_settings_field( 'sds_theme_options_web_fonts_field', 'Select A Web Font:', array( $this, 'sds_theme_options_web_fonts_field' ), 'sds-theme-options[general]', 'sds_theme_options_web_fonts_section' );
+				add_settings_section( 'sds_theme_options_web_fonts_section', __( 'Web Fonts', 'minimize'), array( $this, 'sds_theme_options_web_fonts_section' ), 'sds-theme-options[general]' );
+				add_settings_field( 'sds_theme_options_web_fonts_field', __( 'Select A Web Font:', 'minimize'), array( $this, 'sds_theme_options_web_fonts_field' ), 'sds-theme-options[general]', 'sds_theme_options_web_fonts_section' );
 			}
 
 
@@ -113,18 +113,18 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 			 * Social Media Settings (belong to the sds-theme-options[social-media] "page", used during page render to display section in tab format)
 			 */
 
- 			add_settings_section( 'sds_theme_options_social_media_section', 'Social Media', array( $this, 'sds_theme_options_social_media_section' ), 'sds-theme-options[social-media]' );
-			add_settings_field( 'sds_theme_options_social_media_facebook_url_field', 'Facebook:', array( $this, 'sds_theme_options_social_media_facebook_url_field' ), 'sds-theme-options[social-media]', 'sds_theme_options_social_media_section' );
-			add_settings_field( 'sds_theme_options_social_media_twitter_url_field', 'Twitter:', array( $this, 'sds_theme_options_social_media_twitter_url_field' ), 'sds-theme-options[social-media]', 'sds_theme_options_social_media_section' );
-			add_settings_field( 'sds_theme_options_social_media_linkedin_url_field', 'LinkedIn:', array( $this, 'sds_theme_options_social_media_linkedin_url_field' ), 'sds-theme-options[social-media]', 'sds_theme_options_social_media_section' );
-			add_settings_field( 'sds_theme_options_social_media_google_plus_url_field', 'Google+:', array( $this, 'sds_theme_options_social_media_google_plus_url_field' ), 'sds-theme-options[social-media]', 'sds_theme_options_social_media_section' );
-			add_settings_field( 'sds_theme_options_social_media_youtube_url_field', 'YouTube:', array( $this, 'sds_theme_options_social_media_youtube_url_field' ), 'sds-theme-options[social-media]', 'sds_theme_options_social_media_section' );
-			add_settings_field( 'sds_theme_options_social_media_vimeo_url_field', 'Vimeo:', array( $this, 'sds_theme_options_social_media_vimeo_url_field' ), 'sds-theme-options[social-media]', 'sds_theme_options_social_media_section' );
-			add_settings_field( 'sds_theme_options_social_media_instagram_url_field', 'Instagram:', array( $this, 'sds_theme_options_social_media_instagram_url_field' ), 'sds-theme-options[social-media]', 'sds_theme_options_social_media_section' );
-			add_settings_field( 'sds_theme_options_social_media_pinterest_url_field', 'Pinterest:', array( $this, 'sds_theme_options_social_media_pinterest_url_field' ), 'sds-theme-options[social-media]', 'sds_theme_options_social_media_section' );
-			//add_settings_field( 'sds_theme_options_social_media_yelp_url_field', 'Yelp:', array( $this, 'sds_theme_options_social_media_yelp_url_field' ), 'sds-theme-options[social-media]', 'sds_theme_options_social_media_section' );
-			add_settings_field( 'sds_theme_options_social_media_foursquare_url_field', 'Foursquare:', array( $this, 'sds_theme_options_social_media_foursquare_url_field' ), 'sds-theme-options[social-media]', 'sds_theme_options_social_media_section' );
-			add_settings_field( 'sds_theme_options_social_media_rss_url_field', 'RSS:', array( $this, 'sds_theme_options_social_media_rss_url_field' ), 'sds-theme-options[social-media]', 'sds_theme_options_social_media_section' );
+ 			add_settings_section( 'sds_theme_options_social_media_section', __( 'Social Media', 'minimize'), array( $this, 'sds_theme_options_social_media_section' ), 'sds-theme-options[social-media]' );
+			add_settings_field( 'sds_theme_options_social_media_facebook_url_field', __( 'Facebook:', 'minimize'), array( $this, 'sds_theme_options_social_media_facebook_url_field' ), 'sds-theme-options[social-media]', 'sds_theme_options_social_media_section' );
+			add_settings_field( 'sds_theme_options_social_media_twitter_url_field', __( 'Twitter:', 'minimize'), array( $this, 'sds_theme_options_social_media_twitter_url_field' ), 'sds-theme-options[social-media]', 'sds_theme_options_social_media_section' );
+			add_settings_field( 'sds_theme_options_social_media_linkedin_url_field', __( 'LinkedIn:', 'minimize'), array( $this, 'sds_theme_options_social_media_linkedin_url_field' ), 'sds-theme-options[social-media]', 'sds_theme_options_social_media_section' );
+			add_settings_field( 'sds_theme_options_social_media_google_plus_url_field', __( 'Google+:', 'minimize'), array( $this, 'sds_theme_options_social_media_google_plus_url_field' ), 'sds-theme-options[social-media]', 'sds_theme_options_social_media_section' );
+			add_settings_field( 'sds_theme_options_social_media_youtube_url_field', __( 'YouTube:', 'minimize'), array( $this, 'sds_theme_options_social_media_youtube_url_field' ), 'sds-theme-options[social-media]', 'sds_theme_options_social_media_section' );
+			add_settings_field( 'sds_theme_options_social_media_vimeo_url_field', __( 'Vimeo:', 'minimize'), array( $this, 'sds_theme_options_social_media_vimeo_url_field' ), 'sds-theme-options[social-media]', 'sds_theme_options_social_media_section' );
+			add_settings_field( 'sds_theme_options_social_media_instagram_url_field', __( 'Instagram:', 'minimize'), array( $this, 'sds_theme_options_social_media_instagram_url_field' ), 'sds-theme-options[social-media]', 'sds_theme_options_social_media_section' );
+			add_settings_field( 'sds_theme_options_social_media_pinterest_url_field', __( 'Pinterest:', 'minimize'), array( $this, 'sds_theme_options_social_media_pinterest_url_field' ), 'sds-theme-options[social-media]', 'sds_theme_options_social_media_section' );
+			//add_settings_field( 'sds_theme_options_social_media_yelp_url_field', __( 'Yelp:', 'minimize'), array( $this, 'sds_theme_options_social_media_yelp_url_field' ), 'sds-theme-options[social-media]', 'sds_theme_options_social_media_section' );
+			add_settings_field( 'sds_theme_options_social_media_foursquare_url_field', __( 'Foursquare:', 'minimize'), array( $this, 'sds_theme_options_social_media_foursquare_url_field' ), 'sds-theme-options[social-media]', 'sds_theme_options_social_media_section' );
+			add_settings_field( 'sds_theme_options_social_media_rss_url_field', __( 'RSS:', 'minimize'), array( $this, 'sds_theme_options_social_media_rss_url_field' ), 'sds-theme-options[social-media]', 'sds_theme_options_social_media_section' );
 		}
 
 		/**
@@ -132,33 +132,35 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 		 */
 		function sds_theme_options_logo_section() {
 		?>
-			<p>Upload a logo to to replace the site name. Recommended dimensions: <?php echo apply_filters( 'sds_theme_options_logo_dimensions', '300x100' ); ?>.</p>
+			<p>
+				<?php
+					$sds_logo_dimensions = apply_filters( 'sds_theme_options_logo_dimensions', '300x100' );
+					printf( __( 'Upload a logo to to replace the site name. Recommended dimensions: %1$s.', 'minimize' ), $sds_logo_dimensions );
+				?>
+			</p>
 		<?php
 		}
 
 		/**
 		 * This function is the callback for the logo settings field.
-		 *
-		 * TODO
-		 *	- This function should work with wp 3.4 too!
 		 */
 		function sds_theme_options_logo_field() {
 			global $sds_theme_options;
 		?>
-			<strong>Current Logo:</strong>
+			<strong><?php _e( 'Current Logo:', 'minimize' ); ?></strong>
 			<div class="sds-theme-options-preview sds-theme-options-logo-preview">
 				<?php
 					if ( isset( $sds_theme_options['logo_attachment_id'] ) && $sds_theme_options['logo_attachment_id'] ) :
 						echo wp_get_attachment_image( $sds_theme_options['logo_attachment_id'], 'full' );
 					else :
 				?>
-						<div class="description">No logo selected.</div>
+						<div class="description"><?php _e( 'No logo selected.', 'minimize' ); ?></div>
 				<?php endif; ?>
 			</div>
 
 			<input type="hidden" id="sds_theme_options_logo" class="sds-theme-options-upload-value" name="sds_theme_options[logo_attachment_id]"  value="<?php echo ( isset( $sds_theme_options['logo_attachment_id'] ) && ! empty( $sds_theme_options['logo_attachment_id'] ) ) ? esc_attr( $sds_theme_options['logo_attachment_id'] ) : false; ?>" />
-			<input id="sds_theme_options_logo_attach" class="button-primary sds-theme-options-upload" name="sds_theme_options_logo_attach"  value="Select or Upload Logo" data-media-title="Choose A Logo" data-media-button-text="Use As Logo" />
-			<?php submit_button( 'Remove Logo', array( 'secondary', 'button-remove-logo' ), 'sds_theme_options[remove-logo]', false, ( ! isset( $sds_theme_options['logo_attachment_id'] ) || empty( $sds_theme_options['logo_attachment_id'] ) ) ? array( 'disabled' => 'disabled', 'data-init-empty' => 'true' ) : false ); ?>
+			<input id="sds_theme_options_logo_attach" class="button-primary sds-theme-options-upload" name="sds_theme_options_logo_attach"  value="<?php esc_attr_e( 'Select or Upload Logo', 'minimize' ); ?>" data-media-title="Choose A Logo" data-media-button-text="Use As Logo" />
+			<?php submit_button( __( 'Remove Logo', 'minimize' ), array( 'secondary', 'button-remove-logo' ), 'sds_theme_options[remove-logo]', false, ( ! isset( $sds_theme_options['logo_attachment_id'] ) || empty( $sds_theme_options['logo_attachment_id'] ) ) ? array( 'disabled' => 'disabled', 'data-init-empty' => 'true' ) : false ); ?>
 		<?php
 		}
 
@@ -168,7 +170,7 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 		 */
 		function sds_theme_options_hide_tagline_section() {
 		?>
-			<p>Use this option to show or hide the site tagline.</p>
+			<p><?php _e( 'Use this option to show or hide the site tagline.', 'minimize' ); ?></p>
 		<?php
 		}
 
@@ -178,11 +180,11 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 		function sds_theme_options_hide_tagline_field() {
 			global $sds_theme_options;
 		?>
-			<div class="checkbox sds-theme-options-checkbox checkbox-show-hide-tagline" data-label-left="Show" data-label-right="Hide">
+			<div class="checkbox sds-theme-options-checkbox checkbox-show-hide-tagline" data-label-left="<?php esc_attr_e( 'Show', 'minimize' ); ?>" data-label-right="<?php esc_attr_e( 'Hide', 'minimize' ); ?>">
 				<input type="checkbox" id="sds_theme_options_hide_tagline" name="sds_theme_options[hide_tagline]" <?php ( isset( $sds_theme_options['hide_tagline'] ) ) ? checked( $sds_theme_options['hide_tagline'] ) : checked( false ); ?> />
 				<label for="sds_theme_options_hide_tagline">| | |</label>
 			</div>
-			<span class="description">When "show" is displayed, the tagline will be displayed on your site and vise-versa.</span>
+			<span class="description"><?php _e( 'When "show" is displayed, the tagline will be displayed on your site and vise-versa.', 'minimize' ); ?></span>
 		<?php
 		}
 
@@ -192,7 +194,7 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 		 */
 		function sds_theme_options_color_schemes_section() {
 		?>
-			<p>Select a color scheme to use on your site.</p>
+			<p><?php _e( 'Select a color scheme to use on your site.', 'minimize' ); ?></p>
 		<?php
 		}
 
@@ -237,7 +239,7 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 		 */
 		function sds_theme_options_web_fonts_section() {
 		?>
-			<p>Select a Google Web Font to use on your site.</p>
+			<p><?php _e( 'Select a Google Web Font to use on your site.', 'minimize' ); ?></p>
 		<?php
 		}
 
@@ -257,7 +259,7 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 							<input type="radio" id="sds_theme_options_web_font_none" name="sds_theme_options[web_font]" <?php ( ! isset( $sds_theme_options['web_font'] ) || empty( $sds_theme_options['web_font'] ) || $sds_theme_options['web_font'] === 'none' ) ? checked( true ) : checked( false ); ?> value="none" />
 							<div class="sbt-theme-options-web-font-selected">&#10004;</div>
 						</label>
-						<span class="sds-theme-options-web-font-label-none">None</span>
+						<span class="sds-theme-options-web-font-label-none"><?php _e( 'None', 'minimize' ); ?></span>
 				</div>
 
 				<?php
@@ -270,7 +272,7 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 								<div class="sbt-theme-options-web-font-selected">&#10004;</div>
 							</label>
 							<span class="sds-theme-options-web-font-label"><?php echo ( isset( $atts['label'] ) ) ? $atts['label'] : false; ?></span>
-							<span class="sds-theme-options-web-font-preview">Grumpy wizards make toxic brew for the evil Queen and Jack.</span>
+							<span class="sds-theme-options-web-font-preview"><?php _e( 'Grumpy wizards make toxic brew for the evil Queen and Jack.', 'minimize' ); ?></span>
 						</div>
 				<?php
 					endforeach;
@@ -287,7 +289,8 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 		 * This function is the callback for the social media settings section.
 		 */
 		function sds_theme_options_social_media_section() { ?>
-			<p>Enter your social media links here. This section is used throughout the site to display social media links to visitors. Some themes display social media links automatically, and some only display them within the Social Media widget.</p><?php
+			<p><?php _e( 'Enter your social media links here. This section is used throughout the site to display social media links to visitors. Some themes display social media links automatically, and some only display them within the Social Media widget.', 'minimize' ); ?></p>
+		<?php
 		}
 		
 		/**
@@ -396,15 +399,15 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 		function sds_theme_options_social_media_rss_url_field() {
 			global $sds_theme_options;
 		?>
-			<strong>Use Site RSS Feed:</strong>
-			<div class="checkbox sds-theme-options-checkbox checkbox-social_media-rss_url-use-site-feed" data-label-left="Yes" data-label-right="No">
+			<strong><?php _e( 'Use Site RSS Feed:', 'minimize' ); ?></strong>
+			<div class="checkbox sds-theme-options-checkbox checkbox-social_media-rss_url-use-site-feed" data-label-left="<?php esc_attr_e( 'Yes', 'minimize' ); ?>" data-label-right="<?php esc_attr_e( 'No', 'minimize' ); ?>">
 				<input type="checkbox" id="sds_theme_options_social_media_rss_url_use_site_feed" name="sds_theme_options[social_media][rss_url_use_site_feed]" <?php ( isset( $sds_theme_options['social_media']['rss_url_use_site_feed'] ) ) ? checked( $sds_theme_options['social_media']['rss_url_use_site_feed'] ) : checked( false ); ?> />
 				<label for="sds_theme_options_social_media_rss_url_use_site_feed">| | |</label>
 			</div>
-			<span class="description">When "yes" is displayed, the RSS feed for your site will be used.</span>
+			<span class="description"><?php _e( 'When "yes" is displayed, the RSS feed for your site will be used.', 'minimize' ); ?></span>
 
 			<div id="sds_theme_options_social_media_rss_url_custom">
-				<strong>Custom RSS Feed:</strong>
+				<strong><?php _e( 'Custom RSS Feed:', 'minimize' ); ?></strong>
 				<input type="text" id="sds_theme_options_social_media_rss_url" name="sds_theme_options[social_media][rss_url]" class="large-text" value="<?php echo ( isset( $sds_theme_options['social_media']['rss_url'] ) && ! empty( $sds_theme_options['social_media']['rss_url'] ) ) ? esc_attr( esc_url( $sds_theme_options['social_media']['rss_url'] ) ) : false; ?>" />
 			</div>
 		<?php
@@ -459,18 +462,18 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 			<div class="wrap about-wrap">
 				<?php screen_icon(); // Default Screen Icon ?>
 
-				<h1><?php echo wp_get_theme(); ?> Theme Options</h1>
-				<div class="about-text sds-about-text"><?php echo self::$options_page_description; ?></div>
+				<h1><?php echo wp_get_theme(); ?> <?php _e( 'Theme Options', 'minimize' ); ?></h1>
+				<div class="about-text sds-about-text"><?php printf( __( '%1$s', 'minimize' ), self::$options_page_description ); ?></div>
 
 				<?php do_action( 'sds_theme_options_notifications' ); ?>
 
 				<?php settings_errors(); ?>
 
 				<h2 class="nav-tab-wrapper sds-theme-options-tab-wrap">
-					<a href="#general" id="general-tab" class="nav-tab sds-theme-options-tab nav-tab-active">General Options</a>
-					<a href="#social-media" id="social-media-tab" class="nav-tab sds-theme-options-tab">Social Media</a>
+					<a href="#general" id="general-tab" class="nav-tab sds-theme-options-tab nav-tab-active"><?php _e( 'General Options', 'minimize' ); ?></a>
+					<a href="#social-media" id="social-media-tab" class="nav-tab sds-theme-options-tab"><?php _e( 'Social Media', 'minimize' ); ?></a>
 					<?php do_action( 'sds_theme_options_navigation_tabs' ); // Hook for extending tabs ?>
-					<a href="#help-support" id="help-support-tab" class="nav-tab sds-theme-options-tab">Help/Support</a>
+					<a href="#help-support" id="help-support-tab" class="nav-tab sds-theme-options-tab"><?php _e( 'Help/Support', 'minimize' ); ?></a>
 				</h2>
 
 				<form method="post" action="options.php" enctype="multipart/form-data" id="sds-theme-options-form">
@@ -501,7 +504,7 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 					 */
 					?>
 					<div id="help-support-tab-content" class="sds-theme-options-tab-content">
-						<h3>Help/Support</h3>
+						<h3><?php _e( 'Help/Support', 'minimize' ); ?></h3>
 
 						<?php do_action( 'sds_theme_options_help_support_tab_content' ); ?>
 						<?php do_action( 'sds_theme_options_upgrade_cta', 'help-support' ); ?>
@@ -552,7 +555,7 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 		/**
 		 * This function returns the current option values.
 		 */
-		function get_sds_theme_options() {
+		public static function get_sds_theme_options() {
 			global $sds_theme_options;
 
 			$sds_theme_options = wp_parse_args( get_option( 'sds_theme_options' ), SDS_Theme_Options::get_sds_theme_option_defaults() );
@@ -569,7 +572,7 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 		/**
 		 * This function returns default values for SDS Theme Options
 		 */
-		function get_sds_theme_option_defaults() {
+		public static function get_sds_theme_option_defaults() {
 			$defaults = array(
 				// General
 				'logo_attachment_id' => false,

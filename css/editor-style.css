@@ -34,7 +34,7 @@ table {
 	border-spacing: 0;
 }
 
-address, caption, cite, code, dfn, em, var {
+address, caption, cite, code, dfn, var {
 	font-weight: normal;
 	font-style: normal;
 }
