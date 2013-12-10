@@ -21,7 +21,17 @@
 			</p>
 		</section>
 
-		<?php the_content( __( 'Continue Reading', 'minimize' ) ); ?>
+		<?php
+			// Show the excerpt if the post has one
+			if ( has_excerpt() ) :
+				the_excerpt();
+			?>
+				<p><a href="<?php the_permalink(); ?>" class="more-link read-more excerpt-more-link"><?php _e( 'Continue Reading', 'minimize' ); ?></a></p>
+			<?php
+			else :
+				the_content( __( 'Continue Reading', 'minimize' ) );
+			endif;
+		?>
 	</section>
 <?php
 		endwhile;

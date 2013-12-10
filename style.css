@@ -1,19 +1,19 @@
-/*
-Theme Name: Minimize
-Theme URI: http://slocumstudio.com/wordpress-themes/minimize-free/
-Description: A lightweight and responsive WordPress theme. Great for a blog or to start a new project.
-Author: Slocum Design Studio
-Author URI: http://slocumstudio.com
-Version: 2.2
-License: GPL2+
-License URI: http://www.gnu.org/licenses/gpl.html
-Tags: blue, green, orange, pink, purple, red, white, light, two-columns, left-sidebar, flexible-width, custom-colors, custom-menu, editor-style, featured-images, full-width-template, sticky-post, theme-options, threaded-comments
-
-Minimize WordPress theme, Copyright (C) 2013 Slocum Studio
-Minimize WordPress theme is licensed under the GPL.
-
-@see attribution.txt for more license information.
-*/
+/**
+ * Theme Name: Minimize
+ * Theme URI: http://slocumthemes.com/wordpress-themes/minimize-free/
+ * Description: A lightweight and responsive WordPress theme. Great for a blog or to start a new project.
+ * Author: Slocum Design Studio
+ * Author URI: http://slocumthemes.com/
+ * Version: 2.2.4
+ * License: GPL2+
+ * License URI: http://www.gnu.org/licenses/gpl.html
+ * Tags: blue, green, orange, pink, purple, red, white, light, two-columns, left-sidebar, flexible-width, custom-colors, custom-menu, editor-style, featured-images, full-width-template, sticky-post, theme-options, threaded-comments
+ * 
+ * Minimize WordPress theme, Copyright (C) 2013 Slocum Studio
+ * Minimize WordPress theme is licensed under the GPL.
+ * 
+ * @see attribution.txt for more license information.
+ */
 
 /**
  * CSS Reset - http://meyerweb.com/eric/tools/css/reset/
@@ -510,7 +510,7 @@ nav .primary-nav li a:hover{
 
 
 
-nav .primary-nav li ul.sub-menu {
+nav .primary-nav li ul.sub-menu, .primary-nav-container li ul.children {
 	width: auto;
 	position: absolute;
 	top: 100%;
@@ -519,16 +519,16 @@ nav .primary-nav li ul.sub-menu {
 }
 
 /* Third Level */
-nav .primary-nav li ul.sub-menu li ul.sub-menu {
+nav .primary-nav li ul.sub-menu li ul.sub-menu, .primary-nav-container li ul.children li ul.children {
 	top: 0;
 	left: 100%;
 }
 
-nav .primary-nav li ul.sub-menu li ul.sub-menu li {
+nav .primary-nav li ul.sub-menu li ul.sub-menu li, .primary-nav-container li ul.children li ul.children li {
 	float: left;
 }
 
-nav .primary-nav li ul.sub-menu li {
+nav .primary-nav li ul.sub-menu li, .primary-nav-container li ul.children li {
 	width: auto;
 	min-height: 49px;
 	float: none;
@@ -536,7 +536,7 @@ nav .primary-nav li ul.sub-menu li {
 	position: relative;
 }
 
-nav .primary-nav li ul.sub-menu li a {
+nav .primary-nav li ul.sub-menu li a, .primary-nav-container li ul.children li a {
 	width: auto;
 	min-width: 12em;
 	margin-bottom: -1px;
@@ -547,12 +547,12 @@ nav .primary-nav li ul.sub-menu li a {
 	display: block;
 }
 
-nav .primary-nav li ul.sub-menu li:last-child a {
+nav .primary-nav li ul.sub-menu li:last-child a, .primary-nav-container li ul.children li:last-child a {
 	margin-bottom: 0;
 	border-bottom: none;
 }
 
-nav .primary-nav li:hover > ul.sub-menu {
+nav .primary-nav li:hover > ul.sub-menu, .primary-nav-container li:hover > ul.children {
 	display: block;
 }
 
@@ -1470,6 +1470,216 @@ ul.footer-nav li ul {
 	text-decoration: underline;
 }
 
+/* ----------
+   Newsletter
+ ------------ */
+.mc-gravity, .mc_gravity, .mc-newsletter, .mc_newsletter,
+.mc-gravity_wrapper, .mc_gravity_wrapper, .mc-newsletter_wrapper, .mc_newsletter_wrapper {
+	width: 100%;
+	max-width: 100% !important;
+	border: 1px solid #ddd;
+}
+
+form.mc-gravity, form.mc_gravity, form.mc-newsletter, form.mc_newsletter {
+	padding-bottom: 1em;
+	border: none;
+}
+
+.mc-gravity:before, .mc_gravity:before, .mc-newsletter:before, .mc_newsletter:before,
+.mc-gravity_wrapper:before, .mc_gravity_wrapper:before, .mc-newsletter_wrapper:before, .mc_newsletter_wrapper:before,
+.mc-gravity:after, .mc_gravity:after, .mc-newsletter:after, .mc_newsletter:after,
+.mc-gravity_wrapper:after, .mc_gravity_wrapper:after, .mc-newsletter_wrapper:after, .mc_newsletter_wrapper:after {
+    content: " ";
+    display: table;
+}
+
+.mc-gravity:after, .mc_gravity:after, .mc-newsletter:after, .mc_newsletter:after,
+.mc-gravity_wrapper:after, .mc_gravity_wrapper:after, .mc-newsletter_wrapper:after, .mc_newsletter_wrapper:after {
+    clear: both;
+}
+
+.mc-gravity .gform_heading, .mc_gravity .gform_heading, .mc-newsletter .gform_heading, .mc_newsletter .gform_heading,
+.mc-gravity_wrapper .gform_heading, .mc_gravity_wrapper .gform_heading, .mc-newsletter_wrapper .gform_heading, .mc_newsletter_wrapper .gform_heading {
+	width: 98%;
+	margin: 0;
+	padding: 2%;
+	background: #565656;
+	color: #fff;
+	font-size: 24px;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+.mc-gravity .gform_heading h3.gform_title, .mc_gravity .gform_heading h3.gform_title,
+.mc-newsletter .gform_heading h3.gform_title, .mc_newsletter .gform_heading h3.gform_title,
+.mc-gravity_wrapper .gform_heading h3.gform_title, .mc_gravity_wrapper .gform_heading h3.gform_title,
+.mc-newsletter_wrapper .gform_heading h3.gform_title, .mc_newsletter_wrapper .gform_heading h3.gform_title {
+	margin: 0 0 15px;
+}
+
+.mc-gravity .gform_heading span.gform_description, .mc_gravity .gform_heading span.gform_description,
+.mc-newsletter .gform_heading span.gform_description, .mc_newsletter .gform_heading span.gform_description,
+.mc-gravity_wrapper .gform_heading span.gform_description, .mc_gravity_wrapper .gform_heading span.gform_description,
+.mc-newsletter_wrapper .gform_heading span.gform_description, .mc_newsletter_wrapper .gform_heading span.gform_description {
+	font-size: 16px;
+	text-transform: none;
+	display: block;
+}
+
+.mc-gravity .gform_heading, .mc_gravity .gform_heading,
+.mc-newsletter .gform_heading, .mc_newsletter .gform_heading,
+.mc-gravity_wrapper .gform_heading, .mc_gravity_wrapper .gform_heading,
+.mc-newsletter_wrapper .gform_heading, .mc_newsletter_wrapper .gform_heading {
+	width: 96% !important;
+	margin: 0;
+	margin-bottom: 1.25em !important;
+	padding: 2%;
+}
+
+.mc-gravity .gform_body, .mc_gravity .gform_body,
+.mc-newsletter .gform_body, .mc_newsletter .gform_body,
+.mc-gravity_wrapper .gform_body, .mc_gravity_wrapper .gform_body,
+.mc-newsletter_wrapper .gform_body, .mc_newsletter_wrapper .gform_body {
+	width: 40%;
+	margin: 0 0 0 20%;
+	padding: 0;
+	float: left;
+}
+
+.mc-gravity  .gfield_label, .mc_gravity  .gfield_label,
+.mc-newsletter  .gfield_label, .mc_newsletter  .gfield_label,
+.mc-gravity_wrapper  .gfield_label, .mc_gravity_wrapper  .gfield_label,
+.mc-newsletter_wrapper  .gfield_label, .mc_newsletter_wrapper  .gfield_label {
+	margin: 0 !important;
+	display: none !important;
+}
+
+.mc-gravity  form li, .mc_gravity  form li,
+.mc-newsletter  form li, .mc_newsletter  form li,
+.mc-gravity_wrapper  form li, .mc_gravity_wrapper  form li,
+.mc-newsletter_wrapper  form li, .mc_newsletter_wrapper  form li {
+	padding: 0 !important;
+}
+
+.mc-gravity .gform_fields input, .mc_gravity .gform_fields input,
+.mc-newsletter .gform_fields input, .mc_newsletter .gform_fields input,
+.mc-gravity_wrapper .gform_fields input, .mc_gravity_wrapper .gform_fields input,
+.mc-newsletter_wrapper .gform_fields input, .mc_newsletter_wrapper .gform_fields input {
+	width: 90% !important;
+	margin-left: -2px;
+	font-size: 16px !important;
+	padding: 14px 5% !important;
+	border-radius: 0 !important;
+}
+
+.mc-gravity .gform_fields .gfield_error input, .mc_gravity .gform_fields .gfield_error input,
+.mc-newsletter .gform_fields .gfield_error input, .mc_newsletter .gform_fields .gfield_error input,
+.mc-gravity_wrapper .gform_fields .gfield_error input, .mc_gravity_wrapper .gform_fields .gfield_error input,
+.mc-newsletter_wrapper .gform_fields .gfield_error input, .mc_newsletter_wrapper .gform_fields .gfield_error input {
+	background: #ffdfe0;
+}
+
+/* Placeholder color */
+.mc-gravity .gform_fields input::-webkit-input-placeholder, .mc_gravity .gform_fields input::-webkit-input-placeholder,
+.mc-newsletter .gform_fields input::-webkit-input-placeholder, .mc_newsletter .gform_fields input::-webkit-input-placeholder,
+.mc-gravity_wrapper .gform_fields input::-webkit-input-placeholder, .mc_gravity_wrapper .gform_fields input::-webkit-input-placeholder,
+.mc-newsletter_wrapper .gform_fields input::-webkit-input-placeholder, .mc_newsletter_wrapper .gform_fields input::-webkit-input-placeholder {
+	color: #aaa;
+}
+
+.mc-gravity .gform_fields input::-moz-placeholder, .mc_gravity .gform_fields input::-moz-placeholder,
+.mc-newsletter .gform_fields input::-moz-placeholder, .mc_newsletter .gform_fields input::-moz-placeholder,
+.mc-gravity_wrapper .gform_fields input::-moz-placeholder, .mc_gravity_wrapper .gform_fields input::-moz-placeholder,
+.mc-newsletter_wrapper .gform_fields input::-moz-placeholder, .mc_newsletter_wrapper .gform_fields input::-moz-placeholder {
+	color: #aaa;
+}
+
+.mc-gravity .gform_fields input:-ms-input-placeholder, .mc_gravity .gform_fields input:-ms-input-placeholder,
+.mc-newsletter .gform_fields input:-ms-input-placeholder, .mc_newsletter .gform_fields input:-ms-input-placeholder,
+.mc-gravity_wrapper .gform_fields input:-ms-input-placeholder, .mc_gravity_wrapper .gform_fields input:-ms-input-placeholder,
+.mc-newsletter_wrapper .gform_fields input:-ms-input-placeholder, .mc_newsletter_wrapper .gform_fields input:-ms-input-placeholder {
+	color: #aaa;
+}
+
+.mc-gravity div.validation_error, .mc_gravity div.validation_error,
+.mc-newsletter div.validation_error, .mc_newsletter div.validation_error,
+.mc-gravity_wrapper div.validation_error, .mc_gravity_wrapper div.validation_error,
+.mc-newsletter_wrapper div.validation_error, .mc_newsletter_wrapper div.validation_error {
+	padding: 0 20px !important;
+	font-size: 16px !important;
+	text-align: center;
+}
+
+.mc-gravity li.gfield.gfield_error.gfield_contains_required, .mc_gravity li.gfield.gfield_error.gfield_contains_required,
+.mc-newsletter li.gfield.gfield_error.gfield_contains_required, .mc_newsletter li.gfield.gfield_error.gfield_contains_required,
+.mc-gravity_wrapper li.gfield.gfield_error.gfield_contains_required, .mc_gravity_wrapper li.gfield.gfield_error.gfield_contains_required,
+.mc-newsletter_wrapper li.gfield.gfield_error.gfield_contains_required, .mc_newsletter_wrapper li.gfield.gfield_error.gfield_contains_required {
+	margin: 0 !important;
+	padding: 0 !important;
+	background: transparent !important;
+	border: none !important;
+}
+
+.mc-gravity li.gfield.gfield_error.gfield_contains_required div.ginput_container, .mc_gravity li.gfield.gfield_error.gfield_contains_required div.ginput_container,
+.mc-newsletter li.gfield.gfield_error.gfield_contains_required div.ginput_container, .mc_newsletter li.gfield.gfield_error.gfield_contains_required div.ginput_container,
+.mc-gravity_wrapper li.gfield.gfield_error.gfield_contains_required div.ginput_container, .mc_gravity_wrapper li.gfield.gfield_error.gfield_contains_required div.ginput_container,
+.mc-newsletter_wrapper li.gfield.gfield_error.gfield_contains_required div.ginput_container, .mc_newsletter_wrapper li.gfield.gfield_error.gfield_contains_required div.ginput_container {
+	margin: 0 !important;
+}
+
+
+.mc-gravity .gform_fields .gfield_error .validation_message, .mc_gravity .gform_fields .gfield_error .validation_message,
+.mc-newsletter .gform_fields .gfield_error .validation_message, .mc_newsletter .gform_fields .gfield_error .validation_message,
+.mc-gravity_wrapper .gform_fields .gfield_error .validation_message, .mc_gravity_wrapper .gform_fields .gfield_error .validation_message,
+.mc-newsletter_wrapper .gform_fields .gfield_error .validation_message, .mc_newsletter_wrapper .gform_fields .gfield_error .validation_message {
+	display: none !important;
+}
+
+.mc-gravity .gform_footer, .mc_gravity .gform_footer,
+.mc-newsletter .gform_footer, .mc_newsletter .gform_footer,
+.mc-gravity_wrapper .gform_footer, .mc_gravity_wrapper .gform_footer,
+.mc-newsletter_wrapper .gform_footer, .mc_newsletter_wrapper .gform_footer {
+	width: 20%;
+	margin: 0 20% 0 0 !important;
+	padding: 0 !important;
+	float: left;
+	clear: none !important;
+	position: relative;
+}
+
+.mc-gravity .gform_footer input.button, .mc_gravity .gform_footer input.button,
+.mc-newsletter .gform_footer input.button, .mc_newsletter .gform_footer input.button,
+.mc-gravity_wrapper .gform_footer input.button, .mc_gravity_wrapper .gform_footer input.button,
+.mc-newsletter_wrapper .gform_footer input.button, .mc_newsletter_wrapper .gform_footer input.button {
+	width: 100%;
+	height: 50px;
+	margin: 0;
+	padding: 0;
+	display: block;
+	border: none;
+}
+
+.mc-gravity .gform_ajax_spinner, .mc_gravity .gform_ajax_spinner,
+.mc-newsletter .gform_ajax_spinner, .mc_newsletter .gform_ajax_spinner,
+.mc-gravity_wrapper .gform_ajax_spinner, .mc_gravity_wrapper .gform_ajax_spinner,
+.mc-newsletter_wrapper .gform_ajax_spinner, .mc_newsletter_wrapper .gform_ajax_spinner {
+	position: absolute;
+	top: 17px;
+	right: -25px;
+}
+
+.mc-gravity-confirmation, .mc_gravity-confirmation, .mc-newsletter-confirmation, .mc_newsletter-confirmation {
+	width: 98%;
+	padding: 2%;
+	color: #fff;
+	background: #565656;
+}
+
+.mc-gravity-confirmation .gform_confirmation_wrapper, .mc_gravity-confirmation .gform_confirmation_wrapper,
+.mc-newsletter-confirmation .gform_confirmation_wrapper, .mc_newsletter-confirmation .gform_confirmation_wrapper {
+	border: none;
+}
+
 
 /* ------------------
  Responsive Structure
@@ -1699,7 +1909,9 @@ ul.footer-nav li ul {
 		overflow: hidden;
 	}
 
-	nav ul.top-nav.open li, nav ul.top-nav.open li ul.sub-menu, nav ul.top-nav.open li ul.sub-menu li, nav .primary-nav.open li, nav .primary-nav.open li a, nav .primary-nav.open li ul.sub-menu, nav .primary-nav.open li ul.sub-menu li  { 
+	nav ul.top-nav.open li, nav ul.top-nav.open li ul.sub-menu, nav ul.top-nav.open li ul.sub-menu li,
+	nav .primary-nav.open li, nav .primary-nav.open li a, nav .primary-nav.open li ul.sub-menu, nav .primary-nav.open li ul.sub-menu li,
+	.primary-nav-container .open li, .primary-nav-container .open li a, .primary-nav-container .open li ul.children, .primary-nav-container .open  li ul.children li {
 		display: block; 
 		float: none;
 	}
@@ -1712,7 +1924,7 @@ ul.footer-nav li ul {
 	nav ul.top-nav > li:hover > a, nav .primary-nav > li:hover > a {
 	}
 
-	nav ul.top-nav li .sub-menu > li a:after, nav .primary-nav li .sub-menu > li a:after {
+	nav ul.top-nav li .sub-menu > li a:after, nav .primary-nav li .sub-menu > li a:after, .primary-nav-container li ul.children > li a:after {
 		content: ">";
 		color: rgba(255,255,255,.5);
 		float: left;
@@ -1720,23 +1932,23 @@ ul.footer-nav li ul {
 		padding-right: 8px;
 	}
 
-	nav ul.top-nav li ul.sub-menu  > a:hover, nav .primary-nav li ul.sub-menu  > a:hover {
+	nav ul.top-nav li ul.sub-menu  > a:hover, nav .primary-nav li ul.sub-menu  > a:hover, .primary-nav-container li ul.children > a:hover {
 		background: rgba(0,0,0,.75);
 	}
 
-	nav .primary-nav li ul.sub-menu li ul.sub-menu li {
+	nav .primary-nav li ul.sub-menu li ul.sub-menu li, .primary-nav-container li ul.children li ul.children li {
 		float: none;
 	}
 
-	nav .primary-nav li ul.sub-menu li ul.sub-menu li a {
+	nav .primary-nav li ul.sub-menu li ul.sub-menu li a, .primary-nav-container li ul.children li ul.children li a {
 		float: none;
 	}
 
-	nav .primary-nav li ul.sub-menu li a {
+	nav .primary-nav li ul.sub-menu li a, .primary-nav-container li ul.children li a {
 		padding-left: 10px;
 	}
 
-	nav .primary-nav li ul.sub-menu li .sub-menu li a {
+	nav .primary-nav li ul.sub-menu li .sub-menu li a, .primary-nav-container li ul.children li ul.children li a {
 		padding-left: 30px;
 	}
 
@@ -1744,23 +1956,23 @@ ul.footer-nav li ul {
 		padding-left: 20px;
 	}
 
-	nav ul.top-nav li ul, nav .primary-nav li ul {
+	nav ul.top-nav li ul, nav .primary-nav li ul, .primary-nav-container li ul {
 		display: none;
 		background: rgba(0,0,0,.5);
 		border-top: 0 none;
 		padding: 0;
 	}
-	nav ul.top-nav li ul a, nav .primary-nav li ul a {
+	nav ul.top-nav li ul a, nav .primary-nav li ul a, .primary-nav-container li ul a {
 		border: 0 none;
 		font-size: 12px;
 		padding: 10px 5%;
 		font-weight: normal;
 	}
-	nav ul.top-nav li:hover ul, nav .primary-nav li:hover ul {
+	nav ul.top-nav li:hover ul, nav .primary-nav li:hover ul, .primary-nav-container li:hover ul {
 		display: block;
 	}
 
-	nav ul.top-nav.open li ul.sub-menu, nav .primary-nav.open li ul.sub-menu {
+	nav ul.top-nav.open li ul.sub-menu, nav .primary-nav.open li ul.sub-menu, .primary-nav-container .open li ul.children {
 		width: 100%;
 		position: static;
 		top: auto;
@@ -1771,7 +1983,7 @@ ul.footer-nav li ul {
 		color: #fff;
 	}
 
-	nav ul.top-nav.open li ul.sub-menu li, nav .primary-nav.open li ul.sub-menu li {
+	nav ul.top-nav.open li ul.sub-menu li, nav .primary-nav.open li ul.sub-menu li, .primary-nav-container .open li ul.children li {
 		min-height: 0;
 	}
 

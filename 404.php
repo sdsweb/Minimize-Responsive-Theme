@@ -4,7 +4,7 @@
  */
 
 get_header(); ?>
-	<section class="content-wrapper 404-content">
+	<section class="content-wrapper 404-content cf">
 		<article class="content">
 			<header class="404-title">
 				<h1 title="404 Error" class="page-title"><?php _e( '404 Error', 'minimize' ); ?></h1>

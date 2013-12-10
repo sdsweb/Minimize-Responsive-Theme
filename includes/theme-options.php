@@ -1,7 +1,7 @@
 <?php
 
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 
 /**
@@ -42,8 +42,9 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) ); // Enqueue Theme Options Stylesheet
 			add_action( 'admin_menu', array( $this, 'admin_menu' ) ); // Register Appearance Menu Item
+			add_action( 'admin_bar_menu', array( $this, 'admin_bar_menu' ),999 ); // Add Theme Options Menu to Toolbar
 			add_action( 'admin_init', array( $this, 'admin_init' ) ); // Register Settings, Settings Sections, and Settings Fields
-			add_filter( 'wp_redirect', array( $this, 'wp_redirect' ) ); // Add "hash" (tab) to url before re-direct
+			add_filter( 'wp_redirect', array( $this, 'wp_redirect' ) ); // Add "hash" (tab) to URL before re-direct
 		}
 
 
@@ -74,6 +75,23 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 		 */
 		function admin_menu() {
 			add_theme_page( __( 'Theme Options', 'minimize' ), __( 'Theme Options', 'minimize' ), 'edit_theme_options', 'sds-theme-options', array( $this, 'sds_theme_options_page' ) );
+		}
+
+		/**
+		 * This function adds a new menu to the Toolbar under the appearance parent group on the front-end.
+		 */
+		function admin_bar_menu( $wp_admin_bar ) {
+			// Make sure we're on the front end and that the current user can either switch_themes or edit_theme_options
+			if ( ! is_admin() && ( current_user_can( 'switch_themes' ) || current_user_can( 'edit_theme_options' ) ) ) 
+				$wp_admin_bar->add_menu( array(
+					'parent' => 'appearance',
+					'id'  => 'sds-theme-options',
+					'title' => __( 'Theme Options', 'minimize' ),
+					'href' => admin_url( 'themes.php?page=sds-theme-options' ),
+					'meta' => array(
+						'class' => 'sds-theme-options'
+					)
+				) );
 		}
 
 		/**
@@ -122,6 +140,7 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 			add_settings_field( 'sds_theme_options_social_media_vimeo_url_field', __( 'Vimeo:', 'minimize'), array( $this, 'sds_theme_options_social_media_vimeo_url_field' ), 'sds-theme-options[social-media]', 'sds_theme_options_social_media_section' );
 			add_settings_field( 'sds_theme_options_social_media_instagram_url_field', __( 'Instagram:', 'minimize'), array( $this, 'sds_theme_options_social_media_instagram_url_field' ), 'sds-theme-options[social-media]', 'sds_theme_options_social_media_section' );
 			add_settings_field( 'sds_theme_options_social_media_pinterest_url_field', __( 'Pinterest:', 'minimize'), array( $this, 'sds_theme_options_social_media_pinterest_url_field' ), 'sds-theme-options[social-media]', 'sds_theme_options_social_media_section' );
+			add_settings_field( 'sds_theme_options_social_media_flickr_url_field', __( 'Flickr:', 'minimize'), array( $this, 'sds_theme_options_social_media_flickr_url_field' ), 'sds-theme-options[social-media]', 'sds_theme_options_social_media_section' );
 			//add_settings_field( 'sds_theme_options_social_media_yelp_url_field', __( 'Yelp:', 'minimize'), array( $this, 'sds_theme_options_social_media_yelp_url_field' ), 'sds-theme-options[social-media]', 'sds_theme_options_social_media_section' );
 			add_settings_field( 'sds_theme_options_social_media_foursquare_url_field', __( 'Foursquare:', 'minimize'), array( $this, 'sds_theme_options_social_media_foursquare_url_field' ), 'sds-theme-options[social-media]', 'sds_theme_options_social_media_section' );
 			add_settings_field( 'sds_theme_options_social_media_rss_url_field', __( 'RSS:', 'minimize'), array( $this, 'sds_theme_options_social_media_rss_url_field' ), 'sds-theme-options[social-media]', 'sds_theme_options_social_media_section' );
@@ -374,6 +393,16 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 		}
 		
 		/**
+		 * This function is the callback for the flickr url settings field.
+		 */
+		function sds_theme_options_social_media_flickr_url_field() {
+			global $sds_theme_options;
+		?>
+			<input type="text" id="sds_theme_options_social_media_flickr_url" name="sds_theme_options[social_media][flickr_url]" class="large-text" value="<?php echo ( isset( $sds_theme_options['social_media']['flickr_url'] ) && ! empty( $sds_theme_options['social_media']['flickr_url'] ) ) ? esc_attr( esc_url( $sds_theme_options['social_media']['flickr_url'] ) ) : false; ?>" />
+		<?php
+		}
+		
+		/**
 		 * This function is the callback for the yelp url settings field.
 		 */
 		function sds_theme_options_social_media_yelp_url_field() {
@@ -590,6 +619,7 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 					'vimeo_url' => '',
 					'instagram_url' => '',
 					'pinterest_url' => '',
+					'flickr_url' => '',
 					//'yelp_url' => '',
 					'foursquare_url' => '',
 					'rss_url' => '',

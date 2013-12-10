@@ -83,7 +83,7 @@ if ( ! function_exists( 'sds_theme_options_ads' ) ) {
 	function sds_theme_options_ads() {
 	?>
 		<div class="sds-theme-options-ad">
-			<a href="http://slocumstudio.com/wordpress-themes/minimize?utm_medium=options-panel-plug&amp;utm_campaign=WordPressThemes" target="_blank" class="sds-theme-options-upgrade-ad">
+			<a href="http://slocumthemes.com/wordpress-themes/minimize/" target="_blank" class="sds-theme-options-upgrade-ad">
 				<h2><?php _e( 'Upgrade to Minimize Pro!', 'minimize' ); ?></h2>
 				<ul>
 					<li><?php _e( 'Priority Ticketing Support', 'minimize' ); ?></li>
@@ -108,17 +108,17 @@ if ( ! function_exists( 'sds_theme_options_upgrade_cta' ) ) {
 		switch( $type ) :
 			case 'color-schemes':
 			?>
-				<p><?php printf( __( '%1$s and receive more color schemes!', 'minimize' ), '<a href="http://slocumstudio.com/wordpress-themes/minimize?utm_medium=options-panel-plug&amp;utm_campaign=WordPressThemes" target="_blank">Upgrade to Minimize Pro</a>' ); ?></p>
+				<p><?php printf( __( '%1$s and receive more color schemes!', 'minimize' ), '<a href="http://slocumthemes.com/wordpress-themes/minimize/" target="_blank">Upgrade to Minimize Pro</a>' ); ?></p>
 			<?php
 			break;
 			case 'web-fonts':
 			?>
-				<p><?php printf( __( '%1$s to use more web fonts!', 'minimize' ), '<a href="http://slocumstudio.com/wordpress-themes/minimize?utm_medium=options-panel-plug&amp;utm_campaign=WordPressThemes" target="_blank">Upgrade to Minimize Pro</a>' ); ?></p>
+				<p><?php printf( __( '%1$s to use more web fonts!', 'minimize' ), '<a href="http://slocumthemes.com/wordpress-themes/minimize/" target="_blank">Upgrade to Minimize Pro</a>' ); ?></p>
 			<?php
 			break;
 			case 'help-support':
 			?>
-				<p><?php printf( __( '%1$s to receive priority ticketing support!', 'minimize' ), '<a href="http://slocumstudio.com/wordpress-themes/minimize?utm_medium=options-panel-plug&amp;utm_campaign=WordPressThemes" target="_blank">Upgrade to Minimize Pro</a>' ); ?></p>
+				<p><?php printf( __( '%1$s to receive priority ticketing support!', 'minimize' ), '<a href="http://slocumthemes.com/wordpress-themes/minimize/" target="_blank">Upgrade to Minimize Pro</a>' ); ?></p>
 			<?php
 			break;
 		endswitch;
@@ -139,6 +139,6 @@ if ( ! function_exists( 'sds_copyright_branding' ) ) {
 	add_filter( 'sds_copyright_branding', 'sds_copyright_branding', 10, 2 );
 
 	function sds_copyright_branding( $text, $theme_name ) {
-		return '<a href="http://slocumstudio.com/wordpress-themes/minimize-free/?utm_medium=footer-plugs&amp;utm_campaign=WordPressThemes" target="_blank">' . sprintf( __( '%1$s by Slocum Design Studio', 'minimize' ), $theme_name ) . '</a>';
+		return '<a href="http://slocumthemes.com/wordpress-themes/minimize-free/" target="_blank">' . sprintf( __( '%1$s by Slocum Studio', 'minimize' ), $theme_name ) . '</a>';
 	}
 }

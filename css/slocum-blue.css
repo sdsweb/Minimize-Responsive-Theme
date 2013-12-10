@@ -46,11 +46,11 @@ nav .primary-nav li a:hover{
 	background: rgba(0, 0, 0, .3);
 }
 
-nav .primary-nav li ul.sub-menu {
+nav .primary-nav li ul.sub-menu, .primary-nav-container li ul.children {
 	background: #3c639a;
 }
 
-nav .primary-nav li ul.sub-menu li a {
+nav .primary-nav li ul.sub-menu li a, .primary-nav-container li ul.children li a {
 	border-bottom: 1px solid rgba(255, 255, 255, 0.25);
 }
 
@@ -335,6 +335,15 @@ section.footer-widget:hover {
 	color: #3c639a;
 }
 
+/* ----------
+   Newsletter
+ ------------ */
+.mc-gravity .gform_heading, .mc_gravity .gform_heading, .mc-newsletter .gform_heading, .mc_newsletter .gform_heading,
+.mc-gravity_wrapper .gform_heading, .mc_gravity_wrapper .gform_heading, .mc-newsletter_wrapper .gform_heading, .mc_newsletter_wrapper .gform_heading,
+.mc-gravity-confirmation, .mc_gravity-confirmation, .mc-newsletter-confirmation, .mc_newsletter-confirmation {
+	background: #3c639a;
+}
+
 
 /* =Responsive Structure
 -------------------------------------------------------------- */
@@ -404,12 +413,12 @@ section.footer-widget:hover {
 		border-top: 1px solid rgba(0,0,0,.2);
 	}
 
-	nav ul.top-nav li .sub-menu > li a:after, nav .primary-nav li .sub-menu > li a:after {
+	nav ul.top-nav li .sub-menu > li a:after, nav .primary-nav li .sub-menu > li a:after, .primary-nav-container li ul.children > li a:after {
 		content: ">";
 		color: rgba(255,255,255,.5);
 	}
 
-	nav ul.top-nav li ul.sub-menu  > a:hover, nav .primary-nav li ul.sub-menu  > a:hover {
+	nav ul.top-nav li ul.sub-menu  > a:hover, nav .primary-nav li ul.sub-menu  > a:hover, .primary-nav-container li ul.children > a:hover {
 		background: rgba(0,0,0,.75);
 	}
 
@@ -417,7 +426,7 @@ section.footer-widget:hover {
 		background: rgba(0,0,0,.5);
 	}
 
-	nav ul.top-nav.open li ul.sub-menu, nav .primary-nav.open li ul.sub-menu {
+	nav ul.top-nav.open li ul.sub-menu, nav .primary-nav.open li ul.sub-menu, .primary-nav-container .open li ul.children {
 		background: #3c639a;
 	}
 
