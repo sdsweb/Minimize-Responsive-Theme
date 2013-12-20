@@ -1,7 +1,7 @@
 <?php
 
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 
 /**
@@ -126,11 +126,7 @@ if ( ! function_exists( 'sds_wp_title' ) ) {
 if ( ! function_exists( 'sds_primary_menu_fallback' ) ) {
 	function sds_primary_menu_fallback() {
 		wp_page_menu( array(
-			'depth'       => 1,
-			'sort_column' => 'menu_order, post_title',
 			'menu_class'  => 'primary-nav menu',
-			'include'     => '',
-			'exclude'     => '',
 			'echo'        => true,
 			'show_home'   => true,
 			'link_before' => '',
@@ -146,59 +142,62 @@ if ( ! function_exists( 'sds_primary_menu_fallback' ) ) {
 if ( ! function_exists( 'sds_sitemap' ) ) {
 	function sds_sitemap() {
 	?>
-	<section class="sds-sitemap sitemap">
-		<section class="sitemap-pages page-list">
-			<h2 title="<?php esc_attr_e( 'Pages', 'minimize' ); ?>"><?php _e( 'Pages', 'minimize' ); ?></h2>
-			<ul>
-				<?php wp_list_pages( array( 'title_li' => '' ) ); ?>
-			</ul>
-		</section>
+		<section class="sds-sitemap sitemap">
+			<section class="sitemap-pages page-list">
+				<h2 title="<?php esc_attr_e( 'Pages', 'minimize' ); ?>"><?php _e( 'Pages', 'minimize' ); ?></h2>
+				<ul>
+					<?php wp_list_pages( array( 'title_li' => '' ) ); ?>
+				</ul>
+			</section>
 
-		<section class="sitemap-archives sitemap-monthly-archives monthly-archives archive-list">
-			<h2 title="<?php esc_attr_e( 'Monthly Archives', 'minimize' ); ?>"><?php _e( 'Monthly Archives', 'minimize' ); ?></h2>
-			<ul>
-				<?php wp_get_archives(); ?>
-			</ul>
-		</section>
+			<section class="sitemap-archives sitemap-monthly-archives monthly-archives archive-list">
+				<h2 title="<?php esc_attr_e( 'Monthly Archives', 'minimize' ); ?>"><?php _e( 'Monthly Archives', 'minimize' ); ?></h2>
+				<ul>
+					<?php wp_get_archives(); ?>
+				</ul>
+			</section>
 
-		<section class="sitemap-categories category-list">
-			<h2 title="<?php esc_attr_e( 'Blog Categories', 'minimize' ); ?>"><?php _e( 'Blog Categories', 'minimize' ); ?></h2>
-			<ul>
-				<?php wp_list_categories( array( 'title_li' => '' ) ); ?>
-			</ul>
-		</section>
+			<section class="sitemap-categories category-list">
+				<h2 title="<?php esc_attr_e( 'Blog Categories', 'minimize' ); ?>"><?php _e( 'Blog Categories', 'minimize' ); ?></h2>
+				<ul>
+					<?php wp_list_categories( array( 'title_li' => '' ) ); ?>
+				</ul>
+			</section>
 
 
-		<?php
-			// Output all public post types except attachments and pages (see above for pages)
-			foreach( get_post_types( array( 'public' => true ) ) as $post_type ) {
-				if ( ! in_array( $post_type, array( 'attachment', 'page' ) ) ) {
-				$post_type_object = get_post_type_object( $post_type );
+			<?php
+				// Output all public post types except attachments and pages (see above for pages)
+				foreach( get_post_types( array( 'public' => true ) ) as $post_type ) {
+					if ( ! in_array( $post_type, array( 'attachment', 'page' ) ) ) {
+					$post_type_object = get_post_type_object( $post_type );
 
-				$query = new WP_Query( array(
-					'post_type' => $post_type,
-					'posts_per_page' => wp_count_posts( $post_type )->publish
-				) );
+					$query = new WP_Query( array(
+						'post_type' => $post_type,
+						'posts_per_page' => wp_count_posts( $post_type )->publish
+					) );
 
-				if( $query->have_posts() ) :
-				?>
-					<section class="sitemap-post-type-list sitemap-<?php echo $post_type_object->name; ?>-list post-type-list">
-						<h2 title="<?php echo esc_attr( $post_type_object->labels->name ); ?>">
-							<?php echo $post_type_object->labels->name; ?>
-						</h2>
+					if( $query->have_posts() ) :
+					?>
+						<section class="sitemap-post-type-list sitemap-<?php echo $post_type_object->name; ?>-list post-type-list">
+							<h2 title="<?php echo esc_attr( $post_type_object->labels->name ); ?>">
+								<?php echo $post_type_object->labels->name; ?>
+							</h2>
 
-						<ul>
-							<?php while( $query->have_posts() ) : $query->the_post(); ?>
-								<li>
-									<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-								</li>
-							<?php endwhile; ?>
-						</ul>
-					</section>
-				<?php
-				endif;
+							<ul>
+								<?php while( $query->have_posts() ) : $query->the_post(); ?>
+									<li>
+										<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+									</li>
+								<?php endwhile; ?>
+							</ul>
+						</section>
+					<?php
+					endif;
+				}
 			}
-		}
+			?>
+		</section>
+	<?php
 	}
 }
 
@@ -211,21 +210,21 @@ if ( ! function_exists( 'sds_archive_title' ) ) {
 		if ( is_author() ) :
 			$author = get_user_by( 'slug', get_query_var( 'author_name' ) ); // Get user data by slug with value of author_name in query
 		?>
-			<h1 title="<?php esc_attr_e( 'Author Archive:', 'minimize' ); ?> <?php echo ( $author instanceof WP_User ) ? $author->display_name : false; ?>" class="page-title">
+			<h1 title="<?php esc_attr_e( 'Author Archive:', 'minimize' ); ?> <?php echo ( $author instanceof WP_User ) ? $author->display_name : false; ?>" class="page-title author-archive-title">
 				<?php _e( 'Author Archive:', 'minimize' ); ?> <?php echo ( $author instanceof WP_User ) ? $author->display_name : false; ?>
 			</h1>
 		<?php
 		// Categories
 		elseif ( is_category() ) :
 		?>
-			<h1 title="<?php single_cat_title( __( 'Category Archive: ', 'minimize' ) ); ?>" class="page-title">
+			<h1 title="<?php single_cat_title( __( 'Category Archive: ', 'minimize' ) ); ?>" class="page-title category-archive-title">
 				<?php single_cat_title( __( 'Category Archive: ', 'minimize' ) ); ?>
 			</h1>
 		<?php 
 		// Tags
 		elseif ( is_tag() ) :
 		?>
-			<h1 title="<?php single_tag_title( __( 'Tag Archive: ', 'minimize' ) ); ?>" class="page-title">
+			<h1 title="<?php single_tag_title( __( 'Tag Archive: ', 'minimize' ) ); ?>" class="page-title tag-archive-title">
 				<?php single_tag_title( __( 'Tag Archive: ', 'minimize' ) ); ?>
 			</h1>
 		<?php
@@ -233,7 +232,7 @@ if ( ! function_exists( 'sds_archive_title' ) ) {
 		elseif ( is_day() ) :
 			$the_date = get_the_date();
 		?>
-			<h1 title="<?php esc_attr_e( 'Daily Archives:', 'minimize' ); ?> <?php echo $the_date; ?>" class="page-title">
+			<h1 title="<?php esc_attr_e( 'Daily Archives:', 'minimize' ); ?> <?php echo $the_date; ?>" class="page-title day-archive-title daily-archive-title">
 				<?php _e( 'Daily Archives:', 'minimize' ); ?> <?php echo $the_date; ?>
 			</h1>
 		<?php
@@ -241,7 +240,7 @@ if ( ! function_exists( 'sds_archive_title' ) ) {
 		elseif ( is_month() ) :
 			$the_date = get_the_date( 'F Y' );
 		?>
-			<h1 title="<?php esc_attr_e( 'Monthly Archives:', 'minimize' ); ?> <?php echo $the_date; ?>" class="page-title">
+			<h1 title="<?php esc_attr_e( 'Monthly Archives:', 'minimize' ); ?> <?php echo $the_date; ?>" class="page-title month-archive-title monthly-archive-title">
 				<?php _e( 'Monthly Archives:', 'minimize' ); ?> <?php echo $the_date; ?>
 			</h1>
 		<?php
@@ -249,7 +248,7 @@ if ( ! function_exists( 'sds_archive_title' ) ) {
 		elseif ( is_year() ) :
 			$the_date = get_the_date( 'Y' );
 		?>
-			<h1 title="<?php esc_attr_e( 'Yearly Archives:', 'minimize' ); ?> <?php echo $the_date; ?>" class="page-title">
+			<h1 title="<?php esc_attr_e( 'Yearly Archives:', 'minimize' ); ?> <?php echo $the_date; ?>" class="page-title year-archive-title yearly-archive-title">
 				<?php _e( 'Yearly Archives:', 'minimize' ); ?> <?php echo $the_date; ?>
 			</h1>
 		<?php
@@ -316,7 +315,7 @@ if ( ! function_exists( 'sds_copyright' ) ) {
 			<?php echo apply_filters( 'sds_copyright', 'Copyright &copy; ' . date( 'Y' ) . ' <a href="' . esc_url( home_url() ) . '">' . get_bloginfo( 'name' ) . '</a>. All Rights Reserved.' ); ?>
 		</span>
 		<span class="slocum-credit">
-			<?php echo apply_filters( 'sds_copyright_branding', '<a href="http://slocumstudio.com/?utm_medium=footer-plugs&amp;utm_campaign=WordPressThemes" target="_blank">' . $theme_name . ' by Slocum Design Studio</a>', $theme_name ); ?>
+			<?php echo apply_filters( 'sds_copyright_branding', '<a href="http://slocumthemes.com/" target="_blank">' . $theme_name . ' by Slocum Design Studio</a>', $theme_name ); ?>
 		</span>
 	<?php
 	}
@@ -330,19 +329,20 @@ if ( ! function_exists( 'sds_social_media' ) ) {
 		global $sds_theme_options;
 
 		if ( ! empty( $sds_theme_options['social_media'] ) ) {
-			// Map the correct values for social icon display (FontAwesome webfont, i.e. 'icon-rss' = RSS icon)
+			// Map the correct values for social icon display (FontAwesome webfont, i.e. 'fa-rss' = RSS icon)
 			$social_font_map = array(
-				'facebook_url' => 'icon-facebook',
-				'twitter_url' => 'icon-twitter',
-				'linkedin_url' => 'icon-linkedin',
-				'google_plus_url' => 'icon-google-plus',
-				'youtube_url' => 'icon-youtube',
-				'vimeo_url' => 'icon-play',
-				'instagram_url' => 'icon-instagram',
-				'pinterest_url' => 'icon-pinterest',
+				'facebook_url' => 'fa fa-facebook',
+				'twitter_url' => 'fa fa-twitter',
+				'linkedin_url' => 'fa fa-linkedin',
+				'google_plus_url' => 'fa fa-google-plus',
+				'youtube_url' => 'fa fa-youtube',
+				'vimeo_url' => 'fa fa-vimeo-square', // previously fa-play
+				'pinterest_url' => 'fa fa-pinterest',
+				'instagram_url' => 'fa fa-instagram',
+				'flickr_url' => 'fa fa-flickr',
 				//'yelp_url' => '',
-				'foursquare_url' => 'icon-foursquare',
-				'rss_url' => 'icon-rss'
+				'foursquare_url' => 'fa fa-foursquare',
+				'rss_url' => 'fa fa-rss'
 			);
 
 			$social_font_map = apply_filters( 'sds_social_icon_map', $social_font_map );
@@ -428,8 +428,8 @@ if ( ! function_exists( 'sds_post_navigation' ) ) {
 
 		$pagination_links = paginate_links( array(
 			'base' => esc_url( get_pagenum_link() ) . '%_%', // %_% will be replaced with format below
-			'format' => ( ! $wp_query->is_search ) ? '?paged=%#%' : '&paged=%#%', // %#% will be replaced with page number
-			'current' => max( 1, get_query_var('paged') ), // Get whichever is the max out of 1 and the current page count
+			'format' => ( ( get_option( 'permalink_structure' ) && ! $wp_query->is_search ) || ( is_home() && get_option( 'show_on_front' ) !== 'page' && ! get_option( 'page_on_front' ) ) ) ? '?paged=%#%' : '&paged=%#%', // %#% will be replaced with page number
+			'current' => max( 1, get_query_var( 'paged' ) ), // Get whichever is the max out of 1 and the current page count
 			'total' => $wp_query->max_num_pages, // Get total number of pages in current query
 			'next_text' => 'Next &#8594;',
 			'prev_text' => '&#8592; Previous',

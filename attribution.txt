@@ -33,3 +33,9 @@
  *
  * We've modified this to suit our needs.
  */
+
+/**
+ * Menu Icon Image - /images/menu-icon-large.png
+ * License: GPL2
+ * Copyright: Slocum Design Studio, http://slocumstudio.com/
+ */
