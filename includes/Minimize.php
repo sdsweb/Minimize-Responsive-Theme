@@ -3,7 +3,7 @@
  * This class manages all functionality with our Minimize v2 theme.
  */
 class Minimize {
-	const MIN_VERSION = '2.2.5';
+	const MIN_VERSION = '2.2.6';
 
 	private static $instance; // Keep track of the instance
 
@@ -82,15 +82,13 @@ class Minimize {
 		global $sds_theme_options;
 
 		$protocol = is_ssl() ? 'https' : 'http'; // Determine current protocol
-		$parent_stylesheet_uri = get_template_directory_uri() . '/style.css'; // Fetch parent stylesheet URI
-		$stylesheet_uri = get_stylesheet_uri(); // Fetch current stylesheet URI
 
 		// Minimize (main stylesheet)
-		wp_enqueue_style( 'minimize', $parent_stylesheet_uri, false, self::MIN_VERSION );
+		wp_enqueue_style( 'minimize', get_template_directory_uri() . '/style.css', false, self::MIN_VERSION );
 
 		// Enqueue the child theme stylesheet only if a child theme is active
-		if ( $parent_stylesheet_uri !== $stylesheet_uri )
-			wp_enqueue_style( 'minimize-child', $stylesheet_uri, array( 'minimize' ), self::MIN_VERSION );
+		if ( is_child_theme() )
+			wp_enqueue_style( 'minimize-child', get_stylesheet_uri(), array( 'minimize' ), self::MIN_VERSION );
 
 		// Open Sans (include only if a web font is not selected in Theme Options)
 		if ( ! function_exists( 'sds_web_fonts' ) || empty( $sds_theme_options['web_font'] ) )

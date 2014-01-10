@@ -11,6 +11,8 @@ get_header(); ?>
 
 			<?php get_template_part( 'loop', 'page-full-width' ); // Loop - Full Width ?>
 
+			<section class="clear"></section>
+
 			<?php comments_template(); // Comments ?>
 		</article>
 	</section>
