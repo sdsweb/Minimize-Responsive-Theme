@@ -73,7 +73,6 @@ jQuery( function( $ ) {
 		$( '#sds_theme_options_social_media_rss_url_use_site_feed' ).parents( 'td' ).find( '#sds_theme_options_social_media_rss_url_custom' ).hide();
 
 
-
 	/**
 	 * Navigation Tabs
 	 */
@@ -89,14 +88,21 @@ jQuery( function( $ ) {
 		_this.addClass( 'nav-tab-active' );
 		$( '#sds_theme_options_tab' ).val( tab_id_prefix );
 
-		// Hide submit buttons on Help/Support tab
-		if ( tab_id_prefix === '#help-support' )
+		// Hide submit buttons on Help/Support and "One-Click" Child Themes tabs
+		if ( tab_id_prefix === '#help-support' || tab_id_prefix === '#one-click-child-themes' )
 			$( '.submit' ).hide();
 		else if ( ! $( '.submit' ).is( ':visible' ) )
 			$( '.submit' ).show();
+
+		// "One-Click" Child Themes
+		if ( tab_id_prefix === '#one-click-child-themes' )
+			$( '.sds-child-themes-message' ).show();
+		else
+			$('.sds-child-themes-message' ).attr( 'style', function( index, value ) { return value + ' display: none !important;' } );
 	} );
 
-	if ( window.location.hash ) {
+	// If we have a valid window hash
+	if ( window.location.hash && $( window.location.hash + '-tab-content' ).length ) {
 		// Remove active classes
 		$( '.sds-theme-options-tab-content' ).removeClass( 'sds-theme-options-tab-content-active' );
 		$( '.sds-theme-options-tab' ).removeClass( 'nav-tab-active' );
@@ -107,9 +113,15 @@ jQuery( function( $ ) {
 		$( '#sds_theme_options_tab' ).val( window.location.hash );
 
 		// Hide submit buttons on Help/Support tab
-		if ( window.location.hash === '#help-support' )
+		if ( window.location.hash === '#help-support' || window.location.hash === '#one-click-child-themes' )
 			$( '.submit' ).hide();
 		else if ( ! $( '.submit' ).is( ':visible' ) )
 			$( '.submit' ).show();
+
+		// "One-Click" Child Themes
+		if ( window.location.hash === '#one-click-child-themes' )
+			$( '.sds-child-themes-message' ).show();
+		else
+			$('.sds-child-themes-message' ).attr( 'style', function( index, value ) { return value + ' display: none !important;' } );
 	}
 } );

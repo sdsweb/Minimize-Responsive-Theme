@@ -9,13 +9,13 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  *
  * Description: This Class instantiates the SDS Options Panel providing themes with various options to use.
  *
- * @version 1.0
+ * @version 1.2
  */
 if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 	global $sds_theme_options;
 
 	class SDS_Theme_Options {
-		const VERSION = '1.0';
+		const VERSION = '1.2';
 
 		// Private Variables
 		private static $instance; // Keep track of the instance
@@ -23,6 +23,9 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 
 		// Public Variables
 		public $option_defaults;
+		public $theme;
+		public $child_theme;
+		public $child_themes;
 
 		/*
 		 * Function used to create instance of class.
@@ -39,6 +42,9 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 		 */
 		function __construct() {
 			$this->option_defaults = $this->get_sds_theme_option_defaults();
+			$this->theme = $this->get_parent_theme();
+			$this->child_theme = $this->get_child_theme();
+			$this->child_themes = $this->get_child_themes();
 
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) ); // Enqueue Theme Options Stylesheet
 			add_action( 'admin_menu', array( $this, 'admin_menu' ) ); // Register Appearance Menu Item
@@ -56,7 +62,6 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 				$protocol = is_ssl() ? 'https' : 'http';
 
 				wp_enqueue_style( 'sds-theme-options', get_template_directory_uri() . '/includes/css/sds-theme-options.css', false, self::VERSION );
-				wp_enqueue_style( 'sds-theme-options-fonts', get_template_directory_uri() . '/includes/css/sds-theme-options-fonts.css', false, self::VERSION );
 
 				wp_enqueue_media(); // Enqueue media scripts
 				wp_enqueue_script( 'sds-theme-options', get_template_directory_uri() . '/includes/js/sds-theme-options.js', array( 'jquery' ), self::VERSION );
@@ -480,6 +485,58 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 			if ( ! isset( $input['social_media']['rss_url_use_site_feed'] ) )
 				$input['social_media']['rss_url_use_site_feed'] = false;
 
+			/**
+			 * "One-Click" Child Themes
+			 */
+
+			// Create child theme
+			if ( isset( $input['create_child_theme'] ) ) {
+				$theme_root = trailingslashit( get_theme_root() );
+				$child_theme_name = ( isset( $input['child_theme']['name'] ) ) ? sanitize_title( $input['child_theme']['name'] ) : false;
+				$child_theme_directory = trailingslashit( $theme_root . $child_theme_name );
+				$child_theme_stylesheet_header = $this->create_stylesheet_header( sanitize_text_field( $input['child_theme']['name'] ) );
+
+				// Make sure we have a valid theme name
+				if ( empty( $child_theme_name ) ) {
+					add_settings_error( 'sds_theme_options', 'child-theme-name-invalid', __( 'Please enter a valid child theme name.', 'minimize' ) );
+
+					return $input;
+				}
+				// Make sure the requested child theme does not already exist
+				else if ( file_exists( $theme_root . $child_theme_name ) ) {
+					add_settings_error( 'sds_theme_options', 'child-theme-exists', __( 'It appears that a child theme with that name already exists. Please try again with a different child theme name.', 'minimize' ) );
+
+					return $input;
+				}
+				// Make sure child theme creation didn't fail
+				else if ( ! $this->create_child_theme( $child_theme_directory, $child_theme_stylesheet_header, $theme_root ) ) {
+					add_settings_error( 'sds_theme_options', 'child-theme-creation-failed', __( 'There was a problem creating the child theme. Please check your server permissions.', 'minimize' ) );
+
+					return $input;
+				}
+				// Child theme was created successfully
+				else {
+					// Activate the child theme
+					if ( isset( $input['child_theme']['activate'] ) ) {
+						// Store widgets and menus
+						$sidebar_widgets = wp_get_sidebars_widgets();
+						$menu_locations = get_nav_menu_locations();
+
+						// Activate child theme (if requested)
+						$this->activate_child_theme( $child_theme_name );
+
+						// Carry over widgets and menus to child theme
+						set_theme_mod( 'nav_menu_locations', $menu_locations );
+						wp_set_sidebars_widgets( $sidebar_widgets );
+
+						add_settings_error( 'sds_theme_options', 'child-theme-activation-success', sprintf( __( 'New theme activated. <a href="%s">Visit site</a> or <a href="%s">edit child theme</a>.', 'minimize' ), home_url( '/' ), admin_url( 'theme-editor.php?theme=' . urlencode( $child_theme_name ) ) ), 'updated' );
+					}
+					else
+						add_settings_error( 'sds_theme_options', 'child-theme-creation-success', sprintf( __( 'Child theme created successfully. <a href="%s">Activate</a> your child theme.', 'minimize' ), wp_nonce_url( admin_url( 'themes.php?action=activate&amp;stylesheet=' . urlencode( $child_theme_name ) ), 'switch-theme_' . $child_theme_name ) ), 'updated' );
+				}
+			}
+
+
 			return $input;
 		}
 
@@ -487,12 +544,11 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 		/**
 		 * This function handles the rendering of the options page.
 		 */
-		function sds_theme_options_page() { ?>
+		function sds_theme_options_page() {
+		?>
 			<div class="wrap about-wrap">
-				<?php screen_icon(); // Default Screen Icon ?>
-
 				<h1><?php echo wp_get_theme(); ?> <?php _e( 'Theme Options', 'minimize' ); ?></h1>
-				<div class="about-text sds-about-text"><?php printf( __( '%1$s', 'minimize' ), self::$options_page_description ); ?></div>
+				<div class="about-text sds-about-text"><?php printf( _x( '%1$s', 'Theme options panel descripton', 'minimize' ), self::$options_page_description ); ?></div>
 
 				<?php do_action( 'sds_theme_options_notifications' ); ?>
 
@@ -501,6 +557,7 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 				<h2 class="nav-tab-wrapper sds-theme-options-tab-wrap">
 					<a href="#general" id="general-tab" class="nav-tab sds-theme-options-tab nav-tab-active"><?php _e( 'General Options', 'minimize' ); ?></a>
 					<a href="#social-media" id="social-media-tab" class="nav-tab sds-theme-options-tab"><?php _e( 'Social Media', 'minimize' ); ?></a>
+					<a href="#one-click-child-themes" id="one-click-child-themes-tab" class="nav-tab sds-theme-options-tab"><?php _e( 'One-Click Child Themes', 'minimize' ); ?></a>
 					<?php do_action( 'sds_theme_options_navigation_tabs' ); // Hook for extending tabs ?>
 					<a href="#help-support" id="help-support-tab" class="nav-tab sds-theme-options-tab"><?php _e( 'Help/Support', 'minimize' ); ?></a>
 				</h2>
@@ -529,6 +586,75 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 
 					<?php
 					/*
+					 * "One-Click" Child Themes
+					 */
+					?>
+					<div id="one-click-child-themes-tab-content" class="sds-theme-options-tab-content">
+						<h3><?php _e( '"One-Click" Child Themes', 'minimize' ); ?></h3>
+
+						<?php if ( ! $this->get_child_theme_activation_status() && is_child_theme() ) : // Child theme is currently active ?>
+							<div class="message error sds-child-themes-message" style="border-left: 4px solid #ffba00; display: none !important;">
+								<p><strong><?php _e( 'Please Note: It looks like you\'re already using a child theme.', 'minimize' ); ?></strong></p>
+							</div>
+						<?php endif; ?>
+
+						<div class="form-table">
+							<p><?php printf( __( 'Child themes are an essential part to <a href="%1$s" target="_blank">WordPress theme modification</a>. If you\'re looking to enhance <strong>%2$s</strong> beyond the Theme Options we\'ve provided, you\'ll find the tools to easily create your very own child theme below. It couldn\'t be more simpler.', 'minimize' ), 'http://slocumthemes.com/2013/12/how-to-create-a-child-theme/', $this->theme->get( 'Name' ) ); ?></p>
+
+							<?php if ( ! empty( $this->child_themes ) ) : // Child themes exist ?>
+								<h4><?php printf( __( 'The following %1$s child themes already exist', 'minimize' ), $this->theme->get( 'Name' ) ); ?></h4>
+								<ul class="sds-child-themes">
+									<?php
+										foreach( $this->child_themes as $child_theme ) :
+											// Is this child theme currently active?
+											if ( is_a( $this->child_theme, 'WP_Theme' ) && $this->child_theme->get_stylesheet() === $child_theme->get_stylesheet() ) :
+									?>
+												<li><?php printf( _x( '<strong>%1$s (Active)</strong> - <a href="%2$s">Edit</a>', 'Child theme name and edit link', 'minimize' ), $child_theme->get( 'Name' ), admin_url( 'theme-editor.php?theme=' . urlencode( $child_theme->get_stylesheet() ) ) ); ?></li>
+									<?php
+											else:
+									?>
+												<li><?php printf( _x( '%1$s - <a href="%2$s">Activate</a>', 'Child theme name and activation link', 'minimize' ), $child_theme->get( 'Name' ), wp_nonce_url( admin_url( 'themes.php?action=activate&amp;stylesheet=' . urlencode( $child_theme->get_stylesheet() ) ), 'switch-theme_' . $child_theme->get_stylesheet() ) ); ?></li>
+									<?php
+											endif;
+										endforeach;
+									?>
+								</ul>
+							<?php endif; ?>
+						</div>
+
+						<h3><?php _e( '1. Name Your Child Theme', 'minimize' ); ?> <span class="description"><?php _ex( '(required)', 'This field is required', 'minimize' ); ?></span></h3>
+
+						<table class="form-table">
+							<tr valign="top">
+								<th scope="row"><?php _e( 'Child Theme Name:', 'minimize' ); ?></th>
+								<td>
+									<input type="text" id="sds_theme_options_one_click_child_theme_name" name="sds_theme_options[child_theme][name]" class="large-text" value="" placeholder="e.g. <?php echo $this->theme->get( 'Name' ); ?> Child Theme" />
+								</td>
+							</tr>
+						</table>
+
+						<h3><?php _e( '2. Advanced Settings', 'minimize' ); ?> <span class="description"><?php _ex( '(optional)', 'This field is optional', 'minimize' ); ?></span></h3>
+
+						<table class="form-table">
+							<tr valign="top">
+								<th scope="row"><?php _e( 'Activate Child Theme:', 'minimize' ); ?></th>
+								<td>
+									<div class="checkbox sds-themes-child-themes-checkbox">
+										<input type="checkbox" id="sds_theme_options_one_click_child_theme_activate" name="sds_theme_options[child_theme][activate]" />
+										<label for="sds_theme_options_one_click_child_theme_activate"><?php _e( 'Activate child theme once it has been created', 'minimize' ); ?></label>
+									</div>
+									<span class="description"><?php printf( __( 'This option will also keep navigation menus and widgets from %1$s.', 'minimize' ), $this->theme->get( 'Name' ) ); ?></span>
+								</td>
+							</tr>
+						</table>
+
+						<p class="one-click-child-theme-submit">
+							<?php submit_button( __( 'Create Child Theme', 'minimize' ), 'primary', 'sds_theme_options[create_child_theme]', false ); ?>
+						</p>
+					</div>
+
+					<?php
+					/*
 					 * Help/Support
 					 */
 					?>
@@ -542,8 +668,8 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 					<?php do_action( 'sds_theme_options_settings' ); // Hook for extending settings ?>
 
 					<p class="submit">
-						<?php submit_button( 'Save Options', 'primary', 'submit', false ); ?>
-						<?php submit_button( 'Restore Defaults', 'secondary', 'sds_theme_options[reset]', false ); ?>
+						<?php submit_button( __( 'Save Options', 'minimize' ), 'primary', 'submit', false ); ?>
+						<?php submit_button( __( 'Restore Defaults', 'minimize' ), 'secondary', 'sds_theme_options[reset]', false ); ?>
 					</p>
 				</form>
 
@@ -655,6 +781,147 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 
 				return $google_families;
 			}
+		}
+
+		/**
+		 * This function returns the details of the current parent theme.
+		 */
+		function get_parent_theme() {
+			if ( is_a( $this->theme, 'WP_Theme' ) )
+				return $this->theme;
+
+			return ( is_child_theme() ) ? wp_get_theme()->parent() : wp_get_theme();
+		}
+
+		/**
+		 * This function returns the details of the current child theme activated.
+		 */
+		function get_child_theme() {
+			if ( is_a( $this->child_theme, 'WP_Theme' ) )
+				return $this->child_theme;
+
+			return ( is_child_theme() ) ? wp_get_theme() : false;
+		}
+
+		/**
+		 * This function returns an array of existing child themes for the current parent theme.
+		 */
+		function get_child_themes() {
+			if( ! is_a( $this->theme, 'WP_Theme' ) )
+				return false;
+
+			$theme_template = $this->theme->get_stylesheet(); // Get current theme directory name
+			$wp_themes = wp_get_themes(); // Get all installed themes
+			$child_themes = array();
+
+			// Check for child themes
+			foreach ( $wp_themes as $theme ) {
+				// Child theme of the current active theme and not the current theme
+				if ( $theme->get_template() === $theme_template && $theme->get_template() !== $theme->get_stylesheet() )
+					$child_themes[] = $theme;
+			}
+
+			return ( ! empty( $child_themes ) ) ? $child_themes : false;
+		}
+
+		/**
+		 * This function creates a stylesheet header.
+		 *
+		 * @uses get_file_data()
+		 */
+		function create_stylesheet_header( $theme_name ) {
+			// Stylesheet headers to fetch from current theme stylesheet
+			$stylesheet_header_data = array(
+				'name'        => 'Theme Name',
+				'theme_uri'   => 'Theme URI',
+				'description' => 'Description',
+				'author'      => 'Author',
+				'author_uri'  => 'Author URI',
+				'version'     => 'Version',
+				'license'     => 'License',
+				'license_uri' => 'License URI',
+				'template'    => 'Template',
+			);
+
+			// Fetch stylesheet header
+			$stylesheet_header = get_file_data( trailingslashit( $this->theme->get_stylesheet_directory() ) . 'style.css', $stylesheet_header_data );
+
+			// Adjust for child theme data
+			$stylesheet_header['name'] = $theme_name;
+			$stylesheet_header['description'] = sprintf( __( 'A "one-click" child theme created for %1$s - %2$s', 'minimize' ), $this->theme->get( 'Name' ), $stylesheet_header['description'] );
+			$stylesheet_header['version'] = '1.0';
+			$stylesheet_header['template'] = $this->theme->get_stylesheet();
+
+			// Create child theme stylesheet header
+			$child_theme_stylesheet_header = "/**\n";
+
+			foreach ( $stylesheet_header_data as $key => $header )
+				$child_theme_stylesheet_header .= " * $header: {$stylesheet_header[$key]}\n";
+
+			$child_theme_stylesheet_header .= " */\n";
+
+			return $child_theme_stylesheet_header;
+		}
+
+		/**
+		 * This function creates a child theme.
+		 * - creates directory
+		 * - creates style.css
+		 * - creates blank functions.php
+		 * - moves screenshot.png
+		 *
+		 * @uses WP_Filesystem
+		 */
+		function create_child_theme( $directory, $stylesheet_header, $theme_root ) {
+			global $wp_filesystem;
+
+			$parent_directory = trailingslashit( $theme_root . $this->theme->get_stylesheet() );
+
+			// Set up the WordPress filesystem
+			WP_Filesystem(); 
+
+			// Create child theme style.css
+			if ( $wp_filesystem->mkdir( $directory ) === false )
+				return false;
+
+			// Create child theme style.css
+			if ( $wp_filesystem->put_contents( $directory . 'style.css', $stylesheet_header ) === false )
+				return false;
+
+			// Create blank functions.php
+			$wp_filesystem->touch( $directory . 'functions.php' );
+
+			// Move the screenshot from the parent theme
+			if ( $wp_filesystem->exists( $parent_directory . 'screenshot.png' ) )
+				$wp_filesystem->copy( $parent_directory . 'screenshot.png', $directory . 'screenshot.png' );
+
+			return true;
+		}
+
+		/**
+		 * This function activates a child theme.
+		 *
+		 * @uses switch_theme()
+		 */
+		function activate_child_theme( $theme ) {
+			switch_theme( $theme );
+		}
+
+		/**
+		 * This function checks to see if a child theme was just activated through the options panel.
+		 *
+		 * @uses get_settings_errors()
+		 */
+		function get_child_theme_activation_status() {
+			$settings_errors = get_settings_errors();
+
+			// If a settings error exists, child theme was just activated
+			if ( ! empty( $settings_errors ) )
+				foreach( $settings_errors as $error )
+					if ( $error['code'] == 'child-theme-activation-success' )
+						return true;
+
+			return false;
 		}
 	}
 

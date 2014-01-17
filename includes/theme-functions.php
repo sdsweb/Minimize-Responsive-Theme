@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  *
  * Description: This file contains functions for utilizing options within themes (displaying site logo, tagline, etc...)
  *
- * @version 1.1
+ * @version 1.2
  */
 
 
@@ -315,7 +315,7 @@ if ( ! function_exists( 'sds_copyright' ) ) {
 			<?php echo apply_filters( 'sds_copyright', 'Copyright &copy; ' . date( 'Y' ) . ' <a href="' . esc_url( home_url() ) . '">' . get_bloginfo( 'name' ) . '</a>. All Rights Reserved.' ); ?>
 		</span>
 		<span class="slocum-credit">
-			<?php echo apply_filters( 'sds_copyright_branding', '<a href="http://slocumthemes.com/" target="_blank">' . $theme_name . ' by Slocum Design Studio</a>', $theme_name ); ?>
+			<?php echo apply_filters( 'sds_copyright_branding', '<a href="http://slocumthemes.com/" target="_blank">' . $theme_name . ' by Slocum Studio</a>', $theme_name ); ?>
 		</span>
 	<?php
 	}
@@ -517,6 +517,34 @@ if ( ! function_exists( 'sds_comment' ) ) {
 /***************************
  * Non-Pluggable Functions *
  ***************************/
+
+/**
+ * This function sets a flag if necessary to display a message to the user for creating a one-click child theme.
+ */
+add_action( 'after_switch_theme', 'sds_after_switch_theme' );
+
+function sds_after_switch_theme() {
+	// Make sure a child theme is not already active and that our activation flag is not already set
+	if( ! is_child_theme() && ! get_option( 'sds_theme_activated' ) )
+		update_option( 'sds_theme_activated', true );
+}
+
+/**
+ * This function outputs a message to the user on theme activation letting them know about our "one-click" child theme functionality.
+ */
+add_action( 'admin_notices', 'sds_admin_notices' );
+
+function sds_admin_notices() {
+	if( ! is_child_theme() && get_option( 'sds_theme_activated' ) ) :
+		$sds_theme = SDS_Theme_Options::instance()->theme;
+?>
+	<div class="updated" style="background-color: #5f87af; border-color: #354f6b; color:#fff;">
+		<p><?php printf( __( 'Thank you for activating %1$s! Looking to modify this theme outside of the Theme Options provided? Check our our <a href="%2$s" style="color:#fff; text-decoration: underline;">"One-Click" Child Themes</a>!', 'minimize' ), $sds_theme->get( 'Name' ), admin_url( 'themes.php?page=sds-theme-options#one-click-child-themes' ) ); ?></p>
+	</div>
+<?php
+		delete_option( 'sds_theme_activated' ); // Remove activation flag
+	endif;
+}
 
 /**
  * This function enqueues all necessary scripts/styles based on options.
