@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  *
  * Description: This file contains functions for utilizing options within themes (displaying site logo, tagline, etc...)
  *
- * @version 1.2
+ * @version 1.2.1
  */
 
 
@@ -519,31 +519,32 @@ if ( ! function_exists( 'sds_comment' ) ) {
  ***************************/
 
 /**
- * This function sets a flag if necessary to display a message to the user for creating a one-click child theme.
+ * This function ties into the TGM Plugin Activation Class and recommends plugins to the user.
  */
-add_action( 'after_switch_theme', 'sds_after_switch_theme' );
+add_action( 'tgmpa_register', 'sds_tgmpa_register' );
 
-function sds_after_switch_theme() {
-	// Make sure a child theme is not already active and that our activation flag is not already set
-	if( ! is_child_theme() && ! get_option( 'sds_theme_activated' ) )
-		update_option( 'sds_theme_activated', true );
-}
+function sds_tgmpa_register() {
+	$plugins = array(
+		// One-Click Child Themes for Slocum Themes
+		array(
+			'name' => 'One-Click Child Themes for Slocum Themes',
+			'slug' => 'sds-one-click-child-themes-master',
+			'source' => 'https://github.com/sdsweb/sds-one-click-child-themes/archive/master.zip',
+			'required' => false,
+			'force_activation' => false,
+			'force_deactivation' => false,
+			'external_url' => 'https://github.com/sdsweb/sds-one-click-child-themes/'
+		),
+ 
+        // Soliloquy
+        array(
+            'name'      => 'Soliloquy Lite',
+            'slug'      => 'soliloquy-lite',
+            'required'  => false
+        )
+	);
 
-/**
- * This function outputs a message to the user on theme activation letting them know about our "one-click" child theme functionality.
- */
-add_action( 'admin_notices', 'sds_admin_notices' );
-
-function sds_admin_notices() {
-	if( ! is_child_theme() && get_option( 'sds_theme_activated' ) ) :
-		$sds_theme = SDS_Theme_Options::instance()->theme;
-?>
-	<div class="updated" style="background-color: #5f87af; border-color: #354f6b; color:#fff;">
-		<p><?php printf( __( 'Thank you for activating %1$s! Looking to modify this theme outside of the Theme Options provided? Check our our <a href="%2$s" style="color:#fff; text-decoration: underline;">"One-Click" Child Themes</a>!', 'minimize' ), $sds_theme->get( 'Name' ), admin_url( 'themes.php?page=sds-theme-options#one-click-child-themes' ) ); ?></p>
-	</div>
-<?php
-		delete_option( 'sds_theme_activated' ); // Remove activation flag
-	endif;
+	tgmpa( $plugins );
 }
 
 /**

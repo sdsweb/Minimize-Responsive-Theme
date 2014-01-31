@@ -220,11 +220,6 @@
 	border-radius: 2px 4px 4px 2px;
 }
 
-/* Child Themes Checkbox */
-.sds-themes-child-themes-checkbox {
-	margin: 0 0 10px;
-}
-
 /* Textareas */
 textarea {
 	max-width: 90%;
@@ -408,12 +403,6 @@ select {
 /* RSS Feed */
 #sds_theme_options_social_media_rss_url_custom {
 	margin-top: 1em;
-}
-
-/* "One-Click" Child Themes */
-ul.sds-child-themes {
-	padding-left: 2em;
-	list-style: disc;
 }
 
 
