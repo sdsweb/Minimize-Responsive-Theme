@@ -87,7 +87,7 @@ if ( ! function_exists( 'sds_theme_options_ads' ) ) {
 	?>
 		<div class="sds-theme-options-ad">
 			<a href="http://slocumthemes.com/wordpress-themes/minimize/" target="_blank" class="sds-theme-options-upgrade-ad">
-				<h2><?php _e( 'Upgrade to Minimize Pro!', 'minimize' ); ?></h2>
+				<h3><?php _e( 'Upgrade to Minimize Pro!', 'minimize' ); ?></h3>
 				<ul>
 					<li><?php _e( 'Priority Ticketing Support', 'minimize' ); ?></li>
 					<li><?php _e( 'More Color Schemes', 'minimize' ); ?></li>
