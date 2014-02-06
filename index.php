@@ -10,6 +10,8 @@ get_header(); ?>
 			
 			<?php get_template_part( 'loop' ); // Loop ?>
 
+			<section class="clear"></section>
+
 			<?php comments_template(); // Comments ?>
 		</article>
 

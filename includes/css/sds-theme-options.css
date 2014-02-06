@@ -112,7 +112,7 @@
 }
 
 /* Checkboxes */
-input[type=checkbox] {
+.sds-theme-options-checkbox input[type=checkbox] {
 	display: none;
 }
 
@@ -456,7 +456,7 @@ select {
 	text-decoration: none;
 }
 
-.sds-theme-options-upgrade-ad h2 {
+.sds-theme-options-upgrade-ad h2, .sds-theme-options-upgrade-ad h3 {
 	margin: 0;
 	padding: 0;
 	color: #fff;

@@ -3,7 +3,7 @@
  * This class manages all functionality with our Minimize v2 theme.
  */
 class Minimize {
-	const MIN_VERSION = '2.2.4';
+	const MIN_VERSION = '2.2.9';
 
 	private static $instance; // Keep track of the instance
 
@@ -82,15 +82,13 @@ class Minimize {
 		global $sds_theme_options;
 
 		$protocol = is_ssl() ? 'https' : 'http'; // Determine current protocol
-		$parent_stylesheet_uri = get_template_directory_uri() . '/style.css'; // Fetch parent stylesheet URI
-		$stylesheet_uri = get_stylesheet_uri(); // Fetch current stylesheet URI
 
 		// Minimize (main stylesheet)
-		wp_enqueue_style( 'minimize', $parent_stylesheet_uri, false, self::MIN_VERSION );
+		wp_enqueue_style( 'minimize', get_template_directory_uri() . '/style.css', false, self::MIN_VERSION );
 
 		// Enqueue the child theme stylesheet only if a child theme is active
-		if ( $parent_stylesheet_uri !== $stylesheet_uri )
-			wp_enqueue_style( 'minimize-child', $stylesheet_uri, array( 'minimize' ), self::MIN_VERSION );
+		if ( is_child_theme() )
+			wp_enqueue_style( 'minimize-child', get_stylesheet_uri(), array( 'minimize' ), self::MIN_VERSION );
 
 		// Open Sans (include only if a web font is not selected in Theme Options)
 		if ( ! function_exists( 'sds_web_fonts' ) || empty( $sds_theme_options['web_font'] ) )
@@ -142,7 +140,7 @@ class Minimize {
 		$form_meta = RGFormsModel::get_form_meta( $form_id );
 
 		// Ensure the current form has one of our supported classes and alter the field accordingly if we're not on admin
-		if ( ! is_admin() && in_array( $form_meta['cssClass'], array( 'mc-gravity', 'mc_gravity', 'mc-newsletter', 'mc_newsletter' ) ) )
+		if ( isset( $form['cssClass'] ) && ! is_admin() && in_array( $form_meta['cssClass'], array( 'mc-gravity', 'mc_gravity', 'mc-newsletter', 'mc_newsletter' ) ) )
 			$input = '<div class="ginput_container"><input name="input_' . $field['id'] . '" id="input_' . $form_id . '_' . $field['id'] . '" type="text" value="" class="large" placeholder="' . $field['label'] . '" /></div>';
 
 		return $input;
@@ -153,8 +151,8 @@ class Minimize {
 	 * .mc-gravity, .mc_gravity, .mc-newsletter, .mc_newsletter classes
 	 */
 	function gform_confirmation( $confirmation, $form, $lead, $ajax ) {
-		// Ensure the current form has one of our supported classes and alter the confirmation accordingly if we're not on admin
-		if ( in_array( $form['cssClass'], array( 'mc-gravity', 'mc_gravity', 'mc-newsletter', 'mc_newsletter' ) ) )
+		// Confirmation message is set and form has one of our supported classes (alter the confirmation accordingly)
+		if ( isset( $form['cssClass'] ) && $form['confirmation']['type'] === 'message' && in_array( $form['cssClass'], array( 'mc-gravity', 'mc_gravity', 'mc-newsletter', 'mc_newsletter' ) ) )
 			$confirmation = '<section class="mc-gravity-confirmation mc_gravity-confirmation mc-newsletter-confirmation mc_newsletter-confirmation">' . $confirmation . '</section>';
 
 		return $confirmation;

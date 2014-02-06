@@ -9,13 +9,13 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  *
  * Description: This Class instantiates the SDS Options Panel providing themes with various options to use.
  *
- * @version 1.0
+ * @version 1.2.1
  */
 if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 	global $sds_theme_options;
 
 	class SDS_Theme_Options {
-		const VERSION = '1.0';
+		const VERSION = '1.2';
 
 		// Private Variables
 		private static $instance; // Keep track of the instance
@@ -23,6 +23,7 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 
 		// Public Variables
 		public $option_defaults;
+		public $theme;
 
 		/*
 		 * Function used to create instance of class.
@@ -39,6 +40,7 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 		 */
 		function __construct() {
 			$this->option_defaults = $this->get_sds_theme_option_defaults();
+			$this->theme = $this->get_parent_theme();
 
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) ); // Enqueue Theme Options Stylesheet
 			add_action( 'admin_menu', array( $this, 'admin_menu' ) ); // Register Appearance Menu Item
@@ -56,7 +58,6 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 				$protocol = is_ssl() ? 'https' : 'http';
 
 				wp_enqueue_style( 'sds-theme-options', get_template_directory_uri() . '/includes/css/sds-theme-options.css', false, self::VERSION );
-				wp_enqueue_style( 'sds-theme-options-fonts', get_template_directory_uri() . '/includes/css/sds-theme-options-fonts.css', false, self::VERSION );
 
 				wp_enqueue_media(); // Enqueue media scripts
 				wp_enqueue_script( 'sds-theme-options', get_template_directory_uri() . '/includes/js/sds-theme-options.js', array( 'jquery' ), self::VERSION );
@@ -480,6 +481,7 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 			if ( ! isset( $input['social_media']['rss_url_use_site_feed'] ) )
 				$input['social_media']['rss_url_use_site_feed'] = false;
 
+
 			return $input;
 		}
 
@@ -487,12 +489,11 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 		/**
 		 * This function handles the rendering of the options page.
 		 */
-		function sds_theme_options_page() { ?>
+		function sds_theme_options_page() {
+		?>
 			<div class="wrap about-wrap">
-				<?php screen_icon(); // Default Screen Icon ?>
-
-				<h1><?php echo wp_get_theme(); ?> <?php _e( 'Theme Options', 'minimize' ); ?></h1>
-				<div class="about-text sds-about-text"><?php printf( __( '%1$s', 'minimize' ), self::$options_page_description ); ?></div>
+				<h1><?php echo $this->theme->get( 'Name' ); ?> <?php _e( 'Theme Options', 'minimize' ); ?></h1>
+				<div class="about-text sds-about-text"><?php printf( _x( '%1$s', 'Theme options panel description', 'minimize' ), self::$options_page_description ); ?></div>
 
 				<?php do_action( 'sds_theme_options_notifications' ); ?>
 
@@ -542,8 +543,8 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 					<?php do_action( 'sds_theme_options_settings' ); // Hook for extending settings ?>
 
 					<p class="submit">
-						<?php submit_button( 'Save Options', 'primary', 'submit', false ); ?>
-						<?php submit_button( 'Restore Defaults', 'secondary', 'sds_theme_options[reset]', false ); ?>
+						<?php submit_button( __( 'Save Options', 'minimize' ), 'primary', 'submit', false ); ?>
+						<?php submit_button( __( 'Restore Defaults', 'minimize' ), 'secondary', 'sds_theme_options[reset]', false ); ?>
 					</p>
 				</form>
 
@@ -561,7 +562,7 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 					<?php do_action( 'sds_theme_options_ads' ); ?>
 				</div>
 			</div>
-			<?php
+		<?php
 		}
 
 		/*
@@ -655,6 +656,16 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 
 				return $google_families;
 			}
+		}
+
+		/**
+		 * This function returns the details of the current parent theme.
+		 */
+		function get_parent_theme() {
+			if ( is_a( $this->theme, 'WP_Theme' ) )
+				return $this->theme;
+
+			return ( is_child_theme() ) ? wp_get_theme()->parent() : wp_get_theme();
 		}
 	}
 

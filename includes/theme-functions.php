@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  *
  * Description: This file contains functions for utilizing options within themes (displaying site logo, tagline, etc...)
  *
- * @version 1.1
+ * @version 1.2.1
  */
 
 
@@ -315,7 +315,7 @@ if ( ! function_exists( 'sds_copyright' ) ) {
 			<?php echo apply_filters( 'sds_copyright', 'Copyright &copy; ' . date( 'Y' ) . ' <a href="' . esc_url( home_url() ) . '">' . get_bloginfo( 'name' ) . '</a>. All Rights Reserved.' ); ?>
 		</span>
 		<span class="slocum-credit">
-			<?php echo apply_filters( 'sds_copyright_branding', '<a href="http://slocumthemes.com/" target="_blank">' . $theme_name . ' by Slocum Design Studio</a>', $theme_name ); ?>
+			<?php echo apply_filters( 'sds_copyright_branding', '<a href="http://slocumthemes.com/" target="_blank">' . $theme_name . ' by Slocum Studio</a>', $theme_name ); ?>
 		</span>
 	<?php
 	}
@@ -517,6 +517,35 @@ if ( ! function_exists( 'sds_comment' ) ) {
 /***************************
  * Non-Pluggable Functions *
  ***************************/
+
+/**
+ * This function ties into the TGM Plugin Activation Class and recommends plugins to the user.
+ */
+add_action( 'tgmpa_register', 'sds_tgmpa_register' );
+
+function sds_tgmpa_register() {
+	$plugins = array(
+		// One-Click Child Themes for Slocum Themes
+		array(
+			'name' => 'One-Click Child Themes for Slocum Themes',
+			'slug' => 'sds-one-click-child-themes-master',
+			'source' => 'https://github.com/sdsweb/sds-one-click-child-themes/archive/master.zip',
+			'required' => false,
+			'force_activation' => false,
+			'force_deactivation' => false,
+			'external_url' => 'https://github.com/sdsweb/sds-one-click-child-themes/'
+		),
+ 
+        // Soliloquy
+        array(
+            'name'      => 'Soliloquy Lite',
+            'slug'      => 'soliloquy-lite',
+            'required'  => false
+        )
+	);
+
+	tgmpa( $plugins );
+}
 
 /**
  * This function enqueues all necessary scripts/styles based on options.

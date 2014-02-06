@@ -10,7 +10,7 @@ get_header( 'landing-page' ); ?>
 
 			<?php get_template_part( 'loop', 'page-full-width' ); // Loop - Full Width ?>
 
-			<section class="clear">&nbsp;</section>
+			<section class="clear"></section>
 
 			<?php comments_template(); // Comments ?>
 		</article>
