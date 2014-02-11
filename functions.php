@@ -23,7 +23,7 @@ include_once get_template_directory() . '/includes/Minimize.php'; // Minimize Cl
  */
 
 /**
- * Set the Content Width for embeded items.
+ * Set the Content Width for embedded items.
  */
 if ( ! isset( $content_width ) )
 	$content_width = 715;
@@ -70,6 +70,48 @@ if ( ! function_exists( 'sds_web_fonts' ) ) {
 }
 
 /**
+ * This function registers all content layouts available in this theme.
+ */
+if ( ! function_exists( 'sds_content_layouts' ) ) {
+	function sds_content_layouts() {
+		$content_layouts = array(
+			'default' => array( // Name used in saved option
+				'label' => __( 'Default', 'minimize' ), // Label on options panel (required)
+				'preview' => '<div class="cols cols-1 cols-default"><div class="col col-content" title="%1$s"><span class="label">%1$s</span></div></div>', // Preview on options panel (required; %1$s is replaced with values below on options panel if specified)
+				'preview_values' => array( __( 'Default', 'minimize' ) ),
+				'default' => true
+			),
+			'cols-1' => array( // Full Width
+				'label' => __( 'Full Width', 'minimize' ),
+				'preview' => '<div class="cols cols-1"><div class="col col-content"></div></div>',
+			),
+			'cols-2' => array( // Content Left, Primary Sidebar Right
+				'label' => __( 'Content Left', 'minimize' ),
+				'preview' => '<div class="cols cols-2"><div class="col col-content"></div><div class="col col-sidebar"></div></div>'
+			),
+			'cols-2-r' => array( // Content Right, Primary Sidebar Left
+				'label' => __( 'Content Right', 'minimize' ),
+				'preview' => '<div class="cols cols-2 cols-2-r"><div class="col col-sidebar"></div><div class="col col-content"></div></div>'
+			),
+			'cols-3' => array( // Content Left, Primary Sidebar Middle, Secondary Sidebar Right
+				'label' => __( 'Content, Sidebar, Sidebar', 'minimize' ),
+				'preview' => '<div class="cols-3"><div class="col col-content"></div><div class="col col-sidebar"></div><div class="col col-sidebar col-sidebar-secondary"></div></div>'
+			),
+			'cols-3-m' => array( // Primary Sidebar Left, Content Middle, Secondary Sidebar Right
+				'label' => __( 'Sidebar, Content, Sidebar', 'minimize' ),
+				'preview' => '<div class="cols cols-3 cols-3-m"><div class="col col-sidebar"></div><div class="col col-content"></div><div class="col col-sidebar col-sidebar-secondary"></div></div>'
+			),
+			'cols-3-r' => array( // Primary Sidebar Left, Secondary Sidebar Middle, Content Right
+				'label' => __( 'Sidebar, Sidebar, Content', 'minimize' ),
+				'preview' => '<div class="cols cols-3 cols-3-r"><div class="col col-sidebar"></div><div class="col col-sidebar col-sidebar-secondary"></div><div class="col col-content"></div></div>'
+			)
+		);
+
+		return apply_filters( 'sds_theme_options_content_layouts', $content_layouts );
+	}
+}
+
+/**
  * This function sets a default featured image size for use in this theme.
  */
 if ( ! function_exists( 'sds_theme_options_default_featured_image_size' ) ) {
@@ -77,6 +119,54 @@ if ( ! function_exists( 'sds_theme_options_default_featured_image_size' ) ) {
 
 	function sds_theme_options_default_featured_image_size( $default ) {
 		return 'min-725x400';
+	}
+}
+
+/**
+ * This function modifies the featured image size output based on content layout settings.
+ */
+if ( ! function_exists( 'sds_featured_image_size' ) ) {
+	add_filter( 'sds_featured_image_size', 'sds_featured_image_size', 10, 2 );
+
+	function sds_featured_image_size( $size, $link_image ) {
+		global $sds_theme_options;
+
+		// Content layout was specified by user in Theme Options
+		if ( isset( $sds_theme_options['body_class'] ) && ! empty( $sds_theme_options['body_class'] ) ) {
+			if ( $sds_theme_options['body_class'] === 'cols-1' )
+				$size = 'min-1100x400'; // Full width image
+		}
+		return $size;
+	}
+}
+
+/**
+ * This function modifies the global $content_width value based on content layout or page template settings.
+ */
+if ( ! function_exists( 'min_body_class' ) ) {
+	add_filter( 'body_class', 'min_body_class', 20 );
+
+	function min_body_class( $classes ) {
+		global $sds_theme_options, $content_width;
+
+		// Content layout was specified by user in Theme Options
+		if ( isset( $sds_theme_options['body_class'] ) && ! empty( $sds_theme_options['body_class'] ) ) {
+			// 1 Column
+			if ( $sds_theme_options['body_class'] === 'cols-1' )
+				$content_width = 1100;
+			// 3 Columns
+			else if ( strpos( $sds_theme_options['body_class'], 'cols-3' ) !== false )
+				$content_width = 550;
+		}
+
+		// Page Template was specified by the user for this page
+		if ( ! empty( $sds_theme_options['page_template'] ) && $sds_theme_options['page_template'] !== 'default' ) {
+			// Full Width or Landing Page
+			if( in_array( $sds_theme_options['page_template'], array( 'page-full-width.php', 'page-landing-page.php' ) ) )
+				$content_width = 1100;
+		}
+
+		return $classes;
 	}
 }
 
@@ -133,7 +223,7 @@ if ( ! function_exists( 'sds_theme_options_help_support_tab_content' ) ) {
 
 	function sds_theme_options_help_support_tab_content( ) {
 	?>
-		<p><?php printf( __( 'If you\'d like to create a suppport request, please visit the %1$s.', 'minimize' ), '<a href="http://wordpress.org/themes/minimize" target="_blank">Minimize Forums on WordPress.org</a>' ); ?></p>
+		<p><?php printf( __( 'If you\'d like to create a support request, please visit the %1$s.', 'minimize' ), '<a href="http://wordpress.org/themes/minimize" target="_blank">Minimize Forums on WordPress.org</a>' ); ?></p>
 	<?php
 	}
 }

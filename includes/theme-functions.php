@@ -37,7 +37,7 @@ if ( ! function_exists( 'sds_logo' ) ) {
 		if ( ! empty( $sds_theme_options['logo_attachment_id'] ) ) :
 	?>
 		<h1 id="title" class="site-title site-title-logo has-logo">
-			<a href="<?php echo esc_url( site_url() ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
+			<a href="<?php echo esc_url( home_url() ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
 				<?php echo wp_get_attachment_image( $sds_theme_options['logo_attachment_id'], 'full' ); ?>
 			</a>
 		</h1>
@@ -46,7 +46,7 @@ if ( ! function_exists( 'sds_logo' ) ) {
 		else :
 	?>
 		<h1 id="title" class="site-title site-title-no-logo no-logo">
-			<a href="<?php echo esc_url( site_url() ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
+			<a href="<?php echo esc_url( home_url() ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
 				<?php bloginfo( 'name' ); ?>
 			</a>
 		</h1>
@@ -88,6 +88,8 @@ if ( ! function_exists( 'sds_featured_image' ) ) {
 		else
 			$featured_image_size = apply_filters( 'sds_theme_options_default_featured_image_size', '' );
 
+		$featured_image_size = apply_filters( 'sds_featured_image_size', $featured_image_size, $link_image );
+
 		// Featured Image
 		if ( has_post_thumbnail() && $link_image ) :
 	?>
@@ -114,7 +116,9 @@ if ( ! function_exists( 'sds_wp_title' ) ) {
 	add_filter( 'wp_title', 'sds_wp_title' );
 
 	function sds_wp_title( $title ) {
-		$title .= get_bloginfo( 'name' );
+		// Ignore on feeds
+		if ( ! is_feed() )
+			$title .= get_bloginfo( 'name' );
 
 		return $title;
 	}
@@ -544,6 +548,8 @@ function sds_tgmpa_register() {
         )
 	);
 
+	$plugins = apply_filters( 'sds_tgmpa_plugins', $plugins );
+
 	tgmpa( $plugins );
 }
 
@@ -626,6 +632,70 @@ function sds_wp_head() {
 }
 
 /**
+ * This function outputs the necessary CSS classes in the body_class() function based on content layout settings.
+ */
+add_filter( 'body_class', 'sds_body_class' );
+
+function sds_body_class( $classes ) {
+	global $sds_theme_options, $post;
+
+	// If theme supports content layouts
+	if ( function_exists( 'sds_content_layouts' ) ) {
+		// If single page, determine if specific page template is set
+		$wp_page_template = ( is_page() ) ? get_post_meta( $post->ID, '_wp_page_template', true ) : false;
+		$sds_theme_options['page_template'] = $wp_page_template;
+
+		// Global
+		if ( ! empty( $sds_theme_options['content_layouts']['global'] ) ) {
+			$sds_theme_options['body_class'] = $classes['sds-content-layout'] = $sds_theme_options['content_layouts']['global'];
+
+			// Remove content layout styles if a page template is selected
+			if ( ! empty( $wp_page_template ) && $wp_page_template !== 'default' ) {
+				unset( $sds_theme_options['body_class'] );
+				unset( $classes['sds-content-layout'] );
+			}
+		}
+
+		// 404 Error
+		if ( is_404() && ! empty( $sds_theme_options['content_layouts']['404'] ) )
+			$sds_theme_options['body_class'] = $classes['sds-content-layout'] = $sds_theme_options['content_layouts']['404'];
+
+		// Single Post
+		if ( is_single() && ! empty( $sds_theme_options['content_layouts']['single'] ) )
+			$sds_theme_options['body_class'] = $classes['sds-content-layout'] = $sds_theme_options['content_layouts']['single'];
+
+		// Home (Blog)
+		if ( is_home() && ! empty( $sds_theme_options['content_layouts']['home'] ) )
+			$sds_theme_options['body_class'] = $classes['sds-content-layout'] = $sds_theme_options['content_layouts']['home'];
+
+		// Single Page
+		if ( is_page() && ! empty( $sds_theme_options['content_layouts']['page'] ) ) {
+			// Add content layout styles only if a page template is not selected
+			if( empty( $wp_page_template ) || $wp_page_template === 'default' )
+				$sds_theme_options['body_class'] = $classes['sds-content-layout'] = $sds_theme_options['content_layouts']['page'];
+		}
+
+		// Front Page
+		if ( is_front_page() && ! empty( $sds_theme_options['content_layouts']['front_page'] ) )
+			$sds_theme_options['body_class'] = $classes['sds-content-layout'] = $sds_theme_options['content_layouts']['front_page'];
+
+		// Archive
+		if ( is_archive() && ! empty( $sds_theme_options['content_layouts']['archive'] ) )
+			$sds_theme_options['body_class'] = $classes['sds-content-layout'] = $sds_theme_options['content_layouts']['archive'];
+
+		// Category Archive
+		if ( is_category() && ! empty( $sds_theme_options['content_layouts']['category'] ) )
+			$sds_theme_options['body_class'] = $classes['sds-content-layout'] = $sds_theme_options['content_layouts']['category'];
+
+		// Tag Archive
+		if ( is_tag() && ! empty( $sds_theme_options['content_layouts']['tag'] ) )
+			$sds_theme_options['body_class'] = $classes['sds-content-layout'] = $sds_theme_options['content_layouts']['tag'];
+	}
+
+	return $classes;
+}
+
+/**
  * This function configures/sets up theme options/features.
  */
 add_action( 'after_setup_theme', 'sds_after_setup_theme' );
@@ -665,6 +735,17 @@ function sds_widgets_init() {
 		'before_widget' => '<section id="primary-sidebar-%1$s" class="widget primary-sidebar primary-sidebar-widget %2$s">',
 		'after_widget'  => '<section class="clear"></section></section>',
 		'before_title'  => '<h3 class="widgettitle widget-title primary-sidebar-widget-title">',
+		'after_title'   => '</h3>',
+	) );
+
+	// Secondary sidebar
+	register_sidebar( array(
+		'name'          => __( 'Secondary Sidebar', 'minimize' ),
+		'id'            => 'secondary-sidebar',
+		'description'   => __( 'This widget area is the secondary widget area.', 'minimize' ),
+		'before_widget' => '<section id="secondary-sidebar-%1$s" class="widget secondary-sidebar secondary-sidebar-widget %2$s">',
+		'after_widget'  => '<section class="clear"></section></section>',
+		'before_title'  => '<h3 class="widgettitle widget-title secondary-sidebar-widget-title">',
 		'after_title'   => '</h3>',
 	) );
 
@@ -741,6 +822,14 @@ function sds_widgets_init() {
 function sds_primary_sidebar() {
 	if ( is_active_sidebar( 'primary-sidebar' ) )
 		dynamic_sidebar( 'primary-sidebar' );
+}
+
+/**
+ * This function outputs the Secondary Sidebar.
+ */
+function sds_secondary_sidebar() {
+	if ( is_active_sidebar( 'secondary-sidebar' ) )
+		dynamic_sidebar( 'secondary-sidebar' );
 }
 
 /**
