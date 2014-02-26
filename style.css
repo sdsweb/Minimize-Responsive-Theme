@@ -4,7 +4,7 @@
  * Description: A lightweight and responsive WordPress theme. Great for a blog or to start a new project.
  * Author: Slocum Design Studio
  * Author URI: http://slocumthemes.com/
- * Version: 2.3.0
+ * Version: 2.3.1
  * License: GPL2+
  * License URI: http://www.gnu.org/licenses/gpl.html
  * Tags: blue, green, orange, pink, purple, red, white, light, two-columns, left-sidebar, right-sidebar, custom-colors, custom-menu, editor-style, featured-images, full-width-template, sticky-post, theme-options, threaded-comments, translation-ready, fluid-layout, responsive-layout
@@ -650,6 +650,7 @@ nav .primary-nav li ul.sub-menu li:last-child a, .primary-nav-container li ul.ch
 
 nav .primary-nav li:hover > ul.sub-menu, .primary-nav-container li:hover > ul.children {
 	display: block;
+	z-index: 2;
 }
 
 nav .primary-nav li a:hover{

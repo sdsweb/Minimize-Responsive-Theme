@@ -176,7 +176,7 @@ if ( ! function_exists( 'sds_theme_options_ads' ) ) {
 	function sds_theme_options_ads() {
 	?>
 		<div class="sds-theme-options-ad">
-			<a href="http://slocumthemes.com/wordpress-themes/minimize/" target="_blank" class="sds-theme-options-upgrade-ad">
+			<a href="<?php echo esc_url( __( 'http://slocumthemes.com/wordpress-themes/minimize-pro/', 'minimize' ) ); ?>" target="_blank" class="sds-theme-options-upgrade-ad">
 				<h3><?php _e( 'Upgrade to Minimize Pro!', 'minimize' ); ?></h3>
 				<ul>
 					<li><?php _e( 'Priority Ticketing Support', 'minimize' ); ?></li>
@@ -201,17 +201,17 @@ if ( ! function_exists( 'sds_theme_options_upgrade_cta' ) ) {
 		switch( $type ) :
 			case 'color-schemes':
 			?>
-				<p><?php printf( __( '%1$s and receive more color schemes!', 'minimize' ), '<a href="http://slocumthemes.com/wordpress-themes/minimize/" target="_blank">Upgrade to Minimize Pro</a>' ); ?></p>
+				<p><?php printf( __( '<a href="%1$s">Upgrade to Minimize Pro</a> and receive more color schemes!', 'minimize' ), esc_url( 'http://slocumthemes.com/wordpress-themes/minimize-pro/' ) ); ?></p>
 			<?php
 			break;
 			case 'web-fonts':
 			?>
-				<p><?php printf( __( '%1$s to use more web fonts!', 'minimize' ), '<a href="http://slocumthemes.com/wordpress-themes/minimize/" target="_blank">Upgrade to Minimize Pro</a>' ); ?></p>
+				<p><?php printf( __( '<a href="%1$s">Upgrade to Minimize Pro</a> to use more web fonts!', 'minimize' ), esc_url( 'http://slocumthemes.com/wordpress-themes/minimize-pro/' ) ); ?></p>
 			<?php
 			break;
 			case 'help-support':
 			?>
-				<p><?php printf( __( '%1$s to receive priority ticketing support!', 'minimize' ), '<a href="http://slocumthemes.com/wordpress-themes/minimize/" target="_blank">Upgrade to Minimize Pro</a>' ); ?></p>
+				<p><?php printf( __( '<a href="%1$s">Upgrade to Minimize Pro</a> to receive priority ticketing support!', 'minimize' ), esc_url( 'http://slocumthemes.com/wordpress-themes/minimize-pro/' ) ); ?></p>
 			<?php
 			break;
 		endswitch;
@@ -223,7 +223,7 @@ if ( ! function_exists( 'sds_theme_options_help_support_tab_content' ) ) {
 
 	function sds_theme_options_help_support_tab_content( ) {
 	?>
-		<p><?php printf( __( 'If you\'d like to create a support request, please visit the %1$s.', 'minimize' ), '<a href="http://wordpress.org/themes/minimize" target="_blank">Minimize Forums on WordPress.org</a>' ); ?></p>
+		<p><?php printf( __( 'If you\'d like to create a support request, please visit the <a href="%1$s">Minimize Forums on WordPress.org</a>.', 'minimize' ), esc_url( 'http://wordpress.org/support/theme/minimize/' ) ); ?></p>
 	<?php
 	}
 }
@@ -232,6 +232,6 @@ if ( ! function_exists( 'sds_copyright_branding' ) ) {
 	add_filter( 'sds_copyright_branding', 'sds_copyright_branding', 10, 2 );
 
 	function sds_copyright_branding( $text, $theme_name ) {
-		return '<a href="http://slocumthemes.com/wordpress-themes/minimize-free/" target="_blank">' . sprintf( __( '%1$s by Slocum Studio', 'minimize' ), $theme_name ) . '</a>';
+		return sprintf( __( '<a href="%1$s">%2$s by Slocum Studio</a>', 'minimize' ), esc_url( 'http://slocumthemes.com/wordpress-themes/minimize-free/' ), $theme_name );
 	}
 }
