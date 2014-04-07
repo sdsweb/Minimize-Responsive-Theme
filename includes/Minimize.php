@@ -3,7 +3,7 @@
  * This class manages all functionality with our Minimize v2 theme.
  */
 class Minimize {
-	const MIN_VERSION = '2.3.1';
+	const MIN_VERSION = '2.3.3';
 
 	private static $instance; // Keep track of the instance
 
@@ -24,7 +24,7 @@ class Minimize {
 	 * This function sets up all of the actions and filters on instance
 	 */
 	function __construct() {
-		add_action( 'after_setup_theme', array( $this, 'after_setup_theme' ) ); // Register image sizes
+		add_action( 'after_setup_theme', array( $this, 'after_setup_theme' ) ); // Register image sizes, add theme support
 		add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) ); // Used to enqueue editor styles based on post type
 		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) ); // Enqueue all stylesheets (Main Stylesheet, Fonts, etc...)
 		add_action( 'wp_footer', array( $this, 'wp_footer' ) ); // Responsive navigation functionality
@@ -40,11 +40,18 @@ class Minimize {
 	 ************************************************************************************/
 
 	/**
-	 * This function adds images sizes to WordPress.
+	 * This function adds images sizes to WordPress and adds various bits of theme support.
 	 */
 	function after_setup_theme() {
 		add_image_size( 'min-725x400', 725, 400, true ); // Used for featured images on blog page and single posts
 		add_image_size( 'min-1100x400', 1100, 400, true ); // Used for featured images on full width pages
+
+		// Change default core markup for search form, comment form, and comments, etc... to HTML5
+		add_theme_support( 'html5', array(
+			'search-form',
+			'comment-form',
+			'comment-list'
+		) );
 	}
 
 	/**

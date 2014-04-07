@@ -4,7 +4,7 @@
  * Description: A lightweight and responsive WordPress theme. Great for a blog or to start a new project.
  * Author: Slocum Design Studio
  * Author URI: http://slocumthemes.com/
- * Version: 2.3.1
+ * Version: 2.3.3
  * License: GPL2+
  * License URI: http://www.gnu.org/licenses/gpl.html
  * Tags: blue, green, orange, pink, purple, red, white, light, two-columns, left-sidebar, right-sidebar, custom-colors, custom-menu, editor-style, featured-images, full-width-template, sticky-post, theme-options, threaded-comments, translation-ready, fluid-layout, responsive-layout
@@ -918,7 +918,9 @@ article.content em, .comment-content em {
 	font-style: italic;
 }
 
-article.content input[type=text] {
+article.content input[type=text],
+article.content input[type=email],
+article.content input[type=url] {
 	width: 48%;
 	margin-bottom: 1em;
 	padding: 1%;
@@ -1908,9 +1910,44 @@ form.mc-gravity, form.mc_gravity, form.mc-newsletter, form.mc_newsletter {
 		font-size: 1.35em;
 	}
 
-	article-content h1, h1.page-title, h1{
+	article.content h1, h1.page-title, h1{
 		font-size: 28px !important;
 		line-height: 28px !important;
+	}
+
+	/* ----------
+   Newsletter
+ ------------ */
+	.mc-gravity .gform_heading h3.gform_title, .mc_gravity .gform_heading h3.gform_title,
+	.mc-newsletter .gform_heading h3.gform_title, .mc_newsletter .gform_heading h3.gform_title,
+	.mc-gravity_wrapper .gform_heading h3.gform_title, .mc_gravity_wrapper .gform_heading h3.gform_title,
+	.mc-newsletter_wrapper .gform_heading h3.gform_title, .mc_newsletter_wrapper .gform_heading h3.gform_title {
+		margin: 0 0 10px;
+	}
+
+
+	.mc-gravity .gform_heading, .mc_gravity .gform_heading,
+	.mc-newsletter .gform_heading, .mc_newsletter .gform_heading,
+	.mc-gravity_wrapper .gform_heading, .mc_gravity_wrapper .gform_heading,
+	.mc-newsletter_wrapper .gform_heading, .mc_newsletter_wrapper .gform_heading {
+		width: 88% !important;
+		padding: 2% 6%;
+	}
+
+	.mc-gravity .gform_body, .mc_gravity .gform_body,
+	.mc-newsletter .gform_body, .mc_newsletter .gform_body,
+	.mc-gravity_wrapper .gform_body, .mc_gravity_wrapper .gform_body,
+	.mc-newsletter_wrapper .gform_body, .mc_newsletter_wrapper .gform_body {
+		width: 55%;
+		margin: 0 0 0 10%;
+	}
+
+	.mc-gravity .gform_footer, .mc_gravity .gform_footer,
+	.mc-newsletter .gform_footer, .mc_newsletter .gform_footer,
+	.mc-gravity_wrapper .gform_footer, .mc_gravity_wrapper .gform_footer,
+	.mc-newsletter_wrapper .gform_footer, .mc_newsletter_wrapper .gform_footer {
+		width: 25%;
+		margin: 0 10% 0 0 !important;
 	}
 }
 
@@ -2387,6 +2424,41 @@ form.mc-gravity, form.mc_gravity, form.mc-newsletter, form.mc_newsletter {
 
 	section.footer-widget:last-child {
 		margin-right: auto;
+	}
+
+
+	/* ----------
+	   Newsletter
+	 ------------ */
+	.mc-gravity .gform_heading h3.gform_title, .mc_gravity .gform_heading h3.gform_title,
+	.mc-newsletter .gform_heading h3.gform_title, .mc_newsletter .gform_heading h3.gform_title,
+	.mc-gravity_wrapper .gform_heading h3.gform_title, .mc_gravity_wrapper .gform_heading h3.gform_title,
+	.mc-newsletter_wrapper .gform_heading h3.gform_title, .mc_newsletter_wrapper .gform_heading h3.gform_title {
+		margin: 0 0 10px;
+	}
+
+	.mc-gravity .gform_heading, .mc_gravity .gform_heading,
+	.mc-newsletter .gform_heading, .mc_newsletter .gform_heading,
+	.mc-gravity_wrapper .gform_heading, .mc_gravity_wrapper .gform_heading,
+	.mc-newsletter_wrapper .gform_heading, .mc_newsletter_wrapper .gform_heading {
+		width: 88% !important;
+		padding: 2% 6%;
+	}
+
+	.mc-gravity .gform_body, .mc_gravity .gform_body,
+	.mc-newsletter .gform_body, .mc_newsletter .gform_body,
+	.mc-gravity_wrapper .gform_body, .mc_gravity_wrapper .gform_body,
+	.mc-newsletter_wrapper .gform_body, .mc_newsletter_wrapper .gform_body {
+		width: 65%;
+		margin: 0 0 0 5%;
+	}
+
+	.mc-gravity .gform_footer, .mc_gravity .gform_footer,
+	.mc-newsletter .gform_footer, .mc_newsletter .gform_footer,
+	.mc-gravity_wrapper .gform_footer, .mc_gravity_wrapper .gform_footer,
+	.mc-newsletter_wrapper .gform_footer, .mc_newsletter_wrapper .gform_footer {
+		width: 25%;
+		margin: 0 5% 0 0 !important;
 	}
 }
 

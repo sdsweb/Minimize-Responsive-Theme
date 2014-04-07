@@ -9,13 +9,13 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  *
  * Description: This Class instantiates the SDS Options Panel providing themes with various options to use.
  *
- * @version 1.2.1
+ * @version 1.2.2
  */
 if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 	global $sds_theme_options;
 
 	class SDS_Theme_Options {
-		const VERSION = '1.2.1';
+		const VERSION = '1.2.2';
 
 		// Private Variables
 		private static $instance; // Keep track of the instance
@@ -291,12 +291,12 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 			if ( ! empty( $web_fonts ) ) :
 		?>
 			<div class="sbt-theme-options-web-fonts-wrap">
-				<div class="sbt-theme-options-web-font sbt-theme-options-web-font-none">
+				<div class="sbt-theme-options-web-font sbt-theme-options-web-font-default">
 						<label>
-							<input type="radio" id="sds_theme_options_web_font_none" name="sds_theme_options[web_font]" <?php ( ! isset( $sds_theme_options['web_font'] ) || empty( $sds_theme_options['web_font'] ) || $sds_theme_options['web_font'] === 'none' ) ? checked( true ) : checked( false ); ?> value="none" />
+							<input type="radio" id="sds_theme_options_web_font_default" name="sds_theme_options[web_font]" <?php ( ! isset( $sds_theme_options['web_font'] ) || empty( $sds_theme_options['web_font'] ) || $sds_theme_options['web_font'] === 'default' ) ? checked( true ) : checked( false ); ?> value="default" />
 							<div class="sbt-theme-options-web-font-selected">&#10004;</div>
 						</label>
-						<span class="sds-theme-options-web-font-label-none"><?php _e( 'None', 'minimize' ); ?></span>
+						<span class="sds-theme-options-web-font-label-default"><?php _e( 'Default', 'minimize' ); ?></span>
 				</div>
 
 				<?php
@@ -519,7 +519,7 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 			// General
 			$input['logo_attachment_id'] = ( ! empty( $input['logo_attachment_id'] ) ) ? ( int ) $input['logo_attachment_id'] : '';
 			$input['color_scheme'] = sanitize_text_field( $input['color_scheme'] );
-			$input['web_font'] = ( ! empty( $input['web_font'] ) && $input['web_font'] !== 'none' ) ? sanitize_text_field( $input['web_font'] ) : false;
+			$input['web_font'] = ( ! empty( $input['web_font'] ) && $input['web_font'] !== 'default' ) ? sanitize_text_field( $input['web_font'] ) : false;
 			$input['hide_tagline'] = ( $input['hide_tagline'] ) ? true : false;
 
 			// Content Layouts

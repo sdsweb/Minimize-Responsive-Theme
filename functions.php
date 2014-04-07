@@ -7,13 +7,13 @@
  * Load the theme function files (options panel, theme functions, widgets, etc...).
  */
 
+include_once get_template_directory() . '/includes/Minimize.php'; // Minimize Class (main functionality, actions/filters)
+
 include_once get_template_directory() . '/includes/class-tgm-plugin-activation.php'; // TGM Activation
 
 include_once get_template_directory() . '/includes/theme-options.php'; // SDS Theme Options
 include_once get_template_directory() . '/includes/theme-functions.php'; // SDS Theme Options Functions
 include_once get_template_directory() . '/includes/widget-social-media.php'; // SDS Social Media Widget
-
-include_once get_template_directory() . '/includes/Minimize.php'; // Minimize Class (main functionality, actions/filters)
 
 
 /**
