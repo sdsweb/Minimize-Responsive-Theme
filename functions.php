@@ -13,6 +13,7 @@ include_once get_template_directory() . '/includes/class-tgm-plugin-activation.p
 
 include_once get_template_directory() . '/includes/theme-options.php'; // SDS Theme Options
 include_once get_template_directory() . '/includes/theme-functions.php'; // SDS Theme Options Functions
+include_once get_template_directory() . '/includes/class-customize-us-control.php'; // Customize Controller
 include_once get_template_directory() . '/includes/widget-social-media.php'; // SDS Social Media Widget
 
 
@@ -21,12 +22,6 @@ include_once get_template_directory() . '/includes/widget-social-media.php'; // 
  * Theme Specifics
  * ---------------
  */
-
-/**
- * Set the Content Width for embedded items.
- */
-if ( ! isset( $content_width ) )
-	$content_width = 715;
 
 /**
  * This function registers all color schemes available in this theme.
@@ -38,12 +33,14 @@ if ( ! function_exists( 'sds_color_schemes' ) ) {
 				'label' => __( 'Default', 'minimize' ), // Label on options panel (required)
 				'stylesheet' => false, // Stylesheet URL, relative to theme directory (required)
 				'preview' => '#565656', // Preview color on options panel (required)
+				'content_color' => '#555555', // Default content color (required)
 				'default' => true
 			),
 			'slocum-blue' => array(
 				'label' => __( 'Slocum Blue', 'minimize' ),
 				'stylesheet' => '/css/slocum-blue.css',
 				'preview' => '#3c639a',
+				'content_color' => '#555555',
 				'deps' => 'minimize'
 			)
 		);
@@ -170,13 +167,32 @@ if ( ! function_exists( 'min_body_class' ) ) {
 	}
 }
 
+/**
+ * This function adds the custom Theme Customizer styles to the <head> tag.
+ */
+if ( ! function_exists( 'min_wp_head' ) ) {
+	add_filter( 'wp_head', 'min_wp_head', 20 );
+
+	function min_wp_head() {
+		$sds_theme_options_instance = SDS_Theme_Options_Instance();
+	?>
+		<style type="text/css" id="<?php echo $sds_theme_options_instance->get_parent_theme()->get_template(); ?>-theme-customizer">
+			/* Content Color */
+			article.content, footer.post-footer, #post-author {
+				color: <?php echo get_theme_mod( 'content_color' ); ?>;
+			}
+		</style>
+	<?php
+	}
+}
+
 if ( ! function_exists( 'sds_theme_options_ads' ) ) {
 	add_action( 'sds_theme_options_ads', 'sds_theme_options_ads' );
 
 	function sds_theme_options_ads() {
 	?>
 		<div class="sds-theme-options-ad">
-			<a href="<?php echo esc_url( __( 'http://slocumthemes.com/wordpress-themes/minimize-pro/', 'minimize' ) ); ?>" target="_blank" class="sds-theme-options-upgrade-ad">
+			<a href="<?php echo esc_url( sds_get_pro_link( 'theme-options-ad' ) ); ?>" target="_blank" class="sds-theme-options-upgrade-ad">
 				<h3><?php _e( 'Upgrade to Minimize Pro!', 'minimize' ); ?></h3>
 				<ul>
 					<li><?php _e( 'Priority Ticketing Support', 'minimize' ); ?></li>
@@ -200,22 +216,50 @@ if ( ! function_exists( 'sds_theme_options_upgrade_cta' ) ) {
 	function sds_theme_options_upgrade_cta( $type ) {
 		switch( $type ) :
 			case 'color-schemes':
-			?>
-				<p><?php printf( __( '<a href="%1$s">Upgrade to Minimize Pro</a> and receive more color schemes!', 'minimize' ), esc_url( 'http://slocumthemes.com/wordpress-themes/minimize-pro/' ) ); ?></p>
-			<?php
+		?>
+				<p>
+					<?php
+						printf( '<a href="%1$s" target="_blank">%2$s</a> %3$s',
+							esc_url( sds_get_pro_link( 'theme-options-colors' ) ),
+							__( 'Upgrade to Minimize Pro', 'minimize' ),
+							__( 'and receive more color schemes!', 'minimize' )
+						);
+					?>
+				</p>
+		<?php
 			break;
 			case 'web-fonts':
-			?>
-				<p><?php printf( __( '<a href="%1$s">Upgrade to Minimize Pro</a> to use more web fonts!', 'minimize' ), esc_url( 'http://slocumthemes.com/wordpress-themes/minimize-pro/' ) ); ?></p>
-			<?php
+		?>
+				<p>
+					<?php
+						printf( '<a href="%1$s" target="_blank">%2$s</a> %3$s',
+							esc_url( sds_get_pro_link( 'theme-options-fonts' ) ),
+							__( 'Upgrade to Minimize Pro', 'minimize' ),
+							__( 'to use more web fonts!', 'minimize' )
+						);
+					?>
+				</p>
+		<?php
 			break;
 			case 'help-support':
-			?>
-				<p><?php printf( __( '<a href="%1$s">Upgrade to Minimize Pro</a> to receive priority ticketing support!', 'minimize' ), esc_url( 'http://slocumthemes.com/wordpress-themes/minimize-pro/' ) ); ?></p>
-			<?php
+				?>
+				<p>
+					<?php
+						printf( '<a href="%1$s" target="_blank">%2$s</a> %3$s',
+							esc_url( sds_get_pro_link( 'theme-options-help' ) ),
+							__( 'Upgrade to Minimize Pro', 'minimize' ),
+							__( 'to receive priority ticketing support!', 'minimize' )
+						);
+					?>
+				</p>
+		<?php
 			break;
 		endswitch;
 	}
+}
+
+function sds_get_pro_link( $content ) {
+	return esc_url( 'https://slocumthemes.com/wordpress-themes/minimize-pro/?utm_source=minimize&utm_medium=link&utm_content=' . urlencode( sanitize_title_with_dashes( $content ) ) . '&utm_campaign=pro#purchase-theme' );
 }
 
 if ( ! function_exists( 'sds_theme_options_help_support_tab_content' ) ) {

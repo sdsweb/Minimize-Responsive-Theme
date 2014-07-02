@@ -121,7 +121,7 @@ article.full-width-content .comment-navigation a,
 a#cancel-comment-reply-link,
 #respond input[type="submit"],
 .gform_wrapper .gform_footer input.button,
-.gform_wrapper .gform_footer input[type=submit] {
+.gform_wrapper .gform_footer input[type=submit], .button {
 	background: #f5d39b;
 	color: #986819;
 }
@@ -142,7 +142,7 @@ article.full-width-content .comment-navigation a:hover,
 a#cancel-comment-reply-link:hover,
 #respond input[type="submit"]:hover,
 .gform_wrapper .gform_footer input.button:hover,
-.gform_wrapper .gform_footer input[type=submit]:hover {
+.gform_wrapper .gform_footer input[type=submit]:hover, .button:hover {
 	background: #986819;
 	color: #f5d39b;
 }

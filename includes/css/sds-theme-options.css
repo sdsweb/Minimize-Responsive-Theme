@@ -109,6 +109,11 @@ h3.sds-theme-options-nav-tab-wrapper {
 	border: 1px solid #ccc;
 }
 
+.sds-theme-options-preview img {
+	max-width: 100%;
+	height: auto;
+}
+
 /* Over-ride default WP styling that hides error messages */
 .about-wrap div.updated, .about-wrap div.error {
 	margin-top: 1em;
@@ -215,7 +220,7 @@ h3.sds-theme-options-nav-tab-wrapper {
 
 /* Textareas */
 textarea {
-	max-width: 90%;
+	max-width: 80%;
 }
 
 
@@ -435,19 +440,23 @@ textarea {
 }
 
 .sds-theme-options-content-layout-preview .cols-default .col,
+.sds-theme-options-content-layout:hover .sds-theme-options-content-layout-preview .cols-default .col,
 .sds-theme-options-content-layout input[type=radio]:checked + .sds-theme-options-content-layout-preview .cols-default .col {
 	background: #c9c9c9;
 }
 
 /* Colors used as a fallback if admin color scheme does not exist */
+.sds-theme-options-content-layout:hover .sds-theme-options-content-layout-preview,
 .sds-theme-options-content-layout input[type=radio]:checked + .sds-theme-options-content-layout-preview {
 	border: 1px solid #0074a2;
 }
 
+.sds-theme-options-content-layout:hover .sds-theme-options-content-layout-preview  .col,
 .sds-theme-options-content-layout input[type=radio]:checked + .sds-theme-options-content-layout-preview .col {
 	background: #1e8cbe;
 }
 
+.sds-theme-options-content-layout:hover .sds-theme-options-content-layout-preview  .col-sidebar,
 .sds-theme-options-content-layout input[type=radio]:checked + .sds-theme-options-content-layout-preview .col-sidebar {
 	background: #35b4e2;
 }

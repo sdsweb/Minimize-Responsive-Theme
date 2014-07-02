@@ -4,7 +4,7 @@
  * Description: A lightweight and responsive WordPress theme. Great for a blog or to start a new project.
  * Author: Slocum Design Studio
  * Author URI: http://slocumthemes.com/
- * Version: 2.3.3
+ * Version: 2.3.9
  * License: GPL2+
  * License URI: http://www.gnu.org/licenses/gpl.html
  * Tags: blue, green, orange, pink, purple, red, white, light, two-columns, left-sidebar, right-sidebar, custom-colors, custom-menu, editor-style, featured-images, full-width-template, sticky-post, theme-options, threaded-comments, translation-ready, fluid-layout, responsive-layout
@@ -92,6 +92,7 @@ body{
 	font-family: 'Open Sans', sans-serif;
 	font-size: 18px;
 	color: #555555;
+	background: #fff;
 }
 
 strong{
@@ -335,19 +336,22 @@ section.logo-box{
 	font-style: italic;
 	color: #999999;
 	line-height: 1em;
+	font-weight: bold;
 	float: left;
 }
 
 header #title {
 	margin: 0 0 0.25em;
 	line-height: 1.5em;
+	font-size: 1.5em;
+	font-weight: bold;
 }
 
 header #title.has-logo {
 	margin: 0;
 }
 
-header h1 a{
+header #title a{
 	font-size: 1.5em;
 	text-decoration: none;
 	color: #555;
@@ -716,7 +720,7 @@ article.full-width-content .comment-navigation a,
 a#cancel-comment-reply-link,
 #respond input[type="submit"],
 .gform_wrapper .gform_footer input.button,
-.gform_wrapper .gform_footer input[type=submit] {
+.gform_wrapper .gform_footer input[type=submit], .button {
 	background: #989898;
 	color: #f6f6f6;
 	margin: 0.5em 0;
@@ -750,7 +754,7 @@ article.full-width-content .comment-navigation a:hover,
 a#cancel-comment-reply-link:hover,
 #respond input[type="submit"]:hover,
 .gform_wrapper .gform_footer input.button:hover,
-.gform_wrapper .gform_footer input[type=submit]:hover {
+.gform_wrapper .gform_footer input[type=submit]:hover, .button:hover {
 	background: #f6f6f6;
 	color: #989898;
 }
@@ -946,6 +950,55 @@ article.content iframe, .comment-content iframe {
 	max-width: 100%;
 }
 
+/* ------------------
+ * bbPress/BuddyPress
+   ------------------ */
+.bbp-breadcrumb p {
+	margin-top: 0;
+}
+
+#subscription-toggle {
+	margin-bottom: 1em;
+	float: right;
+}
+
+#bbpress-forums div.bbp-the-content-wrapper div.quicktags-toolbar {
+	overflow: auto;
+}
+
+#bbpress-forums div.bbp-the-content-wrapper input {
+	width: auto;
+	text-transform: none;
+}
+
+#bbpress-forums div.bbp-search-form {
+	margin-bottom: 1em;
+}
+
+#bbpress-forums #bbp-search-form #bbp_search {
+	width: 64%;
+	padding: 0.38em 0.30em;
+	display: inline-block;
+	border-radius: 0;
+	-webkit-border-radius: 0;
+}
+
+#bbp_search_submit {
+	padding: 0.60em 0.30em;
+	float: none;
+	display: inline-block;
+	border: none;
+}
+
+#bbp_topic_submit {
+	cursor: pointer;
+}
+
+#buddypress .dir-search input[type=text] {
+	width: auto;
+	height: auto;
+	display: inline;
+}
 
 /*   -------------
 	     Blog 
