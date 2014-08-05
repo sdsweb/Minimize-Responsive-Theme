@@ -4,7 +4,7 @@
  * Description: A lightweight and responsive WordPress theme. Great for a blog or to start a new project.
  * Author: Slocum Design Studio
  * Author URI: http://slocumthemes.com/
- * Version: 2.2.9
+ * Version: 2.3.9
  * License: GPL2+
  * License URI: http://www.gnu.org/licenses/gpl.html
  * Tags: blue, green, orange, pink, purple, red, white, light, two-columns, left-sidebar, right-sidebar, custom-colors, custom-menu, editor-style, featured-images, full-width-template, sticky-post, theme-options, threaded-comments, translation-ready, fluid-layout, responsive-layout
@@ -92,6 +92,7 @@ body{
 	font-family: 'Open Sans', sans-serif;
 	font-size: 18px;
 	color: #555555;
+	background: #fff;
 }
 
 strong{
@@ -128,6 +129,102 @@ img {
 }
 
 .nav-button, .primary-nav-button { display: none; } /* hide the navigation button by default */
+
+
+/**
+ * Content Layout Styles
+ */
+
+/* 1 Column (Content) */
+.cols-1 article.content {
+	width: 100%;
+}
+
+/* 2 Columns (Content, Sidebar) */
+.cols-2 article.content {
+}
+
+.cols-2 aside.sidebar {
+}
+
+/* 2 Columns Right (Sidebar, Content) */
+.cols-2-r article.content {
+	float: right;
+}
+
+.cols-2-r aside.sidebar {
+	padding: 0 2% 0 0;
+	float: left;
+}
+
+/* 3 Columns (Content, Sidebar, Sidebar) */
+.cols-3 article.content {
+	width: 50%;
+	margin-right: 0;
+}
+
+.cols-3 aside.sidebar, .cols-3 aside.secondary-sidebar {
+	width: 23%;
+	margin: 0 0 0 1%;
+	padding: 0 0 0 1%;
+	float: left;
+}
+
+.cols-3 aside.secondary-sidebar {
+}
+
+/* 3 Columns Middle (Sidebar, Content, Sidebar) */
+.cols-3-m .content-wrapper {
+	padding: 0 25%;
+}
+
+.cols-3-m article.content {
+	width: 100%;
+	margin-right: 0;
+	float: right;
+}
+
+.cols-3-m aside.sidebar, .cols-3-m aside.secondary-sidebar {
+	width: 47%;
+	float: right;
+}
+
+.cols-3-m aside.sidebar {
+	margin: 0 0 0 -50%;
+	padding: 0 2% 0 0;
+	float: left;
+}
+
+.cols-3-m aside.secondary-sidebar {
+	margin: 0 -150% 0 0;
+	padding: 0 0 0 2%;
+	float: right;
+}
+
+/* 3 Columns Right (Sidebar, Sidebar, Content) */
+.cols-3-r article.content {
+	width: 50%;
+	margin-right: 0;
+	float: right;
+}
+
+.cols-3-r aside.sidebar, .cols-3-r aside.secondary-sidebar {
+	width: 23%;
+	margin: 0 1% 0 0;
+	padding: 0 1% 0 0;
+	float: left;
+}
+
+.cols-3-r aside.secondary-sidebar {
+}
+
+/* 3 Columns General */
+.cols-3 .widget .social-media-icons a,
+.cols-3-m .widget .social-media-icons a,
+.cols-3-r .widget .social-media-icons a {
+	margin-right: 6px;
+	margin-bottom: 6px;
+}
 
 
 /**
@@ -239,19 +336,22 @@ section.logo-box{
 	font-style: italic;
 	color: #999999;
 	line-height: 1em;
+	font-weight: bold;
 	float: left;
 }
 
 header #title {
 	margin: 0 0 0.25em;
 	line-height: 1.5em;
+	font-size: 1.5em;
+	font-weight: bold;
 }
 
 header #title.has-logo {
 	margin: 0;
 }
 
-header h1 a{
+header #title a{
 	font-size: 1.5em;
 	text-decoration: none;
 	color: #555;
@@ -554,6 +654,7 @@ nav .primary-nav li ul.sub-menu li:last-child a, .primary-nav-container li ul.ch
 
 nav .primary-nav li:hover > ul.sub-menu, .primary-nav-container li:hover > ul.children {
 	display: block;
+	z-index: 2;
 }
 
 nav .primary-nav li a:hover{
@@ -619,7 +720,7 @@ article.full-width-content .comment-navigation a,
 a#cancel-comment-reply-link,
 #respond input[type="submit"],
 .gform_wrapper .gform_footer input.button,
-.gform_wrapper .gform_footer input[type=submit] {
+.gform_wrapper .gform_footer input[type=submit], .button {
 	background: #989898;
 	color: #f6f6f6;
 	margin: 0.5em 0;
@@ -653,7 +754,7 @@ article.full-width-content .comment-navigation a:hover,
 a#cancel-comment-reply-link:hover,
 #respond input[type="submit"]:hover,
 .gform_wrapper .gform_footer input.button:hover,
-.gform_wrapper .gform_footer input[type=submit]:hover {
+.gform_wrapper .gform_footer input[type=submit]:hover, .button:hover {
 	background: #f6f6f6;
 	color: #989898;
 }
@@ -821,7 +922,9 @@ article.content em, .comment-content em {
 	font-style: italic;
 }
 
-article.content input[type=text] {
+article.content input[type=text],
+article.content input[type=email],
+article.content input[type=url] {
 	width: 48%;
 	margin-bottom: 1em;
 	padding: 1%;
@@ -847,6 +950,55 @@ article.content iframe, .comment-content iframe {
 	max-width: 100%;
 }
 
+/* ------------------
+ * bbPress/BuddyPress
+   ------------------ */
+.bbp-breadcrumb p {
+	margin-top: 0;
+}
+
+#subscription-toggle {
+	margin-bottom: 1em;
+	float: right;
+}
+
+#bbpress-forums div.bbp-the-content-wrapper div.quicktags-toolbar {
+	overflow: auto;
+}
+
+#bbpress-forums div.bbp-the-content-wrapper input {
+	width: auto;
+	text-transform: none;
+}
+
+#bbpress-forums div.bbp-search-form {
+	margin-bottom: 1em;
+}
+
+#bbpress-forums #bbp-search-form #bbp_search {
+	width: 64%;
+	padding: 0.38em 0.30em;
+	display: inline-block;
+	border-radius: 0;
+	-webkit-border-radius: 0;
+}
+
+#bbp_search_submit {
+	padding: 0.60em 0.30em;
+	float: none;
+	display: inline-block;
+	border: none;
+}
+
+#bbp_topic_submit {
+	cursor: pointer;
+}
+
+#buddypress .dir-search input[type=text] {
+	width: auto;
+	height: auto;
+	display: inline;
+}
 
 /*   -------------
 	     Blog 
@@ -1714,6 +1866,74 @@ form.mc-gravity, form.mc_gravity, form.mc-newsletter, form.mc_newsletter {
 		height: 3em;*/
 	}
 }
+
+@media only screen and (max-width: 960px) {
+	/* 3 Columns (Content, Sidebar, Sidebar) */
+	.cols-3 article.content {
+		width: 65%;
+		margin-right: 1%;
+	}
+
+	.cols-3 aside.sidebar, .cols-3 aside.secondary-sidebar {
+		width: 31%;
+		margin: 0 0 0 1%;
+		padding: 0 0 0 2%;
+	}
+
+	.cols-3 aside.secondary-sidebar {
+		float: right;
+	}
+
+	/* 3 Columns Middle (Sidebar, Content, Sidebar) */
+	.cols-3-m .content-wrapper {
+		padding: 0 3%;
+	}
+
+	.cols-3-m article.content {
+		width: 100%;
+		float: none;
+	}
+
+	.cols-3-m .post-image img {
+		margin: 0 auto;
+		display: block;
+	}
+
+	.cols-3-m aside.sidebar, .cols-3-m aside.secondary-sidebar {
+		width: 48%;
+		float: left;
+	}
+
+	.cols-3-m aside.sidebar {
+		margin: 0;
+		padding: 0 2% 0 0;
+	}
+
+	.cols-3-m aside.secondary-sidebar {
+		margin: 0;
+		padding: 0 0 0 2%;
+	}
+
+	/* 3 Columns Right (Sidebar, Sidebar, Content) */
+	.cols-3-r article.content {
+		width: 65%;
+		margin-left: 1%;
+		margin-right: 0;
+		float: right;
+	}
+
+	.cols-3-r aside.sidebar, .cols-3-r aside.secondary-sidebar {
+		width: 31%;
+		margin: 0 1% 0 0;
+		padding: 0 2% 0 0;
+		float: left;
+	}
+
+	.cols-3-r aside.secondary-sidebar {
+		clear: left;
+	}
+}
+
 @media only screen and (min-width: 769px) and (max-width: 1023px) {
 	section.logo-box {
 		width: 65%;
@@ -1743,9 +1963,44 @@ form.mc-gravity, form.mc_gravity, form.mc-newsletter, form.mc_newsletter {
 		font-size: 1.35em;
 	}
 
-	article-content h1, h1.page-title, h1{
+	article.content h1, h1.page-title, h1{
 		font-size: 28px !important;
 		line-height: 28px !important;
+	}
+
+	/* ----------
+   Newsletter
+ ------------ */
+	.mc-gravity .gform_heading h3.gform_title, .mc_gravity .gform_heading h3.gform_title,
+	.mc-newsletter .gform_heading h3.gform_title, .mc_newsletter .gform_heading h3.gform_title,
+	.mc-gravity_wrapper .gform_heading h3.gform_title, .mc_gravity_wrapper .gform_heading h3.gform_title,
+	.mc-newsletter_wrapper .gform_heading h3.gform_title, .mc_newsletter_wrapper .gform_heading h3.gform_title {
+		margin: 0 0 10px;
+	}
+
+
+	.mc-gravity .gform_heading, .mc_gravity .gform_heading,
+	.mc-newsletter .gform_heading, .mc_newsletter .gform_heading,
+	.mc-gravity_wrapper .gform_heading, .mc_gravity_wrapper .gform_heading,
+	.mc-newsletter_wrapper .gform_heading, .mc_newsletter_wrapper .gform_heading {
+		width: 88% !important;
+		padding: 2% 6%;
+	}
+
+	.mc-gravity .gform_body, .mc_gravity .gform_body,
+	.mc-newsletter .gform_body, .mc_newsletter .gform_body,
+	.mc-gravity_wrapper .gform_body, .mc_gravity_wrapper .gform_body,
+	.mc-newsletter_wrapper .gform_body, .mc_newsletter_wrapper .gform_body {
+		width: 55%;
+		margin: 0 0 0 10%;
+	}
+
+	.mc-gravity .gform_footer, .mc_gravity .gform_footer,
+	.mc-newsletter .gform_footer, .mc_newsletter .gform_footer,
+	.mc-gravity_wrapper .gform_footer, .mc_gravity_wrapper .gform_footer,
+	.mc-newsletter_wrapper .gform_footer, .mc_newsletter_wrapper .gform_footer {
+		width: 25%;
+		margin: 0 10% 0 0 !important;
 	}
 }
 
@@ -1753,6 +2008,67 @@ form.mc-gravity, form.mc_gravity, form.mc-newsletter, form.mc_newsletter {
 	header#header {
 		/*margin-top: 2em;*/
 	}
+
+	/* 3 Columns (Content, Sidebar, Sidebar) */
+	.cols-3 article.content {
+		width: 100%;
+		margin-right: 0;
+	}
+
+	.cols-3 aside.sidebar, .cols-3 aside.secondary-sidebar {
+		width: 100%;
+		margin: 1em 0 0;
+		padding: 0;
+		float: none;
+	}
+
+	.cols-3 aside.secondary-sidebar {
+	}
+
+	/* 3 Columns Middle (Sidebar, Content, Sidebar) */
+	.cols-3-m .content-wrapper {
+		padding: 0;
+	}
+
+	.cols-3-m article.content {
+		width: 100%;
+		float: none;
+	}
+
+	.cols-3-m .post-image img {
+	}
+
+	.cols-3-m aside.sidebar, .cols-3-m aside.secondary-sidebar {
+		width: 100%;
+		margin: 1em 0 0;
+		padding: 0;
+		float: none;
+	}
+
+	.cols-3-m aside.sidebar {
+	}
+
+	.cols-3-m aside.secondary-sidebar {
+	}
+
+	/* 3 Columns Right (Sidebar, Sidebar, Content) */
+	.cols-3-r article.content {
+		width: 100%;
+		margin-left: 0;
+		margin-right: 0;
+		float: right;
+	}
+
+	.cols-3-r aside.sidebar, .cols-3-r aside.secondary-sidebar {
+		width: 100%;
+		margin: 1em 0 0;
+		padding: 0;
+		float: none;
+	}
+
+	.cols-3-r aside.secondary-sidebar {
+	}
+
 
 	/* ------------------
 	   Navigation Button
@@ -2161,6 +2477,41 @@ form.mc-gravity, form.mc_gravity, form.mc-newsletter, form.mc_newsletter {
 
 	section.footer-widget:last-child {
 		margin-right: auto;
+	}
+
+
+	/* ----------
+	   Newsletter
+	 ------------ */
+	.mc-gravity .gform_heading h3.gform_title, .mc_gravity .gform_heading h3.gform_title,
+	.mc-newsletter .gform_heading h3.gform_title, .mc_newsletter .gform_heading h3.gform_title,
+	.mc-gravity_wrapper .gform_heading h3.gform_title, .mc_gravity_wrapper .gform_heading h3.gform_title,
+	.mc-newsletter_wrapper .gform_heading h3.gform_title, .mc_newsletter_wrapper .gform_heading h3.gform_title {
+		margin: 0 0 10px;
+	}
+
+	.mc-gravity .gform_heading, .mc_gravity .gform_heading,
+	.mc-newsletter .gform_heading, .mc_newsletter .gform_heading,
+	.mc-gravity_wrapper .gform_heading, .mc_gravity_wrapper .gform_heading,
+	.mc-newsletter_wrapper .gform_heading, .mc_newsletter_wrapper .gform_heading {
+		width: 88% !important;
+		padding: 2% 6%;
+	}
+
+	.mc-gravity .gform_body, .mc_gravity .gform_body,
+	.mc-newsletter .gform_body, .mc_newsletter .gform_body,
+	.mc-gravity_wrapper .gform_body, .mc_gravity_wrapper .gform_body,
+	.mc-newsletter_wrapper .gform_body, .mc_newsletter_wrapper .gform_body {
+		width: 65%;
+		margin: 0 0 0 5%;
+	}
+
+	.mc-gravity .gform_footer, .mc_gravity .gform_footer,
+	.mc-newsletter .gform_footer, .mc_newsletter .gform_footer,
+	.mc-gravity_wrapper .gform_footer, .mc_gravity_wrapper .gform_footer,
+	.mc-newsletter_wrapper .gform_footer, .mc_newsletter_wrapper .gform_footer {
+		width: 25%;
+		margin: 0 5% 0 0 !important;
 	}
 }
 

@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  *
  * Description: This file contains functions for utilizing options within themes (displaying site logo, tagline, etc...)
  *
- * @version 1.2.1
+ * @version 1.2.6
  */
 
 
@@ -33,23 +33,26 @@ if ( ! function_exists( 'sds_logo' ) ) {
 	function sds_logo() {
 		global $sds_theme_options;
 
+		// Determine HTML wrapper element
+		$sds_logo_wrapper_el = ( is_front_page() || is_home() ) ? 'h1' : 'p';
+
 		// Logo
 		if ( ! empty( $sds_theme_options['logo_attachment_id'] ) ) :
 	?>
-		<h1 id="title" class="site-title site-title-logo has-logo">
-			<a href="<?php echo esc_url( site_url() ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
+		<<?php echo $sds_logo_wrapper_el; ?> id="title" class="site-title site-title-logo has-logo">
+			<a href="<?php echo esc_url( home_url() ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
 				<?php echo wp_get_attachment_image( $sds_theme_options['logo_attachment_id'], 'full' ); ?>
 			</a>
-		</h1>
+		</<?php echo $sds_logo_wrapper_el; ?>>
 	<?php
 		// No logo
 		else :
 	?>
-		<h1 id="title" class="site-title site-title-no-logo no-logo">
-			<a href="<?php echo esc_url( site_url() ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
+		<<?php echo $sds_logo_wrapper_el; ?> id="title" class="site-title site-title-no-logo no-logo">
+			<a href="<?php echo esc_url( home_url() ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
 				<?php bloginfo( 'name' ); ?>
 			</a>
-		</h1>
+		</<?php echo $sds_logo_wrapper_el; ?>>
 	<?php
 		endif;
 	}
@@ -63,10 +66,13 @@ if ( ! function_exists( 'sds_logo' ) ) {
 if ( ! function_exists( 'sds_tagline' ) ) {
 	function sds_tagline() {
 		global $sds_theme_options;
+
+		// Determine HTML wrapper element
+		$sds_tagline_wrapper_el = ( is_front_page() || is_home() ) ? 'h2' : 'p';
 	?>
-		<h2 id="slogan" class="slogan <?php echo ( $sds_theme_options['hide_tagline'] ) ? 'hide hidden hide-tagline hide-slogan' : false; ?>">
+		<<?php echo $sds_tagline_wrapper_el; ?> id="slogan" class="slogan <?php echo ( $sds_theme_options['hide_tagline'] ) ? 'hide hidden hide-tagline hide-slogan' : false; ?>">
 			<?php bloginfo( 'description' ); ?>
-		</h2>
+		</<?php echo $sds_tagline_wrapper_el; ?>>
 	<?php
 	}
 }
@@ -87,6 +93,8 @@ if ( ! function_exists( 'sds_featured_image' ) ) {
 			$featured_image_size = $size;
 		else
 			$featured_image_size = apply_filters( 'sds_theme_options_default_featured_image_size', '' );
+
+		$featured_image_size = apply_filters( 'sds_featured_image_size', $featured_image_size, $link_image );
 
 		// Featured Image
 		if ( has_post_thumbnail() && $link_image ) :
@@ -114,7 +122,9 @@ if ( ! function_exists( 'sds_wp_title' ) ) {
 	add_filter( 'wp_title', 'sds_wp_title' );
 
 	function sds_wp_title( $title ) {
-		$title .= get_bloginfo( 'name' );
+		// Ignore on feeds
+		if ( ! is_feed() )
+			$title .= get_bloginfo( 'name' );
 
 		return $title;
 	}
@@ -134,7 +144,6 @@ if ( ! function_exists( 'sds_primary_menu_fallback' ) ) {
 		) );
 	}
 }
-
 
 /**
  * This function outputs a sitemap (most typically found on a 404 template).
@@ -257,7 +266,7 @@ if ( ! function_exists( 'sds_archive_title' ) ) {
 }
 
 /**
- * This function outputs a "no posts" message when no posts are found in a The Loop.
+ * This function outputs a "no posts" message when no posts are found in The Loop.
  */
 if ( ! function_exists( 'sds_no_posts' ) ) {
 	function sds_no_posts() {
@@ -418,7 +427,7 @@ if ( ! function_exists( 'sds_post_meta' ) ) {
 }
 
 
-/*
+/**
  * This function displays pagination links based on arguments
  * @uses paginate_links for output
  */
@@ -514,9 +523,170 @@ if ( ! function_exists( 'sds_comment' ) ) {
 	}
 }
 
+
+/********************
+ * Theme Customizer *
+ ********************/
+
+/**
+ * This function adds settings, sections, and controls to the Theme Customizer.
+ *
+ * Each theme handles the output of the styles in the wp_head action (usually in functions.php).
+ * Each theme also handles filters in their respected Class Files (/includes/ThemeName.php).
+ */
+add_action( 'customize_register', 'sds_customize_register', 20 );
+
+function sds_customize_register( $wp_customize ) {
+	// Load custom Theme Customizer API assets
+	require( get_template_directory() . '/includes/class-sds-theme-options-customize-logo-control.php' ); // Logo Controller
+
+	$sds_theme_options_instance = SDS_Theme_Options_Instance();
+	$sds_theme_options_defaults = $sds_theme_options_instance->get_sds_theme_option_defaults();
+
+	/**
+	 * Logo Upload
+	 */
+
+	// Setting (data is sanitized upon update_option() call using the sanitize function in $sds_theme_options_instance)
+	$wp_customize->add_setting(
+		'sds_theme_options[logo_attachment_id]', // IDs can have nested array keys
+		array(
+			'default' => $sds_theme_options_defaults['logo_attachment_id'],
+			'type' => 'option'
+		)
+	);
+
+	// Section - overwrite the default title_tagline section properties
+	$wp_customize->get_section( 'title_tagline' )->title = __( 'Logo/Site Title & Tagline', 'minimize' );
+
+	// Control
+	$wp_customize->add_control(
+		new SDS_Theme_Options_Customize_Logo_Control(
+			$wp_customize,
+			'logo_attachment_id',
+			array(
+				'label'  => __( 'Logo', 'minimize' ),
+				'section'  => 'title_tagline',
+				'settings' => 'sds_theme_options[logo_attachment_id]',
+				'sds_theme_options_instance' => $sds_theme_options_instance,
+				'type' => 'sds_theme_options_logo' // Used in js controller
+			)
+		)
+	);
+
+
+	/**
+	 * Content Color
+	 */
+
+	// Setting
+	$wp_customize->add_setting(
+		'content_color',
+		array(
+			'default'  => apply_filters( 'theme_mod_content_color', '' ),
+			'sanitize_callback' => 'sanitize_hex_color',
+			'sanitize_js_callback' => 'maybe_hash_hex_color'
+		)
+	);
+
+	// Control
+	$wp_customize->add_control(
+		new WP_Customize_Color_Control(
+			$wp_customize,
+			'content_color',
+			array(
+				'label'  => __( 'Content Color', 'minimize' ),
+				'section' => 'colors',
+				'settings' => 'content_color'
+			)
+		)
+	);
+}
+
+/**
+ * This function re-initializes theme options to ensure the Theme Customizer preview functions as expected.
+ * It also contains a backwards compatibility check for the Remove Logo option.
+ */
+add_action( 'customize_preview_init', 'sds_customize_preview_init' );
+
+function sds_customize_preview_init() {
+	global $sds_theme_options;
+
+	$sds_theme_options = SDS_Theme_Options::get_sds_theme_options();
+
+	/**
+	 * Remove Logo backwards compatibility check
+	 *
+	 * If 'remove-logo' is set in the options array, we need to remove it here
+	 * to ensure the Theme Customizer will save the logo information correctly.
+	 * This is due to the Theme Options sanitize function running on save of Theme
+	 * Customizer, which checks for 'remove-logo' and nulls the logo_attachment_id
+	 * value if it's set. We're now unset()ing 'remove-logo' if it is set in Theme
+	 * Options, however previous versions were not doing so. This check is necessary
+	 * for backwards compatibility.
+	 */
+	if ( isset( $sds_theme_options['remove-logo'] ) ) {
+		unset( $sds_theme_options['remove-logo'] );
+
+		update_option( SDS_Theme_Options::get_option_name(), $sds_theme_options );
+	}
+}
+
+/**
+ * This function enqueues scripts and styles on the Theme Customizer only.
+ */
+add_action( 'customize_controls_enqueue_scripts', 'sds_customize_controls_enqueue_scripts' );
+
+function sds_customize_controls_enqueue_scripts() {
+	wp_enqueue_style( 'sds-theme-options-customizer', get_template_directory_uri() . '/includes/css/customizer-sds-theme-options.css' );
+}
+
+
 /***************************
  * Non-Pluggable Functions *
  ***************************/
+
+/**
+ * This function sets various theme options to their defaults to prevent overlap between themes.
+ */
+add_action( 'after_switch_theme' , 'sds_after_switch_theme' );
+
+function sds_after_switch_theme() {
+	global $sds_theme_options;
+
+	$sds_theme_option_defaults = SDS_Theme_Options::get_sds_theme_option_defaults(); // Defaults
+
+	// Color Scheme (reset if necessary)
+	if ( ! empty( $sds_theme_options['color_scheme'] ) && function_exists( 'sds_color_schemes' ) ) {
+		$color_scheme = $sds_theme_options['color_scheme'];
+		$color_schemes = sds_color_schemes();
+
+		if ( ! isset( $color_schemes[$color_scheme] ) )
+			$sds_theme_options['color_scheme'] = $sds_theme_option_defaults['color_scheme'];
+	}
+
+	// Web Font (reset if necessary)
+	if ( ! empty( $sds_theme_options['web_font'] ) && function_exists( 'sds_web_fonts' ) ) {
+		$web_font = $sds_theme_options['web_font'];
+		$web_fonts = sds_web_fonts();
+
+		if ( ! isset( $web_fonts[$web_font] ) )
+			$sds_theme_options['web_font'] = $sds_theme_option_defaults['web_font'];
+	}
+
+	// Content Layouts (reset if necessary)
+	if ( function_exists( 'sds_content_layouts' ) ) {
+		$content_layouts = $sds_theme_options['content_layouts'];
+		$sds_content_layouts = sds_content_layouts();
+
+		foreach( $content_layouts as $content_layout_id => $content_layout )
+			if ( $content_layout && ! isset( $sds_content_layouts[$content_layout] ) )
+				$sds_theme_options['content_layouts'][$content_layout_id] = $sds_theme_option_defaults['content_layouts'][$content_layout_id];
+	}
+
+	// Update the option with new values
+	update_option( SDS_Theme_Options::$option_name, $sds_theme_options );
+}
 
 /**
  * This function ties into the TGM Plugin Activation Class and recommends plugins to the user.
@@ -544,6 +714,8 @@ function sds_tgmpa_register() {
         )
 	);
 
+	$plugins = apply_filters( 'sds_tgmpa_plugins', $plugins );
+
 	tgmpa( $plugins );
 }
 
@@ -556,17 +728,8 @@ function sds_wp_enqueue_scripts() {
 	global $sds_theme_options;
 
 	// Color Schemes
-	if ( function_exists( 'sds_color_schemes' ) && ! empty( $sds_theme_options['color_scheme'] ) ) {
-		$color_schemes = sds_color_schemes();
-
-		if ( ! empty( $sds_theme_options['color_scheme'] ) && isset( $color_schemes[$sds_theme_options['color_scheme']] ) ) {
-			$selected_color_scheme = array_key_exists( $sds_theme_options['color_scheme'], $color_schemes ) ? $color_schemes[$sds_theme_options['color_scheme']] : false;
-
-			// Make sure this is not the default color scheme
-			if ( ! empty( $selected_color_scheme ) && ( ! isset( $selected_color_scheme['default'] ) || ! $selected_color_scheme['default'] ) )
-				wp_enqueue_style( $selected_color_scheme['deps'] . '-' . $sds_theme_options['color_scheme'], get_template_directory_uri() . $selected_color_scheme['stylesheet'], array( $selected_color_scheme['deps'] ) );
-		}
-	}
+	if ( $selected_color_scheme = sds_get_color_scheme() )
+		wp_enqueue_style( $selected_color_scheme['deps'] . '-' . $sds_theme_options['color_scheme'], get_template_directory_uri() . $selected_color_scheme['stylesheet'], array( $selected_color_scheme['deps'] ) );
 
 	// Web Fonts
 	if ( function_exists( 'sds_web_fonts' ) && ! empty( $sds_theme_options['web_font'] ) ) {
@@ -612,7 +775,7 @@ function sds_wp_head() {
 		if ( ! empty( $selected_web_font ) && isset( $selected_web_font['css'] ) ) :
 		?>
 			<style type="text/css">
-				html, body {
+				<?php echo apply_filters( 'sds_web_font_css_selector', 'html, body' ); ?> {
 					<?php echo $selected_web_font['css']; ?>
 				}
 			</style>
@@ -623,6 +786,70 @@ function sds_wp_head() {
 	// HTML5 Shiv (IE only, conditionally for less than IE9)
 	if ( $is_IE )
 		echo '<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->';
+}
+
+/**
+ * This function outputs the necessary CSS classes in the body_class() function based on content layout settings.
+ */
+add_filter( 'body_class', 'sds_body_class' );
+
+function sds_body_class( $classes ) {
+	global $sds_theme_options, $post;
+
+	// If theme supports content layouts
+	if ( function_exists( 'sds_content_layouts' ) ) {
+		// If single page, determine if specific page template is set
+		$wp_page_template = ( is_page() ) ? get_post_meta( $post->ID, '_wp_page_template', true ) : false;
+		$sds_theme_options['page_template'] = $wp_page_template;
+
+		// Global
+		if ( ! empty( $sds_theme_options['content_layouts']['global'] ) ) {
+			$sds_theme_options['body_class'] = $classes['sds-content-layout'] = $sds_theme_options['content_layouts']['global'];
+
+			// Remove content layout styles if a page template is selected
+			if ( ! empty( $wp_page_template ) && $wp_page_template !== 'default' ) {
+				unset( $sds_theme_options['body_class'] );
+				unset( $classes['sds-content-layout'] );
+			}
+		}
+
+		// 404 Error
+		if ( is_404() && ! empty( $sds_theme_options['content_layouts']['404'] ) )
+			$sds_theme_options['body_class'] = $classes['sds-content-layout'] = $sds_theme_options['content_layouts']['404'];
+
+		// Single Post
+		if ( is_single() && ! empty( $sds_theme_options['content_layouts']['single'] ) )
+			$sds_theme_options['body_class'] = $classes['sds-content-layout'] = $sds_theme_options['content_layouts']['single'];
+
+		// Home (Blog)
+		if ( is_home() && ! empty( $sds_theme_options['content_layouts']['home'] ) )
+			$sds_theme_options['body_class'] = $classes['sds-content-layout'] = $sds_theme_options['content_layouts']['home'];
+
+		// Single Page
+		if ( is_page() && ! empty( $sds_theme_options['content_layouts']['page'] ) ) {
+			// Add content layout styles only if a page template is not selected
+			if( empty( $wp_page_template ) || $wp_page_template === 'default' )
+				$sds_theme_options['body_class'] = $classes['sds-content-layout'] = $sds_theme_options['content_layouts']['page'];
+		}
+
+		// Front Page
+		if ( is_front_page() && ! empty( $sds_theme_options['content_layouts']['front_page'] ) )
+			$sds_theme_options['body_class'] = $classes['sds-content-layout'] = $sds_theme_options['content_layouts']['front_page'];
+
+		// Archive
+		if ( is_archive() && ! empty( $sds_theme_options['content_layouts']['archive'] ) )
+			$sds_theme_options['body_class'] = $classes['sds-content-layout'] = $sds_theme_options['content_layouts']['archive'];
+
+		// Category Archive
+		if ( is_category() && ! empty( $sds_theme_options['content_layouts']['category'] ) )
+			$sds_theme_options['body_class'] = $classes['sds-content-layout'] = $sds_theme_options['content_layouts']['category'];
+
+		// Tag Archive
+		if ( is_tag() && ! empty( $sds_theme_options['content_layouts']['tag'] ) )
+			$sds_theme_options['body_class'] = $classes['sds-content-layout'] = $sds_theme_options['content_layouts']['tag'];
+	}
+
+	return $classes;
 }
 
 /**
@@ -665,6 +892,17 @@ function sds_widgets_init() {
 		'before_widget' => '<section id="primary-sidebar-%1$s" class="widget primary-sidebar primary-sidebar-widget %2$s">',
 		'after_widget'  => '<section class="clear"></section></section>',
 		'before_title'  => '<h3 class="widgettitle widget-title primary-sidebar-widget-title">',
+		'after_title'   => '</h3>',
+	) );
+
+	// Secondary sidebar
+	register_sidebar( array(
+		'name'          => __( 'Secondary Sidebar', 'minimize' ),
+		'id'            => 'secondary-sidebar',
+		'description'   => __( 'This widget area is the secondary widget area.', 'minimize' ),
+		'before_widget' => '<section id="secondary-sidebar-%1$s" class="widget secondary-sidebar secondary-sidebar-widget %2$s">',
+		'after_widget'  => '<section class="clear"></section></section>',
+		'before_title'  => '<h3 class="widgettitle widget-title secondary-sidebar-widget-title">',
 		'after_title'   => '</h3>',
 	) );
 
@@ -744,6 +982,14 @@ function sds_primary_sidebar() {
 }
 
 /**
+ * This function outputs the Secondary Sidebar.
+ */
+function sds_secondary_sidebar() {
+	if ( is_active_sidebar( 'secondary-sidebar' ) )
+		dynamic_sidebar( 'secondary-sidebar' );
+}
+
+/**
  * This function outputs the Front Page Slider Sidebar.
  */
 function sds_front_page_slider_sidebar() {
@@ -781,4 +1027,43 @@ function sds_footer_sidebar() {
 function sds_copyright_area_sidebar() {
 	if ( is_active_sidebar( 'copyright-area-sidebar' ) )
 		dynamic_sidebar( 'copyright-area-sidebar' );
+}
+
+
+/**
+ * This function determines whether or not the user has selected a color scheme and returns
+ * the color scheme details if they have.
+ *
+ * The default color scheme can be ignored and thus if the user has selected the default color
+ * scheme it will not be returned.
+ */
+function sds_get_color_scheme( $ignore_default = true ) {
+	global $sds_theme_options;
+
+	// Return value
+	$r = false;
+
+	// Default and all other color schemes (when user has selected options)
+	if ( function_exists( 'sds_color_schemes' ) && ! empty( $sds_theme_options['color_scheme'] ) ) {
+		$color_schemes = sds_color_schemes();
+
+		if ( ! empty( $sds_theme_options['color_scheme'] ) && isset( $color_schemes[$sds_theme_options['color_scheme']] ) ) {
+			$selected_color_scheme = array_key_exists( $sds_theme_options['color_scheme'], $color_schemes ) ? $color_schemes[$sds_theme_options['color_scheme']] : false;
+
+			// Is this the default color scheme?
+			$default_color_scheme = ( isset( $selected_color_scheme['default'] ) && $selected_color_scheme['default'] ) ? true : false;
+
+			// If we're not ignoring the default, or we are and this isn't a default color scheme
+			if ( ( ! $ignore_default || ! $default_color_scheme ) )
+				$r = $selected_color_scheme;
+		}
+	}
+	// Default
+	else if ( function_exists( 'sds_color_schemes' ) && empty( $sds_theme_options['color_scheme'] ) && ! $ignore_default ) {
+		$color_schemes = sds_color_schemes();
+
+		$r = $color_schemes['default'];
+	}
+
+	return apply_filters( 'sds_color_scheme', $r, $ignore_default );
 }

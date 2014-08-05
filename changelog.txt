@@ -1,0 +1,199 @@
+==========================================
+Theme: Minimize Free
+Author: Slocum Themes/Slocum Design Studio
+Author URI: http://slocumthemes.com
+Current Version: 2.3.9
+==========================================
+
+2.3.9 // July 02 2014
+---------------------
+- Updated to latest version of SDS Core
+- Updated CSS to accommodate new HTML markup
+
+2.3.7 // June 04 2014
+---------------------
+- Updated to latest version of SDS Core (contains fixes for Theme Customizer and fixes PHP warnings)
+- Better bbPress & BuddyPress support
+- Update .pot file
+
+2.3.6 // April 23 2014
+----------------------
+- Added functionality to adjust background/content color defaults based on color scheme selected in Theme Options
+- Updated to latest version of SDS Core
+- Added load_theme_textdomain() function and .pot translation file
+- Moved $content_width declaration into after_setup_theme hook
+
+2.3.5 // April 18 2014
+----------------------
+- Updated to latest verison of SDS Core (contains bugfix in logo contoller and new filter for web fonts)
+
+2.3.4
+-----
+- Updating to latest version of SDS Core (Theme Customizer)
+- Added various bits of Theme Customizer functionality
+
+2.3.3
+-----
+- Added HTML5 support for various default elements (search form, comments-form, comments-list)
+- Updated to newest version of SDS Core ("Default" Web Font Label)
+- Changed order of files loaded in functions.php
+- Added responsive Gravity Forms styling for mc-gravity form
+
+2.3.1
+-----
+- Escaping URLs in functions.php
+- Fixed CSS bug where sub-menu items would be overlapped by primary elements
+
+2.3.0
+-----
+- Updated to newest version of SDS Core (Content Layout Options)
+- Added all content layout options as a function
+- Added theme styles for content layouts
+- Added featured image size adjustments based on content layout option
+- Added functionality to adjust content width based on content layout option
+
+2.2.9
+-----
+- Fixed issue with Gravity Forms confirmation hook - was breaking page/re-direct confirmation functionality
+- Checking to verify Gravity Forms cssClass isset in our hooks (fixes PHP warning)
+- Updated to latest SDS Core (contains TGM Activation Class)
+
+2.2.8
+-----
+- Updating footer nav menu styling (added border between parent list items, formatted styling of sub menus, added max width for parent list items)
+
+2.2.7
+-----
+- Updated to newest version of SDS Core ("One-Click" Child Themes)
+
+2.2.6
+-----
+- Fixed issue on Firefox where comments header was overlapping other elements (added a clearing element)
+- Switched child theme functionality check to use is_child_theme()
+
+2.2.5
+-----
+- Updated theme tags - added fluid-layout, responsive-layout
+- Updated home template to allow Front Page Slider to appear when blogroll is set to front page
+
+2.2.4
+-----
+- Updated to latest version of SDS Core (includes new Toolbar menu for Theme Options)
+- Removed attribution to Yoast Breadcrumbs per: http://themes.trac.wordpress.org/ticket/14861#comment:23
+- Updated call to stylesheets: parent stylesheet is always loaded and a child theme stylesheet is now enqueued if a child theme is enabled
+- Fixed bug with 404 template where "cf" class was not added to content wrapper
+
+2.2.2
+-----
+- Added styles for MailChimp Gravity Form CTA for Newsletters using .mc-gravity, .mc_gravity, .mc-newsletter, .mc_newsletter classes
+
+2.2.1
+-----
+- Updated to latest version of SDS core
+- Attributed Yoast Breadcrumbs and Menu Icon Image
+- Added feature to display post excerpt if set, and content as a fallback
+- Updated screenshot
+- Removed all Google Analytics tracking code on links
+- Adjusted line-height on editor styles for various elements
+
+2.2.0
+-----
+- Adjusted classes on widget areas to ensure social media icons could be styled correctly
+- Removed font size declaration from social icons
+- Removed console debug information from media uploader in theme options
+- Added has_post_thumbnail check to sds_featured_image function to prevent errors
+- Replaced all instances of min-height: auto; with min-height: 0;
+- Changed input style selector to match text only (fixes issue with bbPress styling)
+- Fixed issue with CSS reset that did not allow bold and italic font
+- Adjusted CSS reset in editor style on Minimize Pro to match free version
+- Added clear floats class to searchbox form to ensure widgets displayed correctly when in responsive view
+- Updated get_the_category_list in SDS core to show only single parent categories
+
+
+2.1.8
+-----
+- Removed check in comments.php preventing direct access to comments.php - http://themes.trac.wordpress.org/ticket/13993#comment:3
+- Added parameter to sds_featured_image to allow a size to be specified that would overwrite existing functionality
+- Fixed bug where "has-logo" class was output when there was no logo
+- Added translation/i18n functions to public facing text in templates
+- Fixed issue in header templates where blog_charset was called instead of just charset (header-landing.php, header.php)
+- Fixed clearing of floats by using the microclearfix
+- Fixed typo on footer sidebar description
+- Changed social media icons to "squares" (background color)
+- Registered front page sidebar (for use with Minimize Blocks)
+- Fixed `Notice: Trying to get property of non-object in ../wp-content/themes/minimize/includes/theme-functions.php on line 215` error on author template
+
+2.1.7
+-----
+- Removed campaign code from footer credit link
+- Added campaign code to all options panel links
+- Adjusted styling on content search submit buttons
+- Changed 2 functions to static public (get options and get default options)
+- Replaced search message on 404 template
+- Removed translation functions from comments template (for now)
+- Moved all comment HTML into comments template (outer container element was included in individual templates)
+- Fixed issue where multiple borders would appear without comments active
+- Fixed issue where pre text would not wrap properly in Firefox
+
+2.1.4
+-----
+- Changed screenshot
+- Changed link in footer
+- Added bottom margin to front page slider
+
+2.1.3
+-----
+- Replaced all "divs" with sections
+- Escaped URLs on attributes in searchform.php and theme-functions.php in core
+- Adjusted padding on posts in blog archive in style.css
+- Adjusted post meta function in theme-functions.php
+- Adjusted comment function in comments.php to ensure "thoughts" message was displayed correctly
+- Adjusted comment callback in theme-functions.php
+- Adjusted copyright notice on CSS Reset, and WordPress Core CSS in style.css and CSS Reset editor-style.css
+- Removed sds-theme-options-fonts.css as it was not needed
+- Edited sds-theme-options.js
+- Removed theme update checker from free
+- Removed references to $sbt_options in theme templates (page.php, archive, loop-search)
+- Removed bloginfo( 'name' ) from landing page template header
+- Adjusted sitemap function in theme-functions.php
+
+2.1.2
+-----
+- Removed pluggable functions from SDS core (preserving fundamental theme functionality)
+- 
+- Moved single image navigation function to ensure links were displayed directly below single gallery images
+
+2.1.1
+-----
+- Fixed styling issue with blockquote when it appeared after an unordered list
+- Fixed styling issue with header call to action link colors (was theme color, changed to white)
+
+2.1.0
+-----
+Fixed issue with 404 template where content wrapper was not included
+Major overhaul of options panel (requires options to be re-set)
+
+2.0.3
+-----
+Fixed bug where checkboxes and radio buttons would not work correctly due to CSS reset
+Fixed bug where CSS3 transitions affected Site Title when top menu was active (changed margin em's to px)
+
+2.0.2
+-----
+Fixed issue with home loop template and archive template where featured images were not displayed correctly when a size was chosen
+Fixed issue where logo options were saved to separate option in WP (concatinated all options into 1 array)
+Replaced the_excerpt with the_content
+Adjusted CSS styling for more-link, after post widgets, and comment titles
+Added editor styles for full-width page templates
+Fixed overflow issue on full width page templates (CSS)
+
+2.0.1
+-----
+Added option to select featured image sizes displayed on blog archive, and single posts/pages
+Added "no posts" message when no blog posts were found
+Fixed search template excerpt calls
+Fixed bug where nav buttons would show even if nav elements were empty (responsive)
+
+2.0.0
+-----
+- New Theme

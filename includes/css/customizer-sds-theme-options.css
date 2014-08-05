@@ -1,0 +1,21 @@
+/**
+ * Stylesheet for SDS Theme Options - Theme Customizer
+ */
+
+.customize-sds-theme-options-logo-upload {}
+
+
+.customize-sds-theme-options-logo-upload > strong {
+	display: none;
+}
+
+.sds-theme-options-preview {
+	margin: 1em 0;
+	padding: 1em;
+	border: 1px solid #ccc;
+}
+
+.sds-theme-options-preview img {
+	max-width: 100%;
+	height: auto;
+}

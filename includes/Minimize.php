@@ -3,7 +3,7 @@
  * This class manages all functionality with our Minimize v2 theme.
  */
 class Minimize {
-	const MIN_VERSION = '2.2.9';
+	const MIN_VERSION = '2.3.9';
 
 	private static $instance; // Keep track of the instance
 
@@ -24,10 +24,16 @@ class Minimize {
 	 * This function sets up all of the actions and filters on instance
 	 */
 	function __construct() {
-		add_action( 'after_setup_theme', array( $this, 'after_setup_theme' ) ); // Register image sizes
+		add_action( 'after_setup_theme', array( $this, 'after_setup_theme' ) ); // Register image sizes, add theme support
+		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) ); // Add Meta Boxes
 		add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) ); // Used to enqueue editor styles based on post type
 		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) ); // Enqueue all stylesheets (Main Stylesheet, Fonts, etc...)
 		add_action( 'wp_footer', array( $this, 'wp_footer' ) ); // Responsive navigation functionality
+
+		// Theme Customizer
+		add_action( 'customize_register', array( $this, 'customize_register' ), 20 ); // Switch background properties to use refresh transport method
+		add_action( 'customize_controls_print_styles', array( $this, 'customize_controls_print_styles' ), 20 ); // Customizer Styles
+		add_filter( 'theme_mod_content_color', array( $this, 'theme_mod_content_color' ) ); // Set the default content color
 
 		// Gravity Forms
 		add_filter( 'gform_field_input', array( $this, 'gform_field_input' ), 10, 5 ); // Add placholder to newsletter form
@@ -40,11 +46,81 @@ class Minimize {
 	 ************************************************************************************/
 
 	/**
-	 * This function adds images sizes to WordPress.
+	 * This function adds images sizes to WordPress and adds various bits of theme support.
 	 */
 	function after_setup_theme() {
+		global $content_width;
+
+		/**
+		 * Set the Content Width for embedded items.
+		 */
+		if ( ! isset( $content_width ) )
+			$content_width = 715;
+
 		add_image_size( 'min-725x400', 725, 400, true ); // Used for featured images on blog page and single posts
 		add_image_size( 'min-1100x400', 1100, 400, true ); // Used for featured images on full width pages
+
+		// Change default core markup for search form, comment form, and comments, etc... to HTML5
+		add_theme_support( 'html5', array(
+			'search-form',
+			'comment-form',
+			'comment-list'
+		) );
+
+		// Custom Background (color/image)
+		add_theme_support( 'custom-background', array(
+			'default-color' => '#ffffff'
+		) );
+
+		// Theme textdomain
+		load_theme_textdomain( 'minimize', get_template_directory() . '/languages' );
+	}
+
+	/**
+	 * This function runs when meta boxes are added.
+	 */
+	function add_meta_boxes() {
+		// Post types
+		$post_types = get_post_types(
+			array(
+				'public' => true,
+				'_builtin' => false
+			)
+		);
+		$post_types[] = 'post';
+		$post_types[] = 'page';
+
+		// Add the metabox for each type
+		foreach ( $post_types as $type ) {
+			add_meta_box(
+				'minimize-us-metabox',
+				__( 'Layout Settings', 'minimize' ),
+				array( $this, 'minimize_us_metabox' ),
+				$type,
+				'side',
+				'default'
+			);
+		}
+	}
+
+	/**
+	 * This function renders a metabox.
+	 */
+	function minimize_us_metabox( $post ) {
+		// Get the post type label
+		$post_type = get_post_type_object( $post->post_type );
+		$label = ( isset( $post_type->labels->singular_name ) ) ? $post_type->labels->singular_name : __( 'Post' );
+
+		echo '<p class="howto">';
+		printf(
+			__( 'Looking to configure a unique layout for this %1$s? %2$s.', 'minimize' ),
+			esc_html( strtolower( $label ) ),
+			sprintf(
+				'<a href="%1$s" target="_blank">Upgrade to Pro</a>',
+				esc_url( sds_get_pro_link( 'metabox-layout-settings' ) )
+			)
+		);
+		echo '</p>';
 	}
 
 	/**
@@ -127,6 +203,102 @@ class Minimize {
 		</script>
 	<?php
 	}
+
+	/********************
+	 * Theme Customizer *
+	 ********************/
+
+	/**
+	 * This function is run when the Theme Customizer is loaded.
+	 */
+	function customize_register( $wp_customize ) {
+		$wp_customize->add_section( 'minimize_us', array(
+			'title' => __( 'Upgrade Minimize', 'minimize' ),
+			'priority' => 1
+		) );
+
+		$wp_customize->add_setting(
+			'minimize_us', // IDs can have nested array keys
+			array(
+				'default' => false,
+				'type' => 'minimize_us'
+			)
+		);
+
+		$wp_customize->add_control(
+			new WP_Customize_US_Control(
+				$wp_customize,
+				'minimize_us',
+				array(
+					'content'  => sprintf(
+						__( '<strong>Premium support</strong>, more Customizer options, color schemes, web fonts, and more! %s.', 'minimize' ),
+						sprintf(
+							'<a href="%1$s" target="_blank">%2$s</a>',
+							esc_url( sds_get_pro_link( 'customizer' ) ),
+							__( 'Upgrade to Pro', 'minimize' )
+						)
+					),
+					'section' => 'minimize_us',
+				)
+			)
+		);
+
+		$wp_customize->get_section( 'colors' )->description = sprintf(
+			__( 'Looking for more color customizations? %s.', 'minimize' ),
+			sprintf(
+				'<a href="%1$s" target="_blank">%2$s</a>',
+				esc_url( sds_get_pro_link( 'customizer-colors' ) ),
+				__( 'Upgrade to Pro', 'minimize' )
+			)
+		);
+	}
+
+	/**
+	 * This function is run when the Theme Customizer is printing styles.
+	 */
+	function customize_controls_print_styles() {
+	?>
+		<style type="text/css">
+			#accordion-section-minimize_us .accordion-section-title,
+			#customize-theme-controls #accordion-section-minimize_us .accordion-section-title:focus,
+			#customize-theme-controls #accordion-section-minimize_us .accordion-section-title:hover,
+			#customize-theme-controls #accordion-section-minimize_us .control-section.open .accordion-section-title,
+			#customize-theme-controls #accordion-section-minimize_us:hover .accordion-section-title,
+			#accordion-section-minimize_us .accordion-section-title:active {
+				background: #444;
+				color: #fff;
+			}
+
+			#accordion-section-minimize_us .accordion-section-title:after,
+			#customize-theme-controls #accordion-section-minimize_us .accordion-section-title:focus::after,
+			#customize-theme-controls #accordion-section-minimize_us .accordion-section-title:hover::after,
+			#customize-theme-controls #accordion-section-minimize_us.open .accordion-section-title::after,
+			#customize-theme-controls #accordion-section-minimize_us:hover .accordion-section-title::after {
+				color: #fff;
+			}
+		</style>
+	<?php
+	}
+
+	/**
+	 * This function sets the default color for the content area in the Theme Customizer.
+	 */
+	function theme_mod_content_color( $color ) {
+		// Return the current color if set
+		if ( $color )
+			return $color;
+
+		// Return the selected color scheme content color if set
+		if ( $selected_color_scheme = sds_get_color_scheme() )
+			return $selected_color_scheme['content_color'];
+
+		// Load all color schemes for this theme
+		$color_schemes = sds_color_schemes();
+
+		// Return the default color scheme content color
+		return $color_schemes['default']['content_color'];
+	}
+
 
 	/*****************
 	 * Gravity Forms *

@@ -47,8 +47,7 @@
 
 							_this.parent().find( '.sds-theme-options-upload-value' ).val( '' );
 							_this.parent().find( '.sds-theme-options-preview' ).html( '<div class="description">No logo selected.</div>' );
-						remove_logo_btn.attr( 'disabled', true );
-							
+							remove_logo_btn.attr( 'disabled', true );
 						} );
 					}
 				}
@@ -125,8 +124,12 @@
 		 *
 		 * This functionality taken from /wp-admin/js/common.js and modified for H3s (smaller nav tabs).
 		 */
-		// Move .updated and .error alert boxes. Don't move boxes designed to be inline.
+		// Move .updated and .error alert boxes, don't move boxes designed to be inline, hide all boxes
 		$( 'div.wrap h3:first' ).nextAll( 'div.updated, div.error' ).addClass( 'below-h3' );
 		$( 'div.updated, div.error' ).not( '.below-h3, .inline' ).insertAfter( $( 'div.wrap h3:first' ) );
+		$( 'div.updated, div.error' ).not( '.below-h3, .inline' ).attr( 'style', function( index, value ) { return ( value ) ? value + ' display: none !important;' : 'display: none !important;' } );
+
+		// Only show errors associated with the Theme Options panel
+		$( 'div.updated[id*="settings_updated"], div.updated[id*="sds_theme_options"], div.error[id*="sds_theme_options"]' ).not( '.below-h3, .inline' ).show();
 	} );
 }( jQuery ) );

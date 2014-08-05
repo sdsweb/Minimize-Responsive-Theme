@@ -1964,7 +1964,7 @@ if ( ! class_exists( 'WP_Upgrader' ) && ( isset( $_GET['page'] ) && TGM_Plugin_A
 			}
 
 			/**
-	 		 * Outputs the header strings and necessary JS before each plugin installation.
+	 		 * Outputs the header strings and necessary js before each plugin installation.
 	 		 *
 	 		 * @since 2.2.0
 	 		 */
@@ -1983,7 +1983,7 @@ if ( ! class_exists( 'WP_Upgrader' ) && ( isset( $_GET['page'] ) && TGM_Plugin_A
 			}
 
 			/**
-	 		 * Outputs the footer strings and necessary JS after each plugin installation.
+	 		 * Outputs the footer strings and necessary js after each plugin installation.
 	 		 *
 	 		 * Checks for any errors and outputs them if they exist, else output
 	 		 * success strings.
