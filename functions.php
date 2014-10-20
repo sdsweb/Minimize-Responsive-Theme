@@ -206,6 +206,19 @@ if ( ! function_exists( 'sds_theme_options_ads' ) ) {
 				<span class="sds-theme-options-btn-green"><?php _e( 'Upgrade Now!', 'minimize' ); ?></span>
 			</a>
 		</div>
+
+		<div class="sds-theme-options-ad">
+			<a href="<?php echo esc_url( 'http://conductorplugin.com/slocum-themes/' ); ?>" target="_blank" class="sds-theme-options-upgrade-ad sds-theme-options-upgrade-ad-dark-gray">
+				<h3><?php _e( 'Introducing Conductor Plugin', 'minimize' ); ?></h3>
+				<ul>
+					<li><?php _e( 'Custom Layouts', 'minimize' ); ?></li>
+					<li><?php _e( 'Custom Content Displays', 'minimize' ); ?></li>
+					<li><?php _e( 'No Code Required!', 'minimize' ); ?></li>
+				</ul>
+
+				<span class="sds-theme-options-btn-yellow"><?php _e( 'Get Conductor!', 'minimize' ); ?></span>
+			</a>
+		</div>
 	<?php
 	}
 }

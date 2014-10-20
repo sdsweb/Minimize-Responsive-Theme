@@ -50,6 +50,36 @@ h3.sds-theme-options-nav-tab-wrapper {
 	box-shadow: inset 0px 0px 0px 1px rgba(0,0,0,0.2), inset 0px -2px 0px 0px rgba(0,0,0,0.3), inset 0px 2px 0px 0px rgba(255,255,255,0.5);
 }
 
+.sds-theme-options-btn-yellow {
+	width: 100%;
+	padding: 20px 0;
+	background-color: #deb132;
+	color: #fff;
+	text-decoration: none;
+	text-align: center;
+	display: block;
+	font-size: 18px;
+	font-weight: 700;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	text-shadow: 1px 1px 1px #555555;
+	filter: dropshadow(color=#555555, offx=1, offy=1);
+	box-shadow: inset 0px 0px 0px 1px rgba(0,0,0,0.2), inset 0px -5px 0px 0px rgba(0,0,0,0.3), inset 0px 2px 0px 0px rgba(255,255,255,0.5);
+
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	-ms-border-radius: 5px;
+	border-radius: 5px;
+}
+
+.sds-theme-options-btn-yellow:hover {
+	box-shadow: inset 0px 0px 0px 1px rgba(0,0,0,0.4), inset 0px -5px 0px 0px rgba(0,0,0,0.5);
+}
+
+.sds-theme-options-btn-yellow:active {
+	box-shadow: inset 0px 0px 0px 1px rgba(0,0,0,0.2), inset 0px -2px 0px 0px rgba(0,0,0,0.3), inset 0px 2px 0px 0px rgba(255,255,255,0.5);
+}
+
 /* Notifications */
 .sds-theme-options-notification {
 	margin-bottom: 1em;
@@ -722,6 +752,10 @@ textarea {
 	-moz-border-radius: 5px;
 	-ms-border-radius: 5px;
 	border-radius: 5px;
+}
+
+.sds-theme-options-upgrade-ad-dark-gray {
+	background: #333;
 }
 
 .sds-theme-options-upgrade-ad:hover {

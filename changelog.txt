@@ -6,7 +6,7 @@ Current Version: 2.4.0
 ==========================================
 
 
-2.4.0 // October 15 2014
+2.4.0 // October 20 2014
 ------------------------
 - Updated to latest version of SDS Core
 - Added CSS classes on sidebar containers for better CSS targeting (added "widgets" and "no-widgets" classes)
