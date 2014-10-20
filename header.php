@@ -34,9 +34,9 @@
 				<?php sds_logo(); ?>
 				<?php sds_tagline(); ?>
 			</section>
-	<!--  nav options	-->		
+	<!--  nav options	-->
 			<aside class="nav-options">
-				<section class="header-cta-container header-call-to-action">
+				<section class="header-cta-container header-call-to-action <?php echo ( is_active_sidebar( 'header-call-to-action-sidebar' ) ) ? 'widgets' : 'no-widgets'; ?>">
 					<?php sds_header_call_to_action_sidebar(); // Header CTA Sidebar ?>
 				</section>
 			</aside>

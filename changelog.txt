@@ -2,8 +2,18 @@
 Theme: Minimize Free
 Author: Slocum Themes/Slocum Design Studio
 Author URI: http://slocumthemes.com
-Current Version: 2.3.9
+Current Version: 2.4.0
 ==========================================
+
+
+2.4.0 // October 15 2014
+------------------------
+- Updated to latest version of SDS Core
+- Added CSS classes on sidebar containers for better CSS targeting (added "widgets" and "no-widgets" classes)
+- Added WooCommerce support
+- Adjusted "mc-gravity" support to allow for multiple CSS classes
+- Adjusted default social media styling in sidebar to match social media widget output
+- Updated POT file
 
 2.3.9 // July 02 2014
 ---------------------

@@ -3,7 +3,7 @@
 	<!-- Footer -->
 		<footer id="footer">	
 			<section class="footer-widgets-container">
-				<section class="footer-widgets">
+				<section class="footer-widgets <?php echo ( is_active_sidebar( 'footer-sidebar' ) ) ? 'widgets' : 'no-widgets'; ?>">
 					<?php sds_footer_sidebar(); // Footer (4 columns) ?>
 				</section>
 			</section>
@@ -21,7 +21,7 @@
 				?>
 			</nav>
 
-			<section class="copyright-area">
+			<section class="copyright-area <?php echo ( is_active_sidebar( 'copyright-area-sidebar' ) ) ? 'widgets' : 'no-widgets'; ?>">
 				<?php sds_copyright_area_sidebar(); ?>
 			</section>
 

@@ -26,7 +26,7 @@
 		<?php endif; ?>
 	</section>
 
-	<section class="after-posts-widgets <?php echo ( is_active_sidebar( 'after-posts-sidebar' ) ) ? 'after-posts-widgets-active' : false; ?>">
+	<section class="after-posts-widgets <?php echo ( is_active_sidebar( 'after-posts-sidebar' ) ) ? 'after-posts-widgets-active widgets' : 'no-widgets'; ?>">
 		<?php sds_after_posts_sidebar(); ?>
 	</section>
 

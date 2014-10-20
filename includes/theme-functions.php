@@ -552,7 +552,8 @@ function sds_customize_register( $wp_customize ) {
 		'sds_theme_options[logo_attachment_id]', // IDs can have nested array keys
 		array(
 			'default' => $sds_theme_options_defaults['logo_attachment_id'],
-			'type' => 'option'
+			'type' => 'option',
+			'sanitize_callback' => 'absint'
 		)
 	);
 

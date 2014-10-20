@@ -9,21 +9,46 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  *
  * Description: This Class instantiates the SDS Options Panel providing themes with various options to use.
  *
- * @version 1.2.5
+ * @version 1.2.6
  */
 if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 	global $sds_theme_options;
 
 	class SDS_Theme_Options {
-		const VERSION = '1.2.5';
+		/**
+		 * @var string, Constant, Version of the class
+		 */
+		const VERSION = '1.2.6';
+
 
 		// Private Variables
+
+		/**
+		 * @var SDS_Theme_Options, Instance of the class
+		 */
 		private static $instance; // Keep track of the instance
+
+		/**
+		 * @var string, Description shown on options panel
+		 */
 		private static $options_page_description = 'Customize your theme to the fullest extent by using the options below.'; // Options Page description shown below title
 
+
 		// Public Variables
+
+		/**
+		 * @var string, Option name
+		 */
 		public static $option_name = 'sds_theme_options';
-		public $option_defaults;
+
+		/**
+		 * @var array, Array of option defaults
+		 */
+		public $option_defaults = array();
+
+		/**
+		 * @var WP_Theme, Current theme object
+		 */
 		public $theme;
 
 		/*
@@ -242,14 +267,14 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 		function sds_theme_options_color_schemes_field() {
 			global $sds_theme_options, $wp_version;
 
-			$color_schemes = sds_color_schemes();
+			$color_schemes = ( function_exists( 'sds_color_schemes' ) ) ? sds_color_schemes() : array();
 
 			if ( ! empty( $color_schemes ) ) :
 		?>
-			<div class="sbt-theme-options-color-schemes-wrap">
+			<div class="sds-theme-options-color-schemes-wrap">
 				<?php if ( version_compare( $wp_version, '3.8', '<' ) ) : // Output styles to change CSS on < 3.8 ?>
 					<style type="text/css">
-						.sbt-theme-options-color-scheme input[type=radio]:checked + .sbt-theme-options-color-scheme-preview:after {
+						.sds-theme-options-color-scheme input[type=radio]:checked + .sds-theme-options-color-scheme-preview:after {
 							content: '\2714';
 							font-family: inherit;
 							font-size: 20px;
@@ -259,7 +284,7 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 				<?php endif; ?>
 
 				<?php foreach( $color_schemes as $name => $atts ) :	?>
-					<div class="sbt-theme-options-color-scheme sbt-theme-options-color-scheme-<?php echo $name; ?>">
+					<div class="sds-theme-options-color-scheme sds-theme-options-color-scheme-<?php echo $name; ?>">
 						<label>
 							<?php if ( ( ! isset( $sds_theme_options['color_scheme'] ) || empty( $sds_theme_options['color_scheme'] ) ) && isset( $atts['default'] ) && $atts['default'] ) : // No color scheme selected, use default ?>
 								<input type="radio" id="sds_theme_options_color_scheme_<?php echo $name; ?>" name="sds_theme_options[color_scheme]" <?php checked( true ); ?> value="<?php echo $name; ?>" />
@@ -268,7 +293,7 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 							<?php endif;?>
 
 							<?php if ( isset( $atts['preview'] ) && ! empty( $atts['preview'] ) ) : ?>
-								<div class="sbt-theme-options-color-scheme-preview" style="background: <?php echo $atts['preview']; ?>">&nbsp;</div>
+								<div class="sds-theme-options-color-scheme-preview" style="background: <?php echo $atts['preview']; ?>">&nbsp;</div>
 							<?php endif; ?>
 
 							<?php echo ( isset( $atts['label'] ) ) ? $atts['label'] : false; ?>
@@ -298,14 +323,14 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 		function sds_theme_options_web_fonts_field() {
 			global $sds_theme_options, $wp_version;
 
-			$web_fonts = sds_web_fonts();
+			$web_fonts = ( function_exists( 'sds_web_fonts' ) ) ? sds_web_fonts() : array();
 
 			if ( ! empty( $web_fonts ) ) :
 		?>
-			<div class="sbt-theme-options-web-fonts-wrap">
+			<div class="sds-theme-options-web-fonts-wrap">
 				<?php if ( version_compare( $wp_version, '3.8', '<' ) ) : // Output styles to change CSS on < 3.8 ?>
 					<style type="text/css">
-						.sbt-theme-options-web-font input[type=radio]:checked + .sbt-theme-options-web-font-selected:before {
+						.sds-theme-options-web-font input[type=radio]:checked + .sds-theme-options-web-font-selected:before {
 							content: '\2714';
 							font-family: inherit;
 							font-size: 20px;
@@ -314,22 +339,22 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 					</style>
 				<?php endif; ?>
 
-				<div class="sbt-theme-options-web-font sbt-theme-options-web-font-default">
-						<label>
-							<input type="radio" id="sds_theme_options_web_font_default" name="sds_theme_options[web_font]" <?php ( ! isset( $sds_theme_options['web_font'] ) || empty( $sds_theme_options['web_font'] ) || $sds_theme_options['web_font'] === 'default' ) ? checked( true ) : checked( false ); ?> value="default" />
-							<div class="sbt-theme-options-web-font-selected">&nbsp;</div>
-						</label>
-						<span class="sds-theme-options-web-font-label-default"><?php _e( 'Default', 'minimize' ); ?></span>
+				<div class="sds-theme-options-web-font sds-theme-options-web-font-default">
+					<label>
+						<input type="radio" id="sds_theme_options_web_font_default" name="sds_theme_options[web_font]" <?php ( ! isset( $sds_theme_options['web_font'] ) || empty( $sds_theme_options['web_font'] ) || $sds_theme_options['web_font'] === 'default' ) ? checked( true ) : checked( false ); ?> value="default" />
+						<div class="sds-theme-options-web-font-selected">&nbsp;</div>
+					</label>
+					<span class="sds-theme-options-web-font-label-default"><?php _e( 'Default', 'minimize' ); ?></span>
 				</div>
 
 				<?php
 					foreach( $web_fonts as $name => $atts ) :
 						$css_name = strtolower( str_replace( array( '+'. ':' ), '-', $name) );
 				?>
-						<div class="sbt-theme-options-web-font sbt-theme-options-web-font-<?php echo $css_name; ?>" style="<?php echo ( isset( $atts['css'] ) && ! empty( $atts['css'] ) ) ? $atts['css'] : false; ?>">
+						<div class="sds-theme-options-web-font sds-theme-options-web-font-<?php echo $css_name; ?>" style="<?php echo ( isset( $atts['css'] ) && ! empty( $atts['css'] ) ) ? $atts['css'] : false; ?>">
 							<label>
 								<input type="radio" id="sds_theme_options_web_font_name_<?php echo $css_name; ?>" name="sds_theme_options[web_font]" <?php ( isset( $sds_theme_options['web_font'] ) ) ? checked( $sds_theme_options['web_font'], $name ) : checked( false ); ?> value="<?php echo $name; ?>" />
-								<div class="sbt-theme-options-web-font-selected">&nbsp;</div>
+								<div class="sds-theme-options-web-font-selected">&nbsp;</div>
 							</label>
 							<span class="sds-theme-options-web-font-label"><?php echo ( isset( $atts['label'] ) ) ? $atts['label'] : false; ?></span>
 							<span class="sds-theme-options-web-font-preview"><?php _e( 'Grumpy wizards make toxic brew for the evil Queen and Jack.', 'minimize' ); ?></span>
@@ -552,22 +577,25 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 			// Color Scheme (remove content/background colors if they match another color scheme's default values)
 			if ( ! empty( $input['color_scheme'] ) ) {
 				// Get color schemes
-				$color_schemes = sds_color_schemes();
-				unset( $color_schemes[$input['color_scheme']]); // Remove current color scheme
+				$color_schemes = ( function_exists( 'sds_color_schemes' ) ) ? sds_color_schemes() : array();
 
-				// Get current theme mods
-				$theme_mod_content_color = get_theme_mod( 'content_color' );
-				$theme_mod_background_color = get_theme_mod( 'background_color' );
+				if ( ! empty( $color_schemes ) ) {
+					unset( $color_schemes[$input['color_scheme']]); // Remove current color scheme
 
-				// Loop through color schemes
-				foreach( $color_schemes as $color_scheme_id => $color_scheme ) {
-					// Check to see if the current content color theme mod matches this color scheme's default value
-					if ( $color_scheme['content_color'] === $theme_mod_content_color )
-						remove_theme_mod( 'content_color' );
+					// Get current theme mods
+					$theme_mod_content_color = get_theme_mod( 'content_color' );
+					$theme_mod_background_color = get_theme_mod( 'background_color' );
 
-					// Check to see if the current background color theme mod matches this color scheme's default value
-					if ( isset( $color_scheme['background_color'] ) && ltrim( $color_scheme['background_color'], '#' ) === $theme_mod_background_color )
-						remove_theme_mod( 'background_color' );
+					// Loop through color schemes
+					foreach( $color_schemes as $color_scheme_id => $color_scheme ) {
+						// Check to see if the current content color theme mod matches this color scheme's default value
+						if ( $color_scheme['content_color'] === $theme_mod_content_color )
+							remove_theme_mod( 'content_color' );
+
+						// Check to see if the current background color theme mod matches this color scheme's default value
+						if ( isset( $color_scheme['background_color'] ) && ltrim( $color_scheme['background_color'], '#' ) === $theme_mod_background_color )
+							remove_theme_mod( 'background_color' );
+					}
 				}
 			}
 
@@ -613,7 +641,7 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 						}
 
 						/* Web Fonts */
-						.sbt-theme-options-web-font input[type=radio]:checked + .sbt-theme-options-web-font-selected:before {
+						.sds-theme-options-web-font input[type=radio]:checked + .sds-theme-options-web-font-selected:before {
 							color: <?php echo $_wp_admin_css_colors[$user_admin_color]->colors[2]; ?>;
 						}
 
@@ -715,10 +743,16 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 							<script src="https://apis.google.com/js/plusone.js"></script>
 						</div>
 
-						<a href="https://twitter.com/slocumstudio" class="twitter-follow-button" data-show-count="false" data-size="large" data-dnt="true">Follow @slocumstudio</a>
+						<a href="https://twitter.com/slocumstudio/" class="twitter-follow-button" data-show-count="false" data-size="large" data-dnt="true">Follow @slocumstudio</a>
 						<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 
 						<br />
+						<br />
+
+						<div class="slocum-themes">
+							<?php printf( __( '<a href="%1$s" target="_blank"><strong>How to setup the perfect WordPress website</strong></a>', 'minimize' ), 'http://slocumthemes.com/build-perfect-wordpress-website/' ); ?>
+						</div>
+
 						<br />
 
 						<div class="slocum-themes">
@@ -877,30 +911,30 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 			$content_layouts = ( function_exists( 'sds_content_layouts' ) ) ? sds_content_layouts() : false;
 
 			if ( ! empty( $content_layouts ) )
-				?>
+			?>
 				<div class="sds-theme-options-content-layout-wrap">
-			<?php foreach( $content_layouts as $name => $atts ) : ?>
-				<div class="sds-theme-options-content-layout sds-theme-options-content-layout-<?php echo $name; ?>">
-					<label>
-						<?php if ( ( ! isset( $sds_theme_options['content_layouts']['global'] ) || empty( $sds_theme_options['content_layouts'][$field_id] ) ) && isset( $atts['default'] ) && $atts['default'] ) : // No content layout selected, use default ?>
-							<input type="radio" id="sds_theme_options_content_layouts_name_<?php echo $name; ?>" name="sds_theme_options[content_layouts][<?php echo $field_id; ?>]" <?php checked( true ); ?> value="<?php echo $name; ?>" />
-						<?php else: ?>
-							<input type="radio" id="sds_theme_options_content_layouts_name_<?php echo $name; ?>" name="sds_theme_options[content_layouts][<?php echo $field_id; ?>]" <?php ( isset( $sds_theme_options['content_layouts'][$field_id] ) ) ? checked( $sds_theme_options['content_layouts'][$field_id], $name ) : checked( false ); ?> value="<?php echo $name; ?>" />
-						<?php endif; ?>
+					<?php foreach( $content_layouts as $name => $atts ) : ?>
+						<div class="sds-theme-options-content-layout sds-theme-options-content-layout-<?php echo $name; ?>">
+							<label>
+								<?php if ( ( ! isset( $sds_theme_options['content_layouts']['global'] ) || empty( $sds_theme_options['content_layouts'][$field_id] ) ) && isset( $atts['default'] ) && $atts['default'] ) : // No content layout selected, use default ?>
+									<input type="radio" id="sds_theme_options_content_layouts_name_<?php echo $name; ?>" name="sds_theme_options[content_layouts][<?php echo $field_id; ?>]" <?php checked( true ); ?> value="<?php echo $name; ?>" />
+								<?php else: ?>
+									<input type="radio" id="sds_theme_options_content_layouts_name_<?php echo $name; ?>" name="sds_theme_options[content_layouts][<?php echo $field_id; ?>]" <?php ( isset( $sds_theme_options['content_layouts'][$field_id] ) ) ? checked( $sds_theme_options['content_layouts'][$field_id], $name ) : checked( false ); ?> value="<?php echo $name; ?>" />
+								<?php endif; ?>
 
-						<div class="sds-theme-options-content-layout-preview">
-							<?php
-							if ( isset( $atts['preview_values'] ) )
-								vprintf( $atts['preview'], $atts['preview_values'] );
-							else
-								echo $atts['preview'];
-							?>
+								<div class="sds-theme-options-content-layout-preview">
+									<?php
+									if ( isset( $atts['preview_values'] ) )
+										vprintf( $atts['preview'], $atts['preview_values'] );
+									else
+										echo $atts['preview'];
+									?>
+								</div>
+							</label>
 						</div>
-					</label>
+					<?php endforeach; ?>
 				</div>
-			<?php endforeach; ?>
-			</div>
-			<span class="description"><?php  printf( _x( '%1$s', 'Content layout description; describes where the content layout will be applied', 'minimize' ), $description ); ?></span>
+				<span class="description"><?php  printf( _x( '%1$s', 'Content layout description; describes where the content layout will be applied', 'minimize' ), $description ); ?></span>
 		<?php
 		}
 	}
