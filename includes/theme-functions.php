@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  *
  * Description: This file contains functions for utilizing options within themes (displaying site logo, tagline, etc...)
  *
- * @version 1.2.6
+ * @version 1.2.8
  */
 
 
@@ -566,7 +566,7 @@ function sds_customize_register( $wp_customize ) {
 			$wp_customize,
 			'logo_attachment_id',
 			array(
-				'label'  => __( 'Logo', 'minimize' ),
+				'label' => __( 'Logo', 'minimize' ),
 				'section'  => 'title_tagline',
 				'settings' => 'sds_theme_options[logo_attachment_id]',
 				'sds_theme_options_instance' => $sds_theme_options_instance,
@@ -712,7 +712,14 @@ function sds_tgmpa_register() {
             'name'      => 'Soliloquy Lite',
             'slug'      => 'soliloquy-lite',
             'required'  => false
-        )
+        ),
+
+		// Note
+		array(
+			'name'      => 'Note - A live text widget',
+			'slug'      => 'note',
+			'required'  => false
+		)
 	);
 
 	$plugins = apply_filters( 'sds_tgmpa_plugins', $plugins );
@@ -758,6 +765,19 @@ function sds_wp_enqueue_scripts() {
 	// Comment Replies
 	if ( is_singular() )
 		wp_enqueue_script( 'comment-reply' );
+}
+
+/**
+ * This function is a fallback for 'title-tag' theme support added in WordPress 4.1.
+ */
+if ( ! function_exists( '_wp_render_title_tag' ) ) {
+	add_action( 'wp_head', 'sds_wp_head_title', 1 );
+
+	function sds_wp_head_title() {
+	?>
+		<title><?php wp_title( '|', true, 'right' ); ?></title>
+	<?php
+	}
 }
 
 /**
@@ -867,6 +887,9 @@ function sds_after_setup_theme() {
 
 	// Enable excerpts on Pages
 	add_post_type_support( 'page', 'excerpt' );
+
+	// Enable Title Tag Support (4.1)
+	add_theme_support( 'title-tag' );
 
 	// Register WordPress Menus
 	register_nav_menus( array(

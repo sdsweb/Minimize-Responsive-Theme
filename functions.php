@@ -7,7 +7,7 @@
  * Load the theme function files (options panel, theme functions, widgets, etc...).
  */
 
-include_once get_template_directory() . '/includes/Minimize.php'; // Minimize Class (main functionality, actions/filters)
+include_once get_template_directory() . '/theme/class-minimize.php'; // Minimize Class (main functionality, actions/filters)
 
 include_once get_template_directory() . '/includes/class-tgm-plugin-activation.php'; // TGM Activation
 
@@ -171,7 +171,7 @@ if ( ! function_exists( 'min_body_class' ) ) {
  * This function adds the custom Theme Customizer styles to the <head> tag.
  */
 if ( ! function_exists( 'min_wp_head' ) ) {
-	add_filter( 'wp_head', 'min_wp_head', 20 );
+	add_action( 'wp_head', 'min_wp_head', 20 );
 
 	function min_wp_head() {
 		$sds_theme_options_instance = SDS_Theme_Options_Instance();

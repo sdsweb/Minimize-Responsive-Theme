@@ -57,13 +57,14 @@ button{
 
 
 /* General Styles */
-body{
+body, body.wp-autoresize {
 	width: 715px;
 	max-width: 1100px;
 	margin: 1em;
 	font-family: 'Open Sans', Arial, sans-serif;
-	font-size: 16px;
+	font-size: 18px;
 	color: #555555;
+	line-height: normal;
 
 	/* Ensure that all long words are broken up so they do not exceed the width of their container elements. */
 	-ms-word-wrap: break-word;
@@ -90,39 +91,35 @@ h1 {
 }
 
 h2 {
+	margin-bottom: 5px;
+	margin-top: 15px;
 	font-size: 32px;
-	line-height: 32px;
+	line-height: normal;
 }
 
 h3 {
 	font-size: 24px;
-	line-height: 24px;
+	line-height: normal;
 }
 
 h4 {
 	font-size: 20px;
-	line-height: 20px;
+	line-height: normal;
 }
 
 h5 {
 	font-size: 16px;
-	line-height: 16px;
-}
-
-a {
-	color: #565656;
+	line-height: normal;
 }
 
 blockquote{
 	width: 94%;
-	margin: auto;
+	margin: 0.5em auto auto;
 	padding: 0.5em;
-	font-style: italic;
 	background: #f2f2f2;
 	position: relative;
 	font-size: 22px;
 	line-height: 1.5em;
-	font-style: italic;
 	font-weight: 600;
 }
 
@@ -148,12 +145,15 @@ cite{
 }
 
 table th{
+	color: #555;
 	padding: 0.5em;
 	background: #f2f2f2;
 	font-weight: bold;
 	text-align: center;
 	border: 1px solid #dbdbdb;
 	border-bottom: none;
+	font-size: 18px;
+	font-family: 'Open Sans', Arial, sans-serif;
 }
 
 table tr:nth-child(even){
@@ -163,6 +163,8 @@ table tr:nth-child(even){
 table td {
 	padding: 0.5em;
 	border: 1px solid #e0e0e0;
+	font-size: 18px;
+	font-family: 'Open Sans', Arial, sans-serif;
 }
 
 dt{
