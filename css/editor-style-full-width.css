@@ -1,4 +1,4 @@
 /* General Styles */
-body{
-	width: 100%;
+body, body.wp-autoresize {
+	max-width: 1100px;
 }

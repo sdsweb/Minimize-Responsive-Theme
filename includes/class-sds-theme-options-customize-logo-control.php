@@ -47,7 +47,7 @@ class SDS_Theme_Options_Customize_Logo_Control extends WP_Customize_Image_Contro
 	?>
 		<div class="customize-image-picker customize-sds-theme-options-logo-upload">
 			<span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
-			<?php $this->sds_theme_options_instance->sds_theme_options_logo_field(); ?>
+			<?php $this->sds_theme_options_instance->sds_theme_options_logo_field( true ); ?>
 		</div>
 	<?php
 	}

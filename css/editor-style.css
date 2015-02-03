@@ -58,8 +58,7 @@ button{
 
 /* General Styles */
 body, body.wp-autoresize {
-	width: 715px;
-	max-width: 1100px;
+	max-width: 715px;
 	margin: 1em;
 	font-family: 'Open Sans', Arial, sans-serif;
 	font-size: 18px;

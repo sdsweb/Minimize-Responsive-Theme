@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  *
  * Description: This file contains functions for utilizing options within themes (displaying site logo, tagline, etc...)
  *
- * @version 1.2.8
+ * @version 1.2.9
  */
 
 
@@ -118,7 +118,7 @@ if ( ! function_exists( 'sds_featured_image' ) ) {
 /**
  * This function adds the current site name after the title in the <head> section.
  */
-if ( ! function_exists( 'sds_wp_title' ) ) {
+if ( ! function_exists( 'sds_wp_title' ) && ! function_exists( '_wp_render_title_tag' ) ) {
 	add_filter( 'wp_title', 'sds_wp_title' );
 
 	function sds_wp_title( $title ) {
@@ -150,62 +150,74 @@ if ( ! function_exists( 'sds_primary_menu_fallback' ) ) {
  */
 if ( ! function_exists( 'sds_sitemap' ) ) {
 	function sds_sitemap() {
-	?>
-		<section class="sds-sitemap sitemap">
-			<section class="sitemap-pages page-list">
-				<h2 title="<?php esc_attr_e( 'Pages', 'minimize' ); ?>"><?php _e( 'Pages', 'minimize' ); ?></h2>
-				<ul>
-					<?php wp_list_pages( array( 'title_li' => '' ) ); ?>
-				</ul>
-			</section>
+		global $post;
+		?>
+		<div class="sds-sitemap sitemap">
+			<?php if ( apply_filters( 'sds_sitemap_show_pages', true ) ) : // Allow pages to not be displayed ?>
+				<div class="sitemap-pages page-list">
+					<h2 title="<?php esc_attr_e( 'Pages', 'minimize' ); ?>"><?php _e( 'Pages', 'minimize' ); ?></h2>
+					<ul>
+						<?php wp_list_pages( array( 'title_li' => '' ) ); ?>
+					</ul>
+				</div>
+			<?php endif; ?>
 
-			<section class="sitemap-archives sitemap-monthly-archives monthly-archives archive-list">
-				<h2 title="<?php esc_attr_e( 'Monthly Archives', 'minimize' ); ?>"><?php _e( 'Monthly Archives', 'minimize' ); ?></h2>
-				<ul>
-					<?php wp_get_archives(); ?>
-				</ul>
-			</section>
+			<?php if ( apply_filters( 'sds_sitemap_show_monthly_archives', true ) ) : // Allow monthly archives to not be displayed ?>
+				<div class="sitemap-archives sitemap-monthly-archives monthly-archives archive-list">
+					<h2 title="<?php esc_attr_e( 'Monthly Archives', 'minimize' ); ?>"><?php _e( 'Monthly Archives', 'minimize' ); ?></h2>
+					<ul>
+						<?php echo apply_filters( 'sds_sitemap_monthly_archives', wp_get_archives( array( 'echo' => false ) ) ); ?>
+					</ul>
+				</div>
+			<?php endif; ?>
 
-			<section class="sitemap-categories category-list">
-				<h2 title="<?php esc_attr_e( 'Blog Categories', 'minimize' ); ?>"><?php _e( 'Blog Categories', 'minimize' ); ?></h2>
-				<ul>
-					<?php wp_list_categories( array( 'title_li' => '' ) ); ?>
-				</ul>
-			</section>
+			<?php if ( apply_filters( 'sds_sitemap_show_categories', true ) ) : // Allow categories to not be displayed ?>
+				<div class="sitemap-categories category-list">
+					<h2 title="<?php esc_attr_e( 'Blog Categories', 'minimize' ); ?>"><?php _e( 'Blog Categories', 'minimize' ); ?></h2>
+					<ul>
+						<?php wp_list_categories( array( 'title_li' => '' ) ); ?>
+					</ul>
+				</div>
+			<?php endif; ?>
 
 
 			<?php
-				// Output all public post types except attachments and pages (see above for pages)
-				foreach( get_post_types( array( 'public' => true ) ) as $post_type ) {
-					if ( ! in_array( $post_type, array( 'attachment', 'page' ) ) ) {
-					$post_type_object = get_post_type_object( $post_type );
+			// Allow post types to be filtered
+			$public_post_types = apply_filters( 'sds_sitemap_public_post_types', get_post_types( array( 'public' => true ) ) );
 
-					$query = new WP_Query( array(
-						'post_type' => $post_type,
-						'posts_per_page' => wp_count_posts( $post_type )->publish
-					) );
+			// Output all public post types except attachments and pages (see above for pages)
+			if ( ! empty( $public_post_types ) )
+				foreach( $public_post_types as $post_type ) :
+					// Skip attachments and pages
+					if ( ! in_array( $post_type, array( 'attachment', 'page' ) ) ) :
+						$post_type_object = get_post_type_object( $post_type );
 
-					if( $query->have_posts() ) :
-					?>
-						<section class="sitemap-post-type-list sitemap-<?php echo $post_type_object->name; ?>-list post-type-list">
-							<h2 title="<?php echo esc_attr( $post_type_object->labels->name ); ?>">
-								<?php echo $post_type_object->labels->name; ?>
-							</h2>
+						$query = new WP_Query( array(
+							'post_type' => $post_type,
+							'posts_per_page' => wp_count_posts( $post_type )->publish
+						) );
 
-							<ul>
-								<?php while( $query->have_posts() ) : $query->the_post(); ?>
-									<li>
-										<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-									</li>
-								<?php endwhile; ?>
-							</ul>
-						</section>
-					<?php
+						if( $query->have_posts() ) :
+							?>
+							<div class="sitemap-post-type-list sitemap-<?php echo $post_type_object->name; ?>-list post-type-list">
+								<h2 title="<?php echo esc_attr( $post_type_object->labels->name ); ?>">
+									<?php echo $post_type_object->labels->name; ?>
+								</h2>
+
+								<ul>
+									<?php while( $query->have_posts() ) : $query->the_post(); ?>
+										<li id="<?php echo esc_attr( $post_type . '-' . $post->ID ); ?>">
+											<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+										</li>
+									<?php endwhile; ?>
+								</ul>
+							</div>
+						<?php
+						endif;
 					endif;
-				}
-			}
+				endforeach;
 			?>
-		</section>
+		</div>
 	<?php
 	}
 }
@@ -215,52 +227,88 @@ if ( ! function_exists( 'sds_sitemap' ) ) {
  */
 if ( ! function_exists( 'sds_archive_title' ) ) {
 	function sds_archive_title() {
-		// Author
-		if ( is_author() ) :
-			$author = get_user_by( 'slug', get_query_var( 'author_name' ) ); // Get user data by slug with value of author_name in query
-		?>
-			<h1 title="<?php esc_attr_e( 'Author Archive:', 'minimize' ); ?> <?php echo ( $author instanceof WP_User ) ? $author->display_name : false; ?>" class="page-title author-archive-title">
-				<?php _e( 'Author Archive:', 'minimize' ); ?> <?php echo ( $author instanceof WP_User ) ? $author->display_name : false; ?>
-			</h1>
-		<?php
-		// Categories
-		elseif ( is_category() ) :
-		?>
-			<h1 title="<?php single_cat_title( __( 'Category Archive: ', 'minimize' ) ); ?>" class="page-title category-archive-title">
-				<?php single_cat_title( __( 'Category Archive: ', 'minimize' ) ); ?>
-			</h1>
-		<?php 
-		// Tags
-		elseif ( is_tag() ) :
-		?>
-			<h1 title="<?php single_tag_title( __( 'Tag Archive: ', 'minimize' ) ); ?>" class="page-title tag-archive-title">
-				<?php single_tag_title( __( 'Tag Archive: ', 'minimize' ) ); ?>
-			</h1>
-		<?php
-		// Daily Archives
-		elseif ( is_day() ) :
-			$the_date = get_the_date();
-		?>
-			<h1 title="<?php esc_attr_e( 'Daily Archives:', 'minimize' ); ?> <?php echo $the_date; ?>" class="page-title day-archive-title daily-archive-title">
-				<?php _e( 'Daily Archives:', 'minimize' ); ?> <?php echo $the_date; ?>
-			</h1>
-		<?php
-		// Monthly Archives
-		elseif ( is_month() ) :
-			$the_date = get_the_date( 'F Y' );
-		?>
-			<h1 title="<?php esc_attr_e( 'Monthly Archives:', 'minimize' ); ?> <?php echo $the_date; ?>" class="page-title month-archive-title monthly-archive-title">
-				<?php _e( 'Monthly Archives:', 'minimize' ); ?> <?php echo $the_date; ?>
-			</h1>
-		<?php
-		// Yearly Archives
-		elseif ( is_year() ) :
-			$the_date = get_the_date( 'Y' );
-		?>
-			<h1 title="<?php esc_attr_e( 'Yearly Archives:', 'minimize' ); ?> <?php echo $the_date; ?>" class="page-title year-archive-title yearly-archive-title">
-				<?php _e( 'Yearly Archives:', 'minimize' ); ?> <?php echo $the_date; ?>
-			</h1>
-		<?php
+		global $sds_theme_options;
+
+		// Determine if we should we output the title based on settings
+		if ( $sds_theme_options['hide_archive_titles'] )
+			return false;
+
+		// Use core functionality if it exists
+		if ( function_exists( 'the_archive_title' ) ) :
+			$css_class = 'page-title';
+
+			// Author
+			if ( is_author() )
+				$css_class .= ' author-archive-title';
+			// Categories
+			else if ( is_category() )
+				$css_class .= ' category-archive-title';
+			// Tags
+			else if ( is_tag() )
+				$css_class .= ' tag-archive-title';
+			// Daily Archives
+			else if ( is_day() )
+				$css_class .= ' day-archive-title daily-archive-title';
+			// Monthly Archives
+			else if ( is_month() )
+				$css_class .= ' month-archive-title monthly-archive-title';
+			// Yearly Archives
+			else if ( is_year() )
+				$css_class .= ' year-archive-title yearly-archive-title';
+
+
+			$css_class = apply_filters( 'sds_archive_title_css_class', $css_class );
+
+			the_archive_title( '<h1 class="' . esc_attr( $css_class ) . '">', '</h1>' );
+		// Otherwise use fallback functionality
+		else :
+			// Author
+			if ( is_author() ) :
+				$author = get_user_by( 'slug', get_query_var( 'author_name' ) ); // Get user data by slug with value of author_name in query
+			?>
+				<h1 title="<?php esc_attr_e( 'Author Archive:', 'minimize' ); ?> <?php echo ( $author instanceof WP_User ) ? $author->display_name : false; ?>" class="page-title author-archive-title">
+					<?php _e( 'Author Archive:', 'minimize' ); ?> <?php echo ( $author instanceof WP_User ) ? $author->display_name : false; ?>
+				</h1>
+			<?php
+			// Categories
+			elseif ( is_category() ) :
+			?>
+				<h1 title="<?php single_cat_title( __( 'Category Archive: ', 'minimize' ) ); ?>" class="page-title category-archive-title">
+					<?php single_cat_title( __( 'Category Archive: ', 'minimize' ) ); ?>
+				</h1>
+			<?php
+			// Tags
+			elseif ( is_tag() ) :
+			?>
+				<h1 title="<?php single_tag_title( __( 'Tag Archive: ', 'minimize' ) ); ?>" class="page-title tag-archive-title">
+					<?php single_tag_title( __( 'Tag Archive: ', 'minimize' ) ); ?>
+				</h1>
+			<?php
+			// Daily Archives
+			elseif ( is_day() ) :
+				$the_date = get_the_date();
+			?>
+				<h1 title="<?php esc_attr_e( 'Daily Archives:', 'minimize' ); ?> <?php echo $the_date; ?>" class="page-title day-archive-title daily-archive-title">
+					<?php _e( 'Daily Archives:', 'minimize' ); ?> <?php echo $the_date; ?>
+				</h1>
+			<?php
+			// Monthly Archives
+			elseif ( is_month() ) :
+				$the_date = get_the_date( 'F Y' );
+			?>
+				<h1 title="<?php esc_attr_e( 'Monthly Archives:', 'minimize' ); ?> <?php echo $the_date; ?>" class="page-title month-archive-title monthly-archive-title">
+					<?php _e( 'Monthly Archives:', 'minimize' ); ?> <?php echo $the_date; ?>
+				</h1>
+			<?php
+			// Yearly Archives
+			elseif ( is_year() ) :
+				$the_date = get_the_date( 'Y' );
+			?>
+				<h1 title="<?php esc_attr_e( 'Yearly Archives:', 'minimize' ); ?> <?php echo $the_date; ?>" class="page-title year-archive-title yearly-archive-title">
+					<?php _e( 'Yearly Archives:', 'minimize' ); ?> <?php echo $the_date; ?>
+				</h1>
+			<?php
+			endif;
 		endif;
 	}
 }
@@ -706,13 +754,6 @@ function sds_tgmpa_register() {
 			'force_deactivation' => false,
 			'external_url' => 'https://github.com/sdsweb/sds-one-click-child-themes/'
 		),
- 
-        // Soliloquy
-        array(
-            'name'      => 'Soliloquy Lite',
-            'slug'      => 'soliloquy-lite',
-            'required'  => false
-        ),
 
 		// Note
 		array(
@@ -934,7 +975,7 @@ function sds_widgets_init() {
 	register_sidebar( array(
 		'name'          => __( 'Front Page Slider', 'minimize' ),
 		'id'            => 'front-page-slider-sidebar',
-		'description'   => __( '*This widget area is only displayed if a Front Page is selected via Settings > Reading in the Dashboard. Specifically formatted for Soliloquy or SlideDeck sliders.* This widget area is displayed above the content on the Front Page.', 'minimize' ),
+		'description'   => __( '*This widget area is only displayed if a Front Page is selected via Settings > Reading in the Dashboard.* This widget area is displayed above the content on the Front Page.', 'minimize' ),
 		'before_widget' => '<section id="front-page-slider-%1$s" class="widget front-page-slider front-page-slider-widget slider %2$s">',
 		'after_widget'  => '</section>',
 		'before_title'  => '<h3 class="widgettitle widget-title front-page-slider-title">',

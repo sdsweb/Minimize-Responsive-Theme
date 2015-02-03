@@ -1,10 +1,18 @@
 ==========================================
 Theme: Minimize Free
 Author: Slocum Themes/Slocum Design Studio
-Author URI: http://slocumthemes.com
-Current Version: 2.4.1
+Author URI: https://slocumthemes.com/
+Current Version: 2.4.2
 ==========================================
 
+
+2.4.2 // January 30 2015
+------------------------
+- Updated to latest version of SDS Core
+- Fixed issue where editor styles were not loaded correctly when new content was created
+- Added screen reader CSS declarations
+- Updated Slocum Themes links throughout theme
+- Updated the_time() function to reference date format specified in settings
 
 2.4.1 // November 24 2014
 -------------------------

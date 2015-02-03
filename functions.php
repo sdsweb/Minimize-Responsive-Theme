@@ -289,6 +289,6 @@ if ( ! function_exists( 'sds_copyright_branding' ) ) {
 	add_filter( 'sds_copyright_branding', 'sds_copyright_branding', 10, 2 );
 
 	function sds_copyright_branding( $text, $theme_name ) {
-		return sprintf( __( '<a href="%1$s">%2$s by Slocum Studio</a>', 'minimize' ), esc_url( 'http://slocumthemes.com/wordpress-themes/minimize-free/' ), $theme_name );
+		return sprintf( __( '<a href="%1$s">%2$s by Slocum Studio</a>', 'minimize' ), esc_url( 'https://slocumthemes.com/wordpress-themes/minimize-free/' ), $theme_name );
 	}
 }

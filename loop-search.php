@@ -15,10 +15,10 @@
 					<p class="latest-post-date">
 						<?php
 							if ( strlen( get_the_title() ) > 0 ) :
-								the_time( 'F j, Y' );
+								the_time( get_option( 'date_format' ) );
 							else: // No title
 						?>
-							<a href="<?php the_permalink(); ?>"><?php the_time( 'F j, Y' ); ?></a>
+							<a href="<?php the_permalink(); ?>"><?php the_time( get_option( 'date_format' ) ); ?></a>
 						<?php
 							endif;
 						?>

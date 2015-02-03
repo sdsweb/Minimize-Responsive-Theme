@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  *
  * Description: This Class instantiates the SDS Options Panel providing themes with various options to use.
  *
- * @version 1.2.6
+ * @version 1.2.9
  */
 if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 	global $sds_theme_options;
@@ -18,7 +18,7 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 		/**
 		 * @var string, Constant, Version of the class
 		 */
-		const VERSION = '1.2.6';
+		const VERSION = '1.2.9';
 
 
 		// Private Variables
@@ -207,9 +207,22 @@ if ( ! class_exists( 'SDS_Theme_Options' ) ) {
 		/**
 		 * This function is the callback for the logo settings field.
 		 */
-		function sds_theme_options_logo_field() {
+		function sds_theme_options_logo_field( $customizer = false ) {
 			global $sds_theme_options;
+
+			// Output logo dimensions on Customizer
+			if ( $customizer ) :
 		?>
+				<p>
+					<?php
+						$sds_logo_dimensions = apply_filters( 'sds_theme_options_logo_dimensions', '300x100' );
+						printf( __( 'Upload a logo to to replace the site name. Recommended dimensions: %1$s.', 'minimize' ), $sds_logo_dimensions );
+					?>
+				</p>
+		<?php
+			endif;
+		?>
+
 			<strong><?php _e( 'Current Logo:', 'minimize' ); ?></strong>
 			<div class="sds-theme-options-preview sds-theme-options-logo-preview">
 				<?php
