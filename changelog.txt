@@ -2,9 +2,13 @@
 Theme: Minimize Free
 Author: Slocum Themes/Slocum Design Studio
 Author URI: https://slocumthemes.com/
-Current Version: 2.4.2
+Current Version: 2.4.3
 ==========================================
 
+
+2.4.3 // April 23 2015
+------------------------
+- Updated TGM Plugin Activation to version 2.4.1
 
 2.4.2 // January 30 2015
 ------------------------
