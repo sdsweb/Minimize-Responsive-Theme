@@ -8,11 +8,12 @@
  * License: GPL2+
  * License URI: http://www.gnu.org/licenses/gpl.html
  * Tags: blue, green, orange, pink, purple, red, white, light, two-columns, left-sidebar, right-sidebar, custom-colors, custom-menu, editor-style, featured-images, full-width-template, sticky-post, theme-options, threaded-comments, translation-ready, fluid-layout, responsive-layout
+ * Text Domain: minimize
  * 
  * Minimize WordPress theme, Copyright (C) 2013 Slocum Studio
  * Minimize WordPress theme is licensed under the GPL.
  * 
- * @see attribution.txt for more license information.
+ * @see readme.txt for more license information.
  */
 
 /**
@@ -335,13 +336,13 @@ a img.aligncenter {
 	color: #21759b;
 	display: block;
 	font-size: 14px;
-	font-size: 0.875rem;
 	font-weight: bold;
 	height: auto;
 	left: 5px;
 	line-height: normal;
 	padding: 15px 23px 14px;
 	text-decoration: none;
+    text-transform: none;
 	top: 5px;
 	width: auto;
 	z-index: 100000; /* Above WP toolbar. */
