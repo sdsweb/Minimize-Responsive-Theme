@@ -5,7 +5,7 @@
 
 get_header(); ?>
 	<section class="content-wrapper page-content cf">
-		<article class="content cf">
+		<article id="content-container" class="content cf">
 			<?php get_template_part( 'yoast', 'breadcrumbs' ); // Yoast Breadcrumbs ?>
 
 			<?php get_template_part( 'loop', 'page' ); // Loop - Page ?>
