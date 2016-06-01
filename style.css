@@ -1502,6 +1502,8 @@ aside.sidebar{
 
 .widget ul li, .footer-widget ul li {
 	padding: 0.25em;
+	margin-left: 2em;
+	list-style: disc;
 }
 
 .widget table, .footer-widget table {
